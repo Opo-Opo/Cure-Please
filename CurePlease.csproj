@@ -86,9 +86,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomClasses.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="CustomClasses.cs"/>
     <Compile Include="CurePleaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,9 +119,7 @@
       <DependentUpon>PartyBuffsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="ProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="ProgressBar.cs"/>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CurePleaseForm.resx">
       <DependentUpon>CurePleaseForm.cs</DependentUpon>
@@ -158,9 +154,12 @@
     <None Include="AshitaAddon\CurePlease_Addon\CurePlease_Addon.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="WindowerAddon\CurePlease_Addon\CurePlease_Addon.lua" />
+    <Content Include="Resources\Buffs.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -194,7 +193,7 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
