@@ -5,6 +5,22 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurePlease.App", "App\CurePlease.App.csproj", "{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CurePlease.Addon", "CurePlease.Addon", "{6F989CEE-75D3-4887-AFA7-75419D431D41}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windower", "Windower", "{C87FDDDB-7CDE-4E4F-B5D1-D1E7F04B7A40}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ashita", "Ashita", "{40FAEE6A-EFB9-4F1E-94FF-7B9A72D1EA8E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CurePlease_Addon", "CurePlease_Addon", "{DDD9FC12-9AAF-4DAC-9DFD-8456C747AF48}"
+	ProjectSection(SolutionItems) = preProject
+		Addon\Ashita\CurePlease_Addon\CurePlease_Addon.lua = Addon\Ashita\CurePlease_Addon\CurePlease_Addon.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CurePlease_Addon", "CurePlease_Addon", "{664F011A-5DCF-4E24-867A-832D8568D19A}"
+	ProjectSection(SolutionItems) = preProject
+		Addon\Windower\CurePlease_Addon\CurePlease_Addon.lua = Addon\Windower\CurePlease_Addon\CurePlease_Addon.lua
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -18,6 +34,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C87FDDDB-7CDE-4E4F-B5D1-D1E7F04B7A40} = {6F989CEE-75D3-4887-AFA7-75419D431D41}
+		{40FAEE6A-EFB9-4F1E-94FF-7B9A72D1EA8E} = {6F989CEE-75D3-4887-AFA7-75419D431D41}
+		{DDD9FC12-9AAF-4DAC-9DFD-8456C747AF48} = {40FAEE6A-EFB9-4F1E-94FF-7B9A72D1EA8E}
+		{664F011A-5DCF-4E24-867A-832D8568D19A} = {C87FDDDB-7CDE-4E4F-B5D1-D1E7F04B7A40}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44540655-82B7-4CD4-9E5F-102B0AD69BE5}

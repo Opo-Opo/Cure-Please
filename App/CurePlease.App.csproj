@@ -156,11 +156,7 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="AshitaAddon\CurePlease_Addon\CurePlease_Addon.lua">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
-    <None Include="WindowerAddon\CurePlease_Addon\CurePlease_Addon.lua" />
     <Content Include="Resources\Buffs.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
