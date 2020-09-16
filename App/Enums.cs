@@ -55,4 +55,22 @@
         RUN = 22,
     }
 
+    public enum Buff
+    {
+        Silence = 6,
+        Amnesia = 16,
+        Mute = 29,
+        Impairment = 261,
+        Omerta = 262,
+    }
+
+    public enum Spell
+    {
+        Reraise4 = 848,
+        Distract3 = 882,
+        Frazzle3 = 883,
+        FullCure = 893,
+        Refresh3 = 894,
+        Temper2 = 895,
+    }
 }
