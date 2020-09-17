@@ -93,6 +93,7 @@
     <Compile Include="CurePleaseForm.Designer.cs">
       <DependentUpon>CurePleaseForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Enums.cs" />
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
