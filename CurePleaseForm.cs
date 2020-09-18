@@ -5071,50 +5071,27 @@
 
         private bool plStatusCheck(StatusEffect requestedStatus)
         {
-            bool statusFound = false;
-            foreach (StatusEffect status in _ELITEAPIPL.Player.Buffs.Cast<StatusEffect>().Where(status => requestedStatus == status))
-            {
-                statusFound = true;
-            }
-            return statusFound;
+            return _ELITEAPIPL.Player.Buffs
+                .Cast<StatusEffect>()
+                .Any(status => requestedStatus == status);
         }
 
         private bool monitoredStatusCheck(StatusEffect requestedStatus)
         {
-            bool statusFound = false;
-            foreach (StatusEffect status in _ELITEAPIMonitored.Player.Buffs.Cast<StatusEffect>().Where(status => requestedStatus == status))
-            {
-                statusFound = true;
-            }
-            return statusFound;
+            return _ELITEAPIMonitored.Player.Buffs
+                .Cast<StatusEffect>()
+                .Any(status => requestedStatus == status);
         }
 
         public bool BuffChecker(int buffID, int checkedPlayer)
         {
             if (checkedPlayer == 1)
             {
-                if (_ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Any(b => b == buffID))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Any(b => b == buffID);
             }
-            else
-            {
-                if (_ELITEAPIPL.Player.GetPlayerInfo().Buffs.Any(b => b == buffID))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
 
+            return _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Any(b => b == buffID);
+        }
 
         private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras)
         {
