@@ -324,98 +324,69 @@
             return _ELITEAPIPL.Player.HasSpell(spell.Index) && JobChecker(name);
         }
 
-        public static bool JobChecker(string SpellName)
+        public static bool JobChecker(string spellName)
         {
+            spellName = spellName.Trim().ToLower();
 
-            string checked_spellName = SpellName.Trim().ToLower();
-
-            EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(checked_spellName, 0); // GRAB THE REQUESTED SPELL DATA
-
-            int mainjobLevelRequired = magic.LevelRequired[(_ELITEAPIPL.Player.MainJob)]; // GRAB SPELL LEVEL FOR THE MAIN JOB
-            int subjobLevelRequired = magic.LevelRequired[(_ELITEAPIPL.Player.SubJob)]; // GRAB SPELL LEVEL FOR THE SUB JOB
-
-            if (checked_spellName == "honor march")
+            if (spellName == "honor march")
             {
                 return true;
             }
 
-            if (mainjobLevelRequired <= _ELITEAPIPL.Player.MainJobLevel && mainjobLevelRequired != -1)
-            { // IF THE MAIN JOB DOES NOT EQUAl -1 (Meaning the JOB can't use the spell) AND YOUR LEVEL IS EQUAL TO OR LOVER THAN THE REQUIRED LEVEL RETURN true
-                return true;
-            }
-            else if (subjobLevelRequired <= _ELITEAPIPL.Player.SubJobLevel && subjobLevelRequired != -1)
-            { // IF THE SUB JOB DOES NOT EQUAl -1 (Meaning the JOB can't use the spell) AND YOUR LEVEL IS EQUAL TO OR LOVER THAN THE REQUIRED LEVEL RETURN true
-                return true;
-            }
-            else if (mainjobLevelRequired > 99 && mainjobLevelRequired != -1)
-            { // IF THE MAIN JOB LEVEL IS GREATER THAN 99 BUT DOES NOT EQUAL -1 THEN IT IS A JOB POINT REQUIRED SPELL AND SO FURTHER CHECKS MUST BE MADE SO GRAB CURRENT JOB POINT TABLE
-                EliteAPI.PlayerJobPoints JobPoints = _ELITEAPIPL.Player.GetJobPoints(_ELITEAPIPL.Player.MainJob);
+            var spell = _ELITEAPIPL.Resources.GetSpell(spellName, 0);
 
-                // Spell is a JP spell so check this works correctly and that you possess the spell
-                if (checked_spellName == "refresh iii" || checked_spellName == "temper ii")
-                {
-                    if (_ELITEAPIPL.Player.MainJob == 5 && _ELITEAPIPL.Player.MainJobLevel == 99 && JobPoints.SpentJobPoints >= 1200) // IF MAIN JOB IS RDM, AND JOB LEVEL IS AT MAX WITH REQUIRED JOB POINTS
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if (checked_spellName == "distract iii" || checked_spellName == "frazzle iii")
-                {
-                    if (_ELITEAPIPL.Player.MainJob == 5 && _ELITEAPIPL.Player.MainJobLevel == 99 && JobPoints.SpentJobPoints >= 550) // IF MAIN JOB IS RDM, AND JOB LEVEL IS AT MAX WITH REQUIRED JOB POINTS
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if (checked_spellName.Contains("storm ii"))
-                {
-                    if (_ELITEAPIPL.Player.MainJob == 20 && _ELITEAPIPL.Player.MainJobLevel == 99 && JobPoints.SpentJobPoints >= 100) // IF MAIN JOB IS SCH, AND JOB LEVEL IS AT MAX WITH REQUIRED JOB POINTS
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if (checked_spellName == "reraise iv")
-                {
-                    if (_ELITEAPIPL.Player.MainJob == 3 && _ELITEAPIPL.Player.MainJobLevel == 99 && JobPoints.SpentJobPoints >= 100) // IF MAIN JOB IS WHM, AND JOB LEVEL IS AT MAX WITH REQUIRED JOB POINTS
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if (checked_spellName == "full cure")
-                {
-                    if (_ELITEAPIPL.Player.MainJob == 3 && _ELITEAPIPL.Player.MainJobLevel == 99 && JobPoints.SpentJobPoints >= 1200) // IF MAIN JOB IS WHM, AND JOB LEVEL IS AT MAX WITH REQUIRED JOB POINTS
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
+            var mainJob = _ELITEAPIPL.Player.MainJob;
+            var mainjobLevelRequired = spell.LevelRequired[];
+            var subjobLevelRequired = spell.LevelRequired[_ELITEAPIPL.Player.SubJob];
+
+            if (mainjobLevelRequired == -1 && subjobLevelRequired == -1)
+            {// -1 means the job doesn't have access to the spell
                 return false;
             }
+
+            if (mainjobLevelRequired <= _ELITEAPIPL.Player.MainJobLevel && subjobLevelRequired <= _ELITEAPIPL.Player.SubJobLevel)
+            {// Main and sub job aren't high enough to cast the spell
+                return true;
+            }
+
+            if (mainjobLevelRequired <= 99)
+            {// Not a job point spell
+                return false;
+            }
+
+            EliteAPI.PlayerJobPoints jobPoints = _ELITEAPIPL.Player.GetJobPoints(mainJob);
+
+            if (spellName == "refresh iii" || spellName == "temper ii")
+            {
+                return mainJob == 5 // RDM
+                    && jobPoints.SpentJobPoints >= 1200;
+            }
+
+            if (spellName == "distract iii" || spellName == "frazzle iii")
+            {
+                return mainJob == 5 // RDM
+                    && jobPoints.SpentJobPoints >= 550;
+            }
+
+            if (spellName.Contains("storm ii"))
+            {
+                return mainJob == 20 // SCH
+                    && jobPoints.SpentJobPoints >= 100;
+            }
+
+            if (spellName == "reraise iv")
+            {
+                return mainJob == 3 // WHM
+                    && jobPoints.SpentJobPoints >= 100;
+            }
+
+            if (spellName == "full cure")
+            {
+                return mainJob == 3 // WHM
+                    && jobPoints.SpentJobPoints >= 1200;
+            }
+
+            return false;
         }
 
         // SPELL CHECKER CODE: (CheckSpellRecast("") == 0) && (HasSpell(""))
