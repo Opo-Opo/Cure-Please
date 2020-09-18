@@ -293,7 +293,7 @@
             }
         }
 
-        public bool HasAbility(string checked_abilityName)
+        public bool HasAbility(string name)
         {
             if (_ELITEAPIPL.Player.GetPlayerInfo().Buffs.Any(b => b == 261 || b == 16))
             {// Can't use JAs when Inpairment or Amnesia
@@ -301,34 +301,27 @@
             }
 
             return _ELITEAPIPL.Player.HasAbility(
-                _ELITEAPIPL.Resources.GetAbility(checked_abilityName, 0).ID
+                _ELITEAPIPL.Resources.GetAbility(name, 0).ID
             );
         }
 
-        public static bool HasSpell(string checked_spellName)
+        public bool HasSpell(string name)
         {
+            if (_ELITEAPIPL.Player.GetPlayerInfo().Buffs.Any(b => b == 6 || b == 29 || b == 262))
+            {// Can't cast magic when Silence, Mute or Omerta
+                return false;
+            }
 
-            checked_spellName = checked_spellName.Trim().ToLower();
+            name = name.Trim().ToLower();
 
-            if (checked_spellName == "honor march")
+            if (name == "honor march")
             {
                 return true;
             }
 
-            EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(checked_spellName, 0);
+            var spell = _ELITEAPIPL.Resources.GetSpell(name, 0);
 
-            if (_ELITEAPIPL.Player.GetPlayerInfo().Buffs.Any(b => b == 262)) // IF YOU HAVE OMERTA THEN BLOCK MAGIC CASTING
-            {
-                return false;
-            }
-            else if (_ELITEAPIPL.Player.HasSpell(magic.Index) && JobChecker(checked_spellName) == true)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return _ELITEAPIPL.Player.HasSpell(spell.Index) && JobChecker(name);
         }
 
         public static bool JobChecker(string SpellName)
