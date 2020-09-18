@@ -16,6 +16,7 @@
     using System.Threading.Tasks;
     using System.Windows.Forms;
     using System.Xml.Serialization;
+    using static EliteMMO.API.EliteAPI;
 
     public partial class CurePleaseForm : Form
     {
@@ -321,22 +322,18 @@
 
             var spell = _ELITEAPIPL.Resources.GetSpell(name, 0);
 
-            return _ELITEAPIPL.Player.HasSpell(spell.Index) && JobChecker(name);
+            return _ELITEAPIPL.Player.HasSpell(spell.Index) && JobChecker(spell);
         }
 
-        public static bool JobChecker(string spellName)
+        public static bool JobChecker(ISpell spell)
         {
-            spellName = spellName.Trim().ToLower();
-
-            if (spellName == "honor march")
+            if (spell.ID == (int) Spell.HonorMarch)
             {
                 return true;
             }
 
-            var spell = _ELITEAPIPL.Resources.GetSpell(spellName, 0);
-
             var mainJob = _ELITEAPIPL.Player.MainJob;
-            var mainjobLevelRequired = spell.LevelRequired[];
+            var mainjobLevelRequired = spell.LevelRequired[mainJob];
             var subjobLevelRequired = spell.LevelRequired[_ELITEAPIPL.Player.SubJob];
 
             if (mainjobLevelRequired == -1 && subjobLevelRequired == -1)
@@ -354,35 +351,35 @@
                 return false;
             }
 
-            EliteAPI.PlayerJobPoints jobPoints = _ELITEAPIPL.Player.GetJobPoints(mainJob);
+            PlayerJobPoints jobPoints = _ELITEAPIPL.Player.GetJobPoints(mainJob);
 
-            if (spellName == "refresh iii" || spellName == "temper ii")
+            if (spell.ID == (int) Spell.Refresh3 || spell.ID == (int) Spell.Temper2)
             {
-                return mainJob == 5 // RDM
+                return mainJob == (int)Job.RDM
                     && jobPoints.SpentJobPoints >= 1200;
             }
 
-            if (spellName == "distract iii" || spellName == "frazzle iii")
+            if (spell.ID == (int) Spell.Distract3 || spell.ID == (int) Spell.Frazzle3)
             {
-                return mainJob == 5 // RDM
+                return mainJob == (int)Job.RDM
                     && jobPoints.SpentJobPoints >= 550;
             }
 
-            if (spellName.Contains("storm ii"))
+            if (spell.Name[(int) Language.EN].Contains("storm ii"))
             {
-                return mainJob == 20 // SCH
+                return mainJob == (int)Job.SCH
                     && jobPoints.SpentJobPoints >= 100;
             }
 
-            if (spellName == "reraise iv")
+            if (spell.ID == (int)Spell.Reraise4)
             {
-                return mainJob == 3 // WHM
+                return mainJob == (int)Job.WHM
                     && jobPoints.SpentJobPoints >= 100;
             }
 
-            if (spellName == "full cure")
+            if (spell.ID == (int)Spell.FullCure)
             {
-                return mainJob == 3 // WHM
+                return mainJob == (int)Job.WHM
                     && jobPoints.SpentJobPoints >= 1200;
             }
 

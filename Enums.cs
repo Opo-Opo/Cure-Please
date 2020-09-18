@@ -14,6 +14,11 @@ namespace CurePlease
         LoggedIn = 2
     }
 
+    public enum Language
+    {
+        EN = 0,
+    }
+
     public enum Status : byte
     {
         Standing = 0,
@@ -35,7 +40,7 @@ namespace CurePlease
         Unknown
     }
 
-    public enum Job
+    public enum Job : byte
     {// Only know WHM, RDM and SCH are correct
         WAR = 1,
         MNK = 2,
@@ -61,4 +66,14 @@ namespace CurePlease
         RUN = 22,
     }
 
+    public enum Spell
+    {
+        HonorMarch = 417,
+        Reraise4 = 848,
+        Distract3 = 882,
+        Frazzle3 = 883,
+        Refresh3 = 894,
+        Temper2 = 895,
+        FullCure = 893,
+    }
 }

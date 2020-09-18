@@ -86,7 +86,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomClasses.cs"/>
+    <Compile Include="CustomClasses.cs" />
     <Compile Include="CurePleaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,7 +120,7 @@
       <DependentUpon>PartyBuffsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="ProgressBar.cs"/>
+    <Compile Include="ProgressBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CurePleaseForm.resx">
       <DependentUpon>CurePleaseForm.cs</DependentUpon>
