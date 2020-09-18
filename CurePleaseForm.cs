@@ -3401,18 +3401,16 @@
             return "false";
         }
 
-        private bool partyMemberUpdateMethod(byte partyMemberId)
+        private bool PartyMemberUpdateable(byte partyMemberId)
         {
-            if (_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Active >= 1)
-            {
-                if (_ELITEAPIPL.Player.ZoneId == _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Zone)
-                {
-                    return true;
-                }
+            var member = _ELITEAPIMonitored.Party.GetPartyMember(partyMemberId);
 
+            if (member.Active < 1)
+            {
                 return false;
             }
-            return false;
+
+            return _ELITEAPIPL.Player.ZoneId == member.Zone;
         }
 
         private async void partyMembersUpdate_TickAsync(object sender, EventArgs e)
@@ -3458,7 +3456,7 @@
             {
                 return;
             }
-            if (partyMemberUpdateMethod(0))
+            if (PartyMemberUpdateable(0))
             {
                 player0.Text = _ELITEAPIMonitored.Party.GetPartyMember(0).Name;
                 player0.Enabled = true;
@@ -3474,7 +3472,7 @@
                 player0buffsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(1))
+            if (PartyMemberUpdateable(1))
             {
                 player1.Text = _ELITEAPIMonitored.Party.GetPartyMember(1).Name;
                 player1.Enabled = true;
@@ -3490,7 +3488,7 @@
                 player1buffsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(2))
+            if (PartyMemberUpdateable(2))
             {
                 player2.Text = _ELITEAPIMonitored.Party.GetPartyMember(2).Name;
                 player2.Enabled = true;
@@ -3506,7 +3504,7 @@
                 player2buffsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(3))
+            if (PartyMemberUpdateable(3))
             {
                 player3.Text = _ELITEAPIMonitored.Party.GetPartyMember(3).Name;
                 player3.Enabled = true;
@@ -3522,7 +3520,7 @@
                 player3buffsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(4))
+            if (PartyMemberUpdateable(4))
             {
                 player4.Text = _ELITEAPIMonitored.Party.GetPartyMember(4).Name;
                 player4.Enabled = true;
@@ -3538,7 +3536,7 @@
                 player4buffsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(5))
+            if (PartyMemberUpdateable(5))
             {
                 player5.Text = _ELITEAPIMonitored.Party.GetPartyMember(5).Name;
                 player5.Enabled = true;
@@ -3553,7 +3551,7 @@
                 player5optionsButton.Enabled = false;
                 player5buffsButton.Enabled = false;
             }
-            if (partyMemberUpdateMethod(6))
+            if (PartyMemberUpdateable(6))
             {
                 player6.Text = _ELITEAPIMonitored.Party.GetPartyMember(6).Name;
                 player6.Enabled = true;
@@ -3567,7 +3565,7 @@
                 player6optionsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(7))
+            if (PartyMemberUpdateable(7))
             {
                 player7.Text = _ELITEAPIMonitored.Party.GetPartyMember(7).Name;
                 player7.Enabled = true;
@@ -3581,7 +3579,7 @@
                 player7optionsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(8))
+            if (PartyMemberUpdateable(8))
             {
                 player8.Text = _ELITEAPIMonitored.Party.GetPartyMember(8).Name;
                 player8.Enabled = true;
@@ -3595,7 +3593,7 @@
                 player8optionsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(9))
+            if (PartyMemberUpdateable(9))
             {
                 player9.Text = _ELITEAPIMonitored.Party.GetPartyMember(9).Name;
                 player9.Enabled = true;
@@ -3609,7 +3607,7 @@
                 player9optionsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(10))
+            if (PartyMemberUpdateable(10))
             {
                 player10.Text = _ELITEAPIMonitored.Party.GetPartyMember(10).Name;
                 player10.Enabled = true;
@@ -3623,7 +3621,7 @@
                 player10optionsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(11))
+            if (PartyMemberUpdateable(11))
             {
                 player11.Text = _ELITEAPIMonitored.Party.GetPartyMember(11).Name;
                 player11.Enabled = true;
@@ -3637,7 +3635,7 @@
                 player11optionsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(12))
+            if (PartyMemberUpdateable(12))
             {
                 player12.Text = _ELITEAPIMonitored.Party.GetPartyMember(12).Name;
                 player12.Enabled = true;
@@ -3651,7 +3649,7 @@
                 player12optionsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(13))
+            if (PartyMemberUpdateable(13))
             {
                 player13.Text = _ELITEAPIMonitored.Party.GetPartyMember(13).Name;
                 player13.Enabled = true;
@@ -3665,7 +3663,7 @@
                 player13optionsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(14))
+            if (PartyMemberUpdateable(14))
             {
                 player14.Text = _ELITEAPIMonitored.Party.GetPartyMember(14).Name;
                 player14.Enabled = true;
@@ -3679,7 +3677,7 @@
                 player14optionsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(15))
+            if (PartyMemberUpdateable(15))
             {
                 player15.Text = _ELITEAPIMonitored.Party.GetPartyMember(15).Name;
                 player15.Enabled = true;
@@ -3693,7 +3691,7 @@
                 player15optionsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(16))
+            if (PartyMemberUpdateable(16))
             {
                 player16.Text = _ELITEAPIMonitored.Party.GetPartyMember(16).Name;
                 player16.Enabled = true;
@@ -3707,7 +3705,7 @@
                 player16optionsButton.Enabled = false;
             }
 
-            if (partyMemberUpdateMethod(17))
+            if (PartyMemberUpdateable(17))
             {
                 player17.Text = _ELITEAPIMonitored.Party.GetPartyMember(17).Name;
                 player17.Enabled = true;
