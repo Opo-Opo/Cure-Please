@@ -5055,7 +5055,7 @@
                 return true;
             }
 
-            if (entity.Distance > 0)
+            if (entity.Distance < 0)
             {// Player greater than 50 yalms
                 return false;
             }
@@ -5090,38 +5090,34 @@
 
         private void CastSpell(string partyMemberName, string spellName, [Optional] string OptionalExtras)
         {
-            if (CastingBackground_Check != true)
+            if (CastingBackground_Check)
             {
-
-                EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
-
-                castingSpell = magic.Name[0];
-
-                _ELITEAPIPL.ThirdParty.SendString("/ma \"" + castingSpell + "\" " + partyMemberName);
-
-                if (OptionalExtras != null)
-                {
-                    currentAction.Text = "Casting: " + castingSpell + " [" + OptionalExtras + "]";
-                }
-                else
-                {
-                    currentAction.Text = "Casting: " + castingSpell;
-                }
-
-                CastingBackground_Check = true;
-
-                if (OptionsForm.config.trackCastingPackets == true && OptionsForm.config.EnableAddOn == true)
-                {
-                    if (!ProtectCasting.IsBusy) { ProtectCasting.RunWorkerAsync(); }
-                }
-                else
-                {
-                    castingLockLabel.Text = "Casting is LOCKED";
-                    if (!ProtectCasting.IsBusy) { ProtectCasting.RunWorkerAsync(); }
-                }
-
+                return;
             }
 
+            var spell = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
+
+            castingSpell = spell.Name[0];
+
+            _ELITEAPIPL.ThirdParty.SendString("/ma \"" + castingSpell + "\" " + partyMemberName);
+
+            currentAction.Text = "Casting: " + castingSpell;
+
+            if (OptionalExtras != null)
+            {
+                currentAction.Text += " [" + OptionalExtras + "]";
+            }
+
+            CastingBackground_Check = true;
+            if (!ProtectCasting.IsBusy) 
+            { 
+                ProtectCasting.RunWorkerAsync(); 
+            }
+
+            if (!OptionsForm.config.trackCastingPackets && !OptionsForm.config.EnableAddOn)
+            {
+                castingLockLabel.Text = "Casting is LOCKED";
+            }
         }
 
         private void hastePlayer(byte partyMemberId)
