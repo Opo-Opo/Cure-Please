@@ -4881,21 +4881,12 @@
 
         private bool DebuffContains(List<string> Debuff_list, string Checked_id)
         {
-            if (Debuff_list != null)
-            {
-                if (Debuff_list.Any(x => x == Checked_id))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
+            if (Debuff_list == null)
             {
                 return false;
             }
+
+            return Debuff_list.Any(x => x == Checked_id);
         }
 
         private void CuragaCalculatorAsync(int partyMemberId)
