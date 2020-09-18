@@ -293,20 +293,16 @@
             }
         }
 
-        public static bool HasAbility(string checked_abilityName)
+        public bool HasAbility(string checked_abilityName)
         {
-            if (_ELITEAPIPL.Player.GetPlayerInfo().Buffs.Any(b => b == 261) || _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Any(b => b == 16)) // IF YOU HAVE INPAIRMENT/AMNESIA THEN BLOCK JOB ABILITY CASTING
-            {
+            if (_ELITEAPIPL.Player.GetPlayerInfo().Buffs.Any(b => b == 261 || b == 16))
+            {// Can't use JAs when Inpairment or Amnesia
                 return false;
             }
-            else if (_ELITEAPIPL.Player.HasAbility(_ELITEAPIPL.Resources.GetAbility(checked_abilityName, 0).ID))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+
+            return _ELITEAPIPL.Player.HasAbility(
+                _ELITEAPIPL.Resources.GetAbility(checked_abilityName, 0).ID
+            );
         }
 
         public static bool HasSpell(string checked_spellName)
