@@ -5221,30 +5221,12 @@
         {
             // FALSE IS WANTED WHEN NOT IN PARTY
 
-            if (_ELITEAPIPL.Player.Name == _ELITEAPIMonitored.Player.Name) // MONITORED AND POL ARE BOTH THE SAME THEREFORE IN THE PARTY
-            {
+            if (_ELITEAPIPL.Player.TargetID == _ELITEAPIMonitored.Player.TargetID)
+            {// PL and Monitored are the same
                 return true;
             }
 
-            var PARTYD = _ELITEAPIPL.Party.GetPartyMembers().Where(p => p.Active != 0 && p.Zone == _ELITEAPIPL.Player.ZoneId);
-
-            List<string> gen = new List<string>();
-            foreach (EliteAPI.PartyMember pData in PARTYD)
-            {
-                if (pData != null && pData.Name != "")
-                {
-                    gen.Add(pData.Name);
-                }
-            }
-
-            if (gen.Contains(_ELITEAPIPL.Player.Name) && gen.Contains(_ELITEAPIMonitored.Player.Name))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return _ELITEAPIPL.Party.GetPartyMembers().Any(partyMember => partyMember.ID == _ELITEAPIPL.Player.TargetID);
         }
 
         private void GrabPlayerMonitoredData()
