@@ -91,11 +91,6 @@
         private bool ForceSongRecast = false;
         private string Last_Song_Cast = string.Empty;
 
-
-        private uint PL_Index = 0;
-        private uint Monitored_Index = 0;
-
-
         //  private int song_casting = 0;
         //  private string LastSongCast = String.Empty;
 
@@ -5229,23 +5224,6 @@
             return _ELITEAPIPL.Party.GetPartyMembers().Any(partyMember => partyMember.ID == _ELITEAPIPL.Player.TargetID);
         }
 
-        private void GrabPlayerMonitoredData()
-        {
-            for (int x = 0; x < 2048; x++)
-            {
-                EliteAPI.XiEntity entity = _ELITEAPIPL.Entity.GetEntity(x);
-
-                if (entity.Name != null && entity.Name == _ELITEAPIMonitored.Player.Name)
-                {
-                    Monitored_Index = entity.TargetID;
-                }
-                else if (entity.Name != null && entity.Name == _ELITEAPIPL.Player.Name)
-                {
-                    PL_Index = entity.TargetID;
-                }
-            }
-        }
-
         private async void actionTimer_TickAsync(object sender, EventArgs e)
         {
             string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
@@ -5260,9 +5238,6 @@
             {
                 return;
             }
-
-
-            GrabPlayerMonitoredData();
 
             // Grab current time for calculations below
 
