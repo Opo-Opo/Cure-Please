@@ -6176,7 +6176,7 @@
 
                             CastSpell("<me>", BarspellName);
                         }
-                        else if ((OptionsForm.config.plBarStatus) && (!BuffChecker(BarstatusBuffID, 0) && (CheckSpellRecast(BarstatusName) == 0) && (HasSpell(BarstatusName)) && JobChecker(BarstatusName) == true))
+                        else if ((OptionsForm.config.plBarStatus) && (!BuffChecker(BarstatusBuffID, 0) && (CheckSpellRecast(BarstatusName) == 0) && (HasSpell(BarstatusName))))
                         {
                             if (OptionsForm.config.Accession && OptionsForm.config.barstatusAccession && currentSCHCharges > 0 && HasAbility("Accession") && BarStatus_AOE == false && !plStatusCheck(StatusEffect.Accession))
                             {
@@ -6248,7 +6248,7 @@
                         {
                             CastSpell("<me>", "Boost-CHR");
                         }
-                        else if ((OptionsForm.config.plStormSpell) && (!BuffChecker(stormspell.buffID, 0) && (CheckSpellRecast(stormspell.Spell_Name) == 0) && (HasSpell(stormspell.Spell_Name)) && JobChecker(stormspell.Spell_Name) == true))
+                        else if ((OptionsForm.config.plStormSpell) && (!BuffChecker(stormspell.buffID, 0) && (CheckSpellRecast(stormspell.Spell_Name) == 0) && (HasSpell(stormspell.Spell_Name))))
                         {
                             if (OptionsForm.config.Accession && OptionsForm.config.stormspellAccession && currentSCHCharges > 0 && HasAbility("Accession") && !plStatusCheck(StatusEffect.Accession))
                             {
@@ -6308,7 +6308,7 @@
                                 CastSpell("<me>", "Shock Spikes");
                             }
                         }
-                        else if ((OptionsForm.config.plEnspell) && (!BuffChecker(enspell.buffID, 0) && (CheckSpellRecast(enspell.Spell_Name) == 0) && (HasSpell(enspell.Spell_Name)) && JobChecker(enspell.Spell_Name) == true))
+                        else if ((OptionsForm.config.plEnspell) && (!BuffChecker(enspell.buffID, 0) && (CheckSpellRecast(enspell.Spell_Name) == 0) && (HasSpell(enspell.Spell_Name))))
                         {
                             if (OptionsForm.config.Accession && OptionsForm.config.enspellAccession && currentSCHCharges > 0 && HasAbility("Accession") && enspell.spell_position < 6 && !plStatusCheck(StatusEffect.Accession))
                             {
@@ -6707,15 +6707,15 @@
                                 {
                                     Phalanx_IIPlayer(charDATA.MemberNumber);
                                 }
-                                if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[OptionsForm.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[OptionsForm.config.autoRegen_Spell])) && JobChecker(regen_spells[OptionsForm.config.autoRegen_Spell]) == true && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !plStatusCheck(StatusEffect.Regen))
+                                if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[OptionsForm.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[OptionsForm.config.autoRegen_Spell])) && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !plStatusCheck(StatusEffect.Regen))
                                 {
                                     Regen_Player(charDATA.MemberNumber);
                                 }
-                                if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[OptionsForm.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[OptionsForm.config.autoRefresh_Spell])) && JobChecker(refresh_spells[OptionsForm.config.autoRefresh_Spell]) == true && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !plStatusCheck(StatusEffect.Refresh))
+                                if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[OptionsForm.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[OptionsForm.config.autoRefresh_Spell])) && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !plStatusCheck(StatusEffect.Refresh))
                                 {
                                     Refresh_Player(charDATA.MemberNumber);
                                 }
-                                if (CheckIfAutoStormspellEnabled(charDATA.MemberNumber) && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !BuffChecker(PTstormspell.buffID, 0) && CheckSpellRecast(PTstormspell.Spell_Name) == 0 && HasSpell(PTstormspell.Spell_Name) && JobChecker(PTstormspell.Spell_Name) == true)
+                                if (CheckIfAutoStormspellEnabled(charDATA.MemberNumber) && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !BuffChecker(PTstormspell.buffID, 0) && CheckSpellRecast(PTstormspell.Spell_Name) == 0 && HasSpell(PTstormspell.Spell_Name))
                                 {
                                     StormSpellPlayer(charDATA.MemberNumber, PTstormspell.Spell_Name);
                                 }
@@ -6755,15 +6755,15 @@
                                 {
                                     Phalanx_IIPlayer(charDATA.MemberNumber);
                                 }
-                                if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[OptionsForm.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[OptionsForm.config.autoRegen_Spell])) && JobChecker(regen_spells[OptionsForm.config.autoRegen_Spell]) == true && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Regen))
+                                if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[OptionsForm.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[OptionsForm.config.autoRegen_Spell])) && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Regen))
                                 {
                                     Regen_Player(charDATA.MemberNumber);
                                 }
-                                if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[OptionsForm.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[OptionsForm.config.autoRefresh_Spell])) && JobChecker(refresh_spells[OptionsForm.config.autoRefresh_Spell]) == true && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Refresh))
+                                if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[OptionsForm.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[OptionsForm.config.autoRefresh_Spell])) && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !monitoredStatusCheck(StatusEffect.Refresh))
                                 {
                                     Refresh_Player(charDATA.MemberNumber);
                                 }
-                                if (CheckIfAutoStormspellEnabled(charDATA.MemberNumber) && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !BuffChecker(PTstormspell.buffID, 1) && CheckSpellRecast(PTstormspell.Spell_Name) == 0 && HasSpell(PTstormspell.Spell_Name) && JobChecker(PTstormspell.Spell_Name) == true)
+                                if (CheckIfAutoStormspellEnabled(charDATA.MemberNumber) && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && !BuffChecker(PTstormspell.buffID, 1) && CheckSpellRecast(PTstormspell.Spell_Name) == 0 && HasSpell(PTstormspell.Spell_Name))
                                 {
                                     StormSpellPlayer(charDATA.MemberNumber, PTstormspell.Spell_Name);
                                 }
@@ -6802,15 +6802,15 @@
                                 {
                                     Phalanx_IIPlayer(charDATA.MemberNumber);
                                 }
-                                if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[OptionsForm.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[OptionsForm.config.autoRegen_Spell])) && JobChecker(regen_spells[OptionsForm.config.autoRegen_Spell]) == true && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && playerRegen_Span[charDATA.MemberNumber].Minutes >= OptionsForm.config.autoRegen_Minutes)
+                                if ((autoRegen_Enabled[charDATA.MemberNumber]) && (CheckSpellRecast(regen_spells[OptionsForm.config.autoRegen_Spell]) == 0) && (HasSpell(regen_spells[OptionsForm.config.autoRegen_Spell])) && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && playerRegen_Span[charDATA.MemberNumber].Minutes >= OptionsForm.config.autoRegen_Minutes)
                                 {
                                     Regen_Player(charDATA.MemberNumber);
                                 }
-                                if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[OptionsForm.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[OptionsForm.config.autoRefresh_Spell])) && JobChecker(refresh_spells[OptionsForm.config.autoRefresh_Spell]) == true && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && playerRefresh_Span[charDATA.MemberNumber].Minutes >= OptionsForm.config.autoRefresh_Minutes)
+                                if ((autoRefreshEnabled[charDATA.MemberNumber]) && (CheckSpellRecast(refresh_spells[OptionsForm.config.autoRefresh_Spell]) == 0) && (HasSpell(refresh_spells[OptionsForm.config.autoRefresh_Spell])) && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && playerRefresh_Span[charDATA.MemberNumber].Minutes >= OptionsForm.config.autoRefresh_Minutes)
                                 {
                                     Refresh_Player(charDATA.MemberNumber);
                                 }
-                                if (CheckIfAutoStormspellEnabled(charDATA.MemberNumber) && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && CheckSpellRecast(PTstormspell.Spell_Name) == 0 && HasSpell(PTstormspell.Spell_Name) && JobChecker(PTstormspell.Spell_Name) == true && playerStormspellSpan[charDATA.MemberNumber].Minutes >= OptionsForm.config.autoStormspellMinutes)
+                                if (CheckIfAutoStormspellEnabled(charDATA.MemberNumber) && (_ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue) && (CanCastOnPartyMember(charDATA.MemberNumber)) && _ELITEAPIPL.Player.Status != 33 && CheckSpellRecast(PTstormspell.Spell_Name) == 0 && HasSpell(PTstormspell.Spell_Name) && playerStormspellSpan[charDATA.MemberNumber].Minutes >= OptionsForm.config.autoStormspellMinutes)
                                 {
                                     StormSpellPlayer(charDATA.MemberNumber, PTstormspell.Spell_Name);
                                 }
@@ -7052,7 +7052,7 @@
 
             if (GeoSpell_Type == 1)
             {
-                if (HasSpell(GeoSpell.indi_spell) && JobChecker(GeoSpell.indi_spell) == true)
+                if (HasSpell(GeoSpell.indi_spell))
                 {
                     if (CheckSpellRecast(GeoSpell.indi_spell) == 0)
                     {
@@ -7070,7 +7070,7 @@
             }
             else if (GeoSpell_Type == 2)
             {
-                if (HasSpell(GeoSpell.geo_spell) && JobChecker(GeoSpell.geo_spell) == true)
+                if (HasSpell(GeoSpell.geo_spell))
                 {
                     if (CheckSpellRecast(GeoSpell.geo_spell) == 0)
                     {
@@ -7937,7 +7937,7 @@
             switch ((int)OptionsForm.config.plShellra_Level)
             {
                 case 1:
-                    if (JobChecker("Shellra") == true && CheckSpellRecast("Shellra") == 0)
+                    if (HasSpell("Shellra") == true && CheckSpellRecast("Shellra") == 0)
                     {
                         return true;
                     }
@@ -7947,7 +7947,7 @@
                     }
 
                 case 2:
-                    if (JobChecker("Shellra II") == true && CheckSpellRecast("Shellra II") == 0)
+                    if (HasSpell("Shellra II") == true && CheckSpellRecast("Shellra II") == 0)
                     {
                         return true;
                     }
@@ -7957,7 +7957,7 @@
                     }
 
                 case 3:
-                    if (JobChecker("Shellra III") == true && CheckSpellRecast("Shellra III") == 0)
+                    if (HasSpell("Shellra III") == true && CheckSpellRecast("Shellra III") == 0)
                     {
                         return true;
                     }
@@ -7967,7 +7967,7 @@
                     }
 
                 case 4:
-                    if (JobChecker("Shellra IV") == true && CheckSpellRecast("Shellra IV") == 0)
+                    if (HasSpell("Shellra IV") == true && CheckSpellRecast("Shellra IV") == 0)
                     {
                         return true;
                     }
@@ -7977,7 +7977,7 @@
                     }
 
                 case 5:
-                    if (JobChecker("Shellra V") == true && CheckSpellRecast("Shellra V") == 0)
+                    if (HasSpell("Shellra V") == true && CheckSpellRecast("Shellra V") == 0)
                     {
                         return true;
                     }
@@ -7996,7 +7996,7 @@
             switch ((int)OptionsForm.config.plProtectra_Level)
             {
                 case 1:
-                    if (JobChecker("Protectra") == true && CheckSpellRecast("Protectra") == 0)
+                    if (HasSpell("Protectra") == true && CheckSpellRecast("Protectra") == 0)
                     {
                         return true;
                     }
@@ -8006,7 +8006,7 @@
                     }
 
                 case 2:
-                    if (JobChecker("Protectra II") == true && CheckSpellRecast("Protectra II") == 0)
+                    if (HasSpell("Protectra II") == true && CheckSpellRecast("Protectra II") == 0)
                     {
                         return true;
                     }
@@ -8016,7 +8016,7 @@
                     }
 
                 case 3:
-                    if (JobChecker("Protectra III") == true && CheckSpellRecast("Protectra III") == 0)
+                    if (HasSpell("Protectra III") == true && CheckSpellRecast("Protectra III") == 0)
                     {
                         return true;
                     }
@@ -8026,7 +8026,7 @@
                     }
 
                 case 4:
-                    if (JobChecker("Protectra IV") == true && CheckSpellRecast("Protectra IV") == 0)
+                    if (HasSpell("Protectra IV") == true && CheckSpellRecast("Protectra IV") == 0)
                     {
                         return true;
                     }
@@ -8036,7 +8036,7 @@
                     }
 
                 case 5:
-                    if (JobChecker("Protectra V") == true && CheckSpellRecast("Protectra V") == 0)
+                    if (HasSpell("Protectra V") == true && CheckSpellRecast("Protectra V") == 0)
                     {
                         return true;
                     }
@@ -8055,7 +8055,7 @@
             switch (OptionsForm.config.plReraise_Level)
             {
                 case 1:
-                    if (JobChecker("Reraise") == true && CheckSpellRecast("Reraise") == 0)
+                    if (HasSpell("Reraise") == true && CheckSpellRecast("Reraise") == 0)
                     {
                         // Check SCH possiblity
                         if (_ELITEAPIPL.Player.MainJob == 20 && _ELITEAPIPL.Player.SubJob != 3 && !BuffChecker(401, 0))
@@ -8074,7 +8074,7 @@
 
                 case 2:
 
-                    if (JobChecker("Reraise II") == true && CheckSpellRecast("Reraise II") == 0)
+                    if (HasSpell("Reraise II") == true && CheckSpellRecast("Reraise II") == 0)
                     {
                         if (_ELITEAPIPL.Player.MainJob == 20 && !BuffChecker(401, 0))
                         {
@@ -8092,7 +8092,7 @@
 
                 case 3:
 
-                    if (JobChecker("Reraise III") == true && CheckSpellRecast("Reraise III") == 0)
+                    if (HasSpell("Reraise III") == true && CheckSpellRecast("Reraise III") == 0)
                     {
                         if (_ELITEAPIPL.Player.MainJob == 20 && !BuffChecker(401, 0))
                         {
@@ -8109,7 +8109,7 @@
                     }
 
                 case 4:
-                    if (JobChecker("Reraise IV") == true && CheckSpellRecast("Reraise IV") == 0)
+                    if (HasSpell("Reraise IV") == true && CheckSpellRecast("Reraise IV") == 0)
                     {
                         if (_ELITEAPIPL.Player.MainJob == 20 && !BuffChecker(401, 0))
                         {
@@ -8915,14 +8915,14 @@
                 {
                     if (PL_BRDCount == 3)
                     {
-                        if (CheckSpellRecast(dummy2_song.song_name) == 0 && (HasSpell(dummy2_song.song_name)) && JobChecker(dummy2_song.song_name) == true)
+                        if (CheckSpellRecast(dummy2_song.song_name) == 0 && (HasSpell(dummy2_song.song_name)))
                         {
                             CastSpell("<me>", dummy2_song.song_name);
                         }
                     }
                     else
                     {
-                        if (CheckSpellRecast(song_4.song_name) == 0 && (HasSpell(song_4.song_name)) && JobChecker(song_4.song_name) == true)
+                        if (CheckSpellRecast(song_4.song_name) == 0 && (HasSpell(song_4.song_name)))
                         {
                             CastSpell("<me>", song_4.song_name);
                             Last_Song_Cast = song_4.song_name;
@@ -8944,14 +8944,14 @@
                 {
                     if (PL_BRDCount == 2)
                     {
-                        if (CheckSpellRecast(dummy1_song.song_name) == 0 && (HasSpell(dummy1_song.song_name)) && JobChecker(dummy1_song.song_name) == true)
+                        if (CheckSpellRecast(dummy1_song.song_name) == 0 && (HasSpell(dummy1_song.song_name)))
                         {
                             CastSpell("<me>", dummy1_song.song_name);
                         }
                     }
                     else
                     {
-                        if (CheckSpellRecast(song_3.song_name) == 0 && (HasSpell(song_3.song_name)) && JobChecker(song_3.song_name) == true)
+                        if (CheckSpellRecast(song_3.song_name) == 0 && (HasSpell(song_3.song_name)))
                         {
                             CastSpell("<me>", song_3.song_name);
                             Last_Song_Cast = song_3.song_name;
@@ -8970,7 +8970,7 @@
                 // SONG NUMBER #2
                 else if (song_casting == 1 && song_2.song_name.ToLower() != "blank" && count2_type < SongDataMax.Where(c => c == song_2.buff_id).Count() && Last_Song_Cast != song_4.song_name)
                 {
-                    if (CheckSpellRecast(song_2.song_name) == 0 && (HasSpell(song_2.song_name)) && JobChecker(song_2.song_name) == true)
+                    if (CheckSpellRecast(song_2.song_name) == 0 && (HasSpell(song_2.song_name)))
                     {
                         CastSpell("<me>", song_2.song_name);
                         Last_Song_Cast = song_2.song_name;
@@ -8987,7 +8987,7 @@
                 // SONG NUMBER #1
                 else if ((song_casting == 0) && song_1.song_name.ToLower() != "blank" && count1_type < SongDataMax.Where(c => c == song_1.buff_id).Count() && Last_Song_Cast != song_4.song_name)
                 {
-                    if (CheckSpellRecast(song_1.song_name) == 0 && (HasSpell(song_1.song_name)) && JobChecker(song_1.song_name) == true)
+                    if (CheckSpellRecast(song_1.song_name) == 0 && (HasSpell(song_1.song_name)))
                     {
                         CastSpell("<me>", song_1.song_name);
                         Last_Song_Cast = song_1.song_name;
@@ -9008,7 +9008,7 @@
                 {
                     if ((OptionsForm.config.SongsOnlyWhenNear && Monitoreddistance < 10) || OptionsForm.config.SongsOnlyWhenNear == false)
                     {
-                        if (CheckSpellRecast(song_1.song_name) == 0 && (HasSpell(song_1.song_name)) && JobChecker(song_1.song_name) == true)
+                        if (CheckSpellRecast(song_1.song_name) == 0 && (HasSpell(song_1.song_name)))
                         {
                             CastSpell("<me>", song_1.song_name);
                             playerSong1[0] = DateTime.Now;
@@ -9020,7 +9020,7 @@
                 {
                     if ((OptionsForm.config.SongsOnlyWhenNear && Monitoreddistance < 10) || OptionsForm.config.SongsOnlyWhenNear == false)
                     {
-                        if (CheckSpellRecast(song_2.song_name) == 0 && (HasSpell(song_2.song_name)) && JobChecker(song_2.song_name) == true)
+                        if (CheckSpellRecast(song_2.song_name) == 0 && (HasSpell(song_2.song_name)))
                         {
                             CastSpell("<me>", song_2.song_name);
                             playerSong2[0] = DateTime.Now;
@@ -9032,7 +9032,7 @@
                 {
                     if ((OptionsForm.config.SongsOnlyWhenNear && Monitoreddistance < 10) || OptionsForm.config.SongsOnlyWhenNear == false)
                     {
-                        if (CheckSpellRecast(song_3.song_name) == 0 && (HasSpell(song_3.song_name)) && JobChecker(song_3.song_name) == true)
+                        if (CheckSpellRecast(song_3.song_name) == 0 && (HasSpell(song_3.song_name)))
                         {
                             CastSpell("<me>", song_3.song_name);
                             playerSong3[0] = DateTime.Now;
@@ -9044,7 +9044,7 @@
                 {
                     if ((OptionsForm.config.SongsOnlyWhenNear && Monitoreddistance < 10) || OptionsForm.config.SongsOnlyWhenNear == false)
                     {
-                        if (CheckSpellRecast(song_4.song_name) == 0 && (HasSpell(song_4.song_name)) && JobChecker(song_4.song_name) == true)
+                        if (CheckSpellRecast(song_4.song_name) == 0 && (HasSpell(song_4.song_name)))
                         {
                             CastSpell("<me>", song_4.song_name);
                             playerSong4[0] = DateTime.Now;
