@@ -259,39 +259,26 @@
         }
 
         public int CheckSpellRecast(string checked_recastspellName)
+        {// I have no idea why this is returning an int but what ever
+            return CanCastSpell(checked_recastspellName) ? 0 : 1;
+        }
+
+        public bool CanCastSpell(string spellName)
         {
-            checked_recastspellName = checked_recastspellName.Trim().ToLower();
+            var spell = _ELITEAPIPL.Resources.GetSpell(spellName, (int) Language.EN);
 
-            if (checked_recastspellName == "honor march")
+            if (spell == null)
             {
-                return 0;
+                showErrorMessage("Error detected, please Report Error: #SpellRecastError #" + spellName);
+                return false;
             }
 
-            if (checked_recastspellName != "blank")
+            if (spell.Index == (int) Spell.HonorMarch)
             {
-                EliteAPI.ISpell magic = _ELITEAPIPL.Resources.GetSpell(checked_recastspellName, 0);
+                return true;
+            }
 
-                if (magic == null)
-                {
-                    showErrorMessage("Error detected, please Report Error: #SpellRecastError #" + checked_recastspellName);
-                    return 1;
-                }
-                else
-                {
-                    if (_ELITEAPIPL.Recast.GetSpellRecast(magic.Index) == 0)
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        return 1;
-                    }
-                }
-            }
-            else
-            {
-                return 1;
-            }
+            return _ELITEAPIPL.Recast.GetSpellRecast(spell.Index) == 0;
         }
 
         public bool HasAbility(string name)
@@ -320,14 +307,14 @@
                 return true;
             }
 
-            var spell = _ELITEAPIPL.Resources.GetSpell(name, 0);
+            var spell = _ELITEAPIPL.Resources.GetSpell(name, (int)Language.EN);
 
             return _ELITEAPIPL.Player.HasSpell(spell.Index) && JobChecker(spell);
         }
 
         public static bool JobChecker(ISpell spell)
         {
-            if (spell.ID == (int) Spell.HonorMarch)
+            if (spell.Index == (int) Spell.HonorMarch)
             {
                 return true;
             }
@@ -353,13 +340,13 @@
 
             PlayerJobPoints jobPoints = _ELITEAPIPL.Player.GetJobPoints(mainJob);
 
-            if (spell.ID == (int) Spell.Refresh3 || spell.ID == (int) Spell.Temper2)
+            if (spell.Index == (int) Spell.Refresh3 || spell.Index == (int) Spell.Temper2)
             {
                 return mainJob == (int)Job.RDM
                     && jobPoints.SpentJobPoints >= 1200;
             }
 
-            if (spell.ID == (int) Spell.Distract3 || spell.ID == (int) Spell.Frazzle3)
+            if (spell.Index == (int) Spell.Distract3 || spell.Index == (int) Spell.Frazzle3)
             {
                 return mainJob == (int)Job.RDM
                     && jobPoints.SpentJobPoints >= 550;
@@ -371,13 +358,13 @@
                     && jobPoints.SpentJobPoints >= 100;
             }
 
-            if (spell.ID == (int)Spell.Reraise4)
+            if (spell.Index == (int)Spell.Reraise4)
             {
                 return mainJob == (int)Job.WHM
                     && jobPoints.SpentJobPoints >= 100;
             }
 
-            if (spell.ID == (int)Spell.FullCure)
+            if (spell.Index == (int)Spell.FullCure)
             {
                 return mainJob == (int)Job.WHM
                     && jobPoints.SpentJobPoints >= 1200;
