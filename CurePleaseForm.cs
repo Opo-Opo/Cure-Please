@@ -2961,52 +2961,7 @@
                 firstTime_Pause = 1;
             }
 
-            // LOAD AUTOMATIC SETTINGS
-            string path = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Settings");
-            if (System.IO.File.Exists(path + "/loadSettings"))
-            {
-                if (_ELITEAPIPL.Player.MainJob != 0)
-                {
-                    if (_ELITEAPIPL.Player.SubJob != 0)
-                    {
-                        JobTitles mainJob = JobNames.Where(c => c.job_number == _ELITEAPIPL.Player.MainJob).FirstOrDefault();
-                        JobTitles subJob = JobNames.Where(c => c.job_number == _ELITEAPIPL.Player.SubJob).FirstOrDefault();
-
-                        string filename = path + "\\" + _ELITEAPIPL.Player.Name + "_" + mainJob.job_name + "_" + subJob.job_name + ".xml";
-                        string filename2 = path + "\\" + mainJob.job_name + "_" + subJob.job_name + ".xml";
-
-
-                        if (System.IO.File.Exists(filename))
-                        {
-                            OptionsForm.MySettings config = new OptionsForm.MySettings();
-
-                            XmlSerializer mySerializer = new XmlSerializer(typeof(OptionsForm.MySettings));
-
-                            StreamReader reader = new StreamReader(filename);
-                            config = (OptionsForm.MySettings)mySerializer.Deserialize(reader);
-
-                            reader.Close();
-                            reader.Dispose();
-                            Form2.updateForm(config);
-                            Form2.button4_Click(sender, e);
-                        }
-                        else if (System.IO.File.Exists(filename2))
-                        {
-                            OptionsForm.MySettings config = new OptionsForm.MySettings();
-
-                            XmlSerializer mySerializer = new XmlSerializer(typeof(OptionsForm.MySettings));
-
-                            StreamReader reader = new StreamReader(filename2);
-                            config = (OptionsForm.MySettings)mySerializer.Deserialize(reader);
-
-                            reader.Close();
-                            reader.Dispose();
-                            Form2.updateForm(config);
-                            Form2.button4_Click(sender, e);
-                        }
-                    }
-                }
-            }
+            LoadConfig(sender, e);
 
             if (LUA_Plugin_Loaded == 0 && !OptionsForm.config.pauseOnStartBox && _ELITEAPIMonitored != null)
             {
@@ -3050,6 +3005,46 @@
 
                 LUA_Plugin_Loaded = 1;
             }
+        }
+
+        private void LoadConfig(object sender, EventArgs e)
+        {
+            if (_ELITEAPIPL.Player.MainJob == 0 && _ELITEAPIPL.Player.SubJob == 0)
+            {
+                return;
+            }
+
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings");
+            if (!File.Exists(path + "/loadSettings"))
+            {
+                return;
+            }
+
+            var mainJob = Enum.Parse(typeof(Job), _ELITEAPIPL.Player.MainJob.ToString()).ToString();
+            var subJob = Enum.Parse(typeof(Job), _ELITEAPIPL.Player.SubJob.ToString()).ToString();
+
+            var filename = $"{path}\\{_ELITEAPIPL.Player.Name}_{mainJob}_{subJob}.xml";
+
+            if (!File.Exists(filename))
+            {
+                filename = $"{path}\\{mainJob}_{subJob}.xml";
+
+                if (!File.Exists(filename))
+                {
+                    return;
+                }
+            }
+
+            XmlSerializer mySerializer = new XmlSerializer(typeof(OptionsForm.MySettings));
+
+            StreamReader reader = new StreamReader(filename);
+            var config = (OptionsForm.MySettings)mySerializer.Deserialize(reader);
+
+            reader.Close();
+            reader.Dispose();
+
+            Form2.updateForm(config);
+            Form2.button4_Click(sender, e);
         }
 
         private void setinstance2_Click(object sender, EventArgs e)
