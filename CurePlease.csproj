@@ -86,6 +86,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Addon\Ashita.cs" />
+    <Compile Include="Addon\IAddon.cs" />
+    <Compile Include="Addon\Windower.cs" />
     <Compile Include="CustomClasses.cs" />
     <Compile Include="CurePleaseForm.cs">
       <SubType>Form</SubType>

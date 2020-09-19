@@ -1,5 +1,6 @@
 ﻿namespace CurePlease
 {
+    using CurePlease.Addon;
     using CurePlease.Properties;
     using EliteMMO.API;
     using System;
@@ -116,6 +117,8 @@
         private bool curePlease_autofollow = false;
 
         private List<string> characterNames_naRemoval = new List<string>();
+
+        public IAddon AddonManager;
 
         public string WindowerMode = "Windower";
 
@@ -240,7 +243,7 @@
 
         private bool islowmp;
 
-        public int LUA_Plugin_Loaded = 0;
+        public bool LUA_Plugin_Loaded = false;
 
         public int firstTime_Pause = 0;
 
@@ -2945,10 +2948,12 @@
                 {
                     if (dats.Modules[i].FileName.Contains("Ashita.dll"))
                     {
+                        AddonManager = new Ashita(_ELITEAPIPL);
                         WindowerMode = "Ashita";
                     }
                     else if (dats.Modules[i].FileName.Contains("Hook.dll"))
                     {
+                        AddonManager = new Windower(_ELITEAPIPL);
                         WindowerMode = "Windower";
                     }
                 }
@@ -2963,48 +2968,48 @@
 
             LoadConfig(sender, e);
 
-            if (LUA_Plugin_Loaded == 0 && !OptionsForm.config.pauseOnStartBox && _ELITEAPIMonitored != null)
+            // Wait a milisecond and then load and set the config.
+            Thread.Sleep(500);
+
+            LoadLuaAddon();
+        }
+
+        private void LoadLuaAddon()
+        {
+            if (LUA_Plugin_Loaded)
             {
-                // Wait a milisecond and then load and set the config.
-                Thread.Sleep(500);
-
-                if (WindowerMode == "Windower")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString("//lua load CurePlease_addon");
-                    Thread.Sleep(1500);
-                    _ELITEAPIPL.ThirdParty.SendString("//cpaddon settings " + OptionsForm.config.ipAddress + " " + OptionsForm.config.listeningPort);
-                    Thread.Sleep(100);
-                    _ELITEAPIPL.ThirdParty.SendString("//cpaddon verify");
-                    if (OptionsForm.config.enableHotKeys)
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("//bind ^!F1 cureplease toggle");
-                        _ELITEAPIPL.ThirdParty.SendString("//bind ^!F2 cureplease start");
-                        _ELITEAPIPL.ThirdParty.SendString("//bind ^!F3 cureplease pause");
-                    }
-                }
-                else if (WindowerMode == "Ashita")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString("/addon load CurePlease_addon");
-                    Thread.Sleep(1500);
-                    _ELITEAPIPL.ThirdParty.SendString("/cpaddon settings " + OptionsForm.config.ipAddress + " " + OptionsForm.config.listeningPort);
-                    Thread.Sleep(100);
-
-                    _ELITEAPIPL.ThirdParty.SendString("/cpaddon verify");
-                    if (OptionsForm.config.enableHotKeys)
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F1 /cureplease toggle");
-                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F2 /cureplease start");
-                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F3 /cureplease pause");
-                    }
-                }
-
-                AddOnStatus_Click(sender, e);
-
-
-                currentAction.Text = "LUA Addon loaded. ( " + OptionsForm.config.ipAddress + " - " + OptionsForm.config.listeningPort + " )";
-
-                LUA_Plugin_Loaded = 1;
+                return;
             }
+
+            if (pauseActions)
+            {
+                return;
+            }
+
+            if (!OptionsForm.config.EnableAddOn)
+            {
+                return;
+            }
+
+            if (_ELITEAPIMonitored == null && _ELITEAPIPL == null)
+            {
+                return;
+            }
+
+            if (AddonManager == null)
+            {
+                return;
+            }
+
+            AddonManager.Load();
+            if (OptionsForm.config.enableHotKeys)
+            {
+                AddonManager.BindHotKeys();
+            }
+
+            currentAction.Text = "LUA Addon loaded. ( " + OptionsForm.config.ipAddress + " - " + OptionsForm.config.listeningPort + " )";
+
+            LUA_Plugin_Loaded = true;
         }
 
         private void LoadConfig(object sender, EventArgs e)
@@ -3081,48 +3086,7 @@
                 }
             }
 
-            if (LUA_Plugin_Loaded == 0 && !OptionsForm.config.pauseOnStartBox && _ELITEAPIPL != null)
-            {
-                // Wait a milisecond and then load and set the config.
-                Thread.Sleep(500);
-                if (WindowerMode == "Windower")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString("//lua load CurePlease_addon");
-                    Thread.Sleep(1500);
-                    _ELITEAPIPL.ThirdParty.SendString("//cpaddon settings " + OptionsForm.config.ipAddress + " " + OptionsForm.config.listeningPort);
-                    Thread.Sleep(100);
-                    _ELITEAPIPL.ThirdParty.SendString("//cpaddon verify");
-
-                    if (OptionsForm.config.enableHotKeys)
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("//bind ^!F1 cureplease toggle");
-                        _ELITEAPIPL.ThirdParty.SendString("//bind ^!F2 cureplease start");
-                        _ELITEAPIPL.ThirdParty.SendString("//bind ^!F3 cureplease pause");
-                    }
-                }
-                else if (WindowerMode == "Ashita")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString("/addon load CurePlease_addon");
-                    Thread.Sleep(1500);
-                    _ELITEAPIPL.ThirdParty.SendString("/cpaddon settings " + OptionsForm.config.ipAddress + " " + OptionsForm.config.listeningPort);
-                    Thread.Sleep(100);
-                    _ELITEAPIPL.ThirdParty.SendString("/cpaddon verify");
-                    if (OptionsForm.config.enableHotKeys)
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F1 /cureplease toggle");
-                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F2 /cureplease start");
-                        _ELITEAPIPL.ThirdParty.SendString("/bind ^!F3 /cureplease pause");
-                    }
-                }
-
-                currentAction.Text = "LUA Addon loaded. ( " + OptionsForm.config.ipAddress + " - " + OptionsForm.config.listeningPort + " )";
-
-                LUA_Plugin_Loaded = 1;
-
-                AddOnStatus_Click(sender, e);
-
-                lastCommand = _ELITEAPIMonitored.ThirdParty.ConsoleIsNewCommand();
-            }
+            LoadLuaAddon();
         }
 
         private bool CheckForDLLFiles()
@@ -7441,10 +7405,8 @@
             CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Shell V");
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void PauseButton_Click(object sender, EventArgs e)
         {
-
-
             song_casting = 0;
             ForceSongRecast = true;
 
@@ -7472,42 +7434,7 @@
                     WindowState = FormWindowState.Minimized;
                 }
 
-                if (OptionsForm.config.EnableAddOn && LUA_Plugin_Loaded == 0)
-                {
-                    if (WindowerMode == "Windower")
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("//lua load CurePlease_addon");
-                        Thread.Sleep(1500);
-                        _ELITEAPIPL.ThirdParty.SendString("//cpaddon settings " + OptionsForm.config.ipAddress + " " + OptionsForm.config.listeningPort);
-                        Thread.Sleep(100);
-                        if (OptionsForm.config.enableHotKeys)
-                        {
-                            _ELITEAPIPL.ThirdParty.SendString("//bind ^!F1 cureplease toggle");
-                            _ELITEAPIPL.ThirdParty.SendString("//bind ^!F2 cureplease start");
-                            _ELITEAPIPL.ThirdParty.SendString("//bind ^!F3 cureplease pause");
-                        }
-                    }
-                    else if (WindowerMode == "Ashita")
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("/addon load CurePlease_addon");
-                        Thread.Sleep(1500);
-                        _ELITEAPIPL.ThirdParty.SendString("/cpaddon settings " + OptionsForm.config.ipAddress + " " + OptionsForm.config.listeningPort);
-                        Thread.Sleep(100);
-                        if (OptionsForm.config.enableHotKeys)
-                        {
-                            _ELITEAPIPL.ThirdParty.SendString("/bind ^!F1 /cureplease toggle");
-                            _ELITEAPIPL.ThirdParty.SendString("/bind ^!F2 /cureplease start");
-                            _ELITEAPIPL.ThirdParty.SendString("/bind ^!F3 /cureplease pause");
-                        }
-                    }
-
-                    AddOnStatus_Click(sender, e);
-
-
-                    LUA_Plugin_Loaded = 1;
-
-
-                }
+                LoadLuaAddon();
             }
         }
 
@@ -7840,32 +7767,16 @@
         {
             notifyIcon1.Dispose();
 
-            if (_ELITEAPIPL != null)
+            if (_ELITEAPIPL == null)
             {
-                if (WindowerMode == "Ashita")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString("/addon unload CurePlease_addon");
-                    if (OptionsForm.config.enableHotKeys)
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("/unbind ^!F1");
-                        _ELITEAPIPL.ThirdParty.SendString("/unbind ^!F2");
-                        _ELITEAPIPL.ThirdParty.SendString("/unbind ^!F3");
-                    }
-                }
-                else if (WindowerMode == "Windower")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString("//lua unload CurePlease_addon");
-
-                    if (OptionsForm.config.enableHotKeys)
-                    {
-                        _ELITEAPIPL.ThirdParty.SendString("//unbind ^!F1");
-                        _ELITEAPIPL.ThirdParty.SendString("//unbind ^!F2");
-                        _ELITEAPIPL.ThirdParty.SendString("//unbind ^!F3");
-                    }
-
-                }
+                return;
             }
 
+            AddonManager.Unload();
+            if (OptionsForm.config.enableHotKeys)
+            {
+                AddonManager.UnbindHotKeys();
+            }
         }
 
         private int followID()
@@ -9029,7 +8940,7 @@
                         }
                     }
                 }
-                catch (Exception error1)
+                catch (Exception)
                 {
                     //  Console.WriteLine(error1.ToString());
                 }
@@ -9113,17 +9024,12 @@
 
         private void AddOnStatus_Click(object sender, EventArgs e)
         {
-            if (_ELITEAPIMonitored != null && _ELITEAPIPL != null)
+            if (_ELITEAPIPL == null)
             {
-                if (WindowerMode == "Ashita")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString(string.Format("/cpaddon verify"));
-                }
-                else if (WindowerMode == "Windower")
-                {
-                    _ELITEAPIPL.ThirdParty.SendString(string.Format("//cpaddon verify"));
-                }
+                return;
             }
+
+            AddonManager.Verify();
         }
 
         private void CastingCheck_BackgroundTask_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)

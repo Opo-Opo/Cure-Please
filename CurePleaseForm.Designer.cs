@@ -2004,7 +2004,7 @@ namespace CurePlease
             this.pauseButton.Text = "Pause";
             this.toolTips.SetToolTip(this.pauseButton, "Pauses Bot");
             this.pauseButton.UseVisualStyleBackColor = false;
-            this.pauseButton.Click += new System.EventHandler(this.button3_Click);
+            this.pauseButton.Click += new System.EventHandler(this.PauseButton_Click);
             this.pauseButton.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // checkBox1
@@ -2410,7 +2410,7 @@ namespace CurePlease
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "CurePleaseForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Cure Please v. 2.0.0.5";
             this.TransparencyKey = System.Drawing.Color.Silver;
