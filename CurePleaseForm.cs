@@ -10,6 +10,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using System.Reflection;
     using System.Runtime.InteropServices;
     using System.Text;
     using System.Threading;
@@ -3340,16 +3341,46 @@
             return "false";
         }
 
-        private bool PartyMemberUpdateable(byte partyMemberId)
+        private T GetField<T>(string name)
         {
-            var member = _ELITEAPIMonitored.Party.GetPartyMember(partyMemberId);
+            return (T) GetType()
+                .GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)
+                .GetValue(this);
+        }
 
-            if (member.Active < 1)
+        private void UpdatePartyMemberDetails(int index, PartyMember partyMember)
+        {
+            var fieldPrefix = "player" + index;
+
+            var playerName = GetField<Label>(fieldPrefix);
+            var playerHealth = GetField<NewProgressBar>($"{fieldPrefix}HP");
+            var playerOptions = GetField<Button>($"{fieldPrefix}optionsButton");
+            var playerBuffs = (index < 6) ? GetField<Button>($"{fieldPrefix}buffsButton") : null;
+
+            if (partyMember.Active == 1 && _ELITEAPIPL.Player.ZoneId == partyMember.Zone)
             {
-                return false;
+                playerName.Text = partyMember.Name;
+                playerName.Enabled = true;
+                playerOptions.Enabled = true;
+
+                if (playerBuffs != null)
+                {
+                    playerBuffs.Enabled = true;
+                }
+
+                return;
             }
 
-            return _ELITEAPIPL.Player.ZoneId == member.Zone;
+            playerName.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
+            playerName.Enabled = false;
+            playerHealth.Value = 0;
+            playerOptions.Enabled = false;
+
+            if (playerBuffs != null)
+            {
+                playerBuffs.Enabled = false;
+            }
+
         }
 
         private async void partyMembersUpdate_TickAsync(object sender, EventArgs e)
@@ -3395,267 +3426,11 @@
             {
                 return;
             }
-            if (PartyMemberUpdateable(0))
-            {
-                player0.Text = _ELITEAPIMonitored.Party.GetPartyMember(0).Name;
-                player0.Enabled = true;
-                player0optionsButton.Enabled = true;
-                player0buffsButton.Enabled = true;
-            }
-            else
-            {
-                player0.Text = "Inactive or out of zone";
-                player0.Enabled = false;
-                player0HP.Value = 0;
-                player0optionsButton.Enabled = false;
-                player0buffsButton.Enabled = false;
-            }
 
-            if (PartyMemberUpdateable(1))
+            var partyMembers = _ELITEAPIMonitored.Party.GetPartyMembers();
+            for (int i = 0; i < partyMembers.Count; i++)
             {
-                player1.Text = _ELITEAPIMonitored.Party.GetPartyMember(1).Name;
-                player1.Enabled = true;
-                player1optionsButton.Enabled = true;
-                player1buffsButton.Enabled = true;
-            }
-            else
-            {
-                player1.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player1.Enabled = false;
-                player1HP.Value = 0;
-                player1optionsButton.Enabled = false;
-                player1buffsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(2))
-            {
-                player2.Text = _ELITEAPIMonitored.Party.GetPartyMember(2).Name;
-                player2.Enabled = true;
-                player2optionsButton.Enabled = true;
-                player2buffsButton.Enabled = true;
-            }
-            else
-            {
-                player2.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player2.Enabled = false;
-                player2HP.Value = 0;
-                player2optionsButton.Enabled = false;
-                player2buffsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(3))
-            {
-                player3.Text = _ELITEAPIMonitored.Party.GetPartyMember(3).Name;
-                player3.Enabled = true;
-                player3optionsButton.Enabled = true;
-                player3buffsButton.Enabled = true;
-            }
-            else
-            {
-                player3.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player3.Enabled = false;
-                player3HP.Value = 0;
-                player3optionsButton.Enabled = false;
-                player3buffsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(4))
-            {
-                player4.Text = _ELITEAPIMonitored.Party.GetPartyMember(4).Name;
-                player4.Enabled = true;
-                player4optionsButton.Enabled = true;
-                player4buffsButton.Enabled = true;
-            }
-            else
-            {
-                player4.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player4.Enabled = false;
-                player4HP.Value = 0;
-                player4optionsButton.Enabled = false;
-                player4buffsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(5))
-            {
-                player5.Text = _ELITEAPIMonitored.Party.GetPartyMember(5).Name;
-                player5.Enabled = true;
-                player5optionsButton.Enabled = true;
-                player5buffsButton.Enabled = true;
-            }
-            else
-            {
-                player5.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player5.Enabled = false;
-                player5HP.Value = 0;
-                player5optionsButton.Enabled = false;
-                player5buffsButton.Enabled = false;
-            }
-            if (PartyMemberUpdateable(6))
-            {
-                player6.Text = _ELITEAPIMonitored.Party.GetPartyMember(6).Name;
-                player6.Enabled = true;
-                player6optionsButton.Enabled = true;
-            }
-            else
-            {
-                player6.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player6.Enabled = false;
-                player6HP.Value = 0;
-                player6optionsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(7))
-            {
-                player7.Text = _ELITEAPIMonitored.Party.GetPartyMember(7).Name;
-                player7.Enabled = true;
-                player7optionsButton.Enabled = true;
-            }
-            else
-            {
-                player7.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player7.Enabled = false;
-                player7HP.Value = 0;
-                player7optionsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(8))
-            {
-                player8.Text = _ELITEAPIMonitored.Party.GetPartyMember(8).Name;
-                player8.Enabled = true;
-                player8optionsButton.Enabled = true;
-            }
-            else
-            {
-                player8.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player8.Enabled = false;
-                player8HP.Value = 0;
-                player8optionsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(9))
-            {
-                player9.Text = _ELITEAPIMonitored.Party.GetPartyMember(9).Name;
-                player9.Enabled = true;
-                player9optionsButton.Enabled = true;
-            }
-            else
-            {
-                player9.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player9.Enabled = false;
-                player9HP.Value = 0;
-                player9optionsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(10))
-            {
-                player10.Text = _ELITEAPIMonitored.Party.GetPartyMember(10).Name;
-                player10.Enabled = true;
-                player10optionsButton.Enabled = true;
-            }
-            else
-            {
-                player10.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player10.Enabled = false;
-                player10HP.Value = 0;
-                player10optionsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(11))
-            {
-                player11.Text = _ELITEAPIMonitored.Party.GetPartyMember(11).Name;
-                player11.Enabled = true;
-                player11optionsButton.Enabled = true;
-            }
-            else
-            {
-                player11.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player11.Enabled = false;
-                player11HP.Value = 0;
-                player11optionsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(12))
-            {
-                player12.Text = _ELITEAPIMonitored.Party.GetPartyMember(12).Name;
-                player12.Enabled = true;
-                player12optionsButton.Enabled = true;
-            }
-            else
-            {
-                player12.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player12.Enabled = false;
-                player12HP.Value = 0;
-                player12optionsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(13))
-            {
-                player13.Text = _ELITEAPIMonitored.Party.GetPartyMember(13).Name;
-                player13.Enabled = true;
-                player13optionsButton.Enabled = true;
-            }
-            else
-            {
-                player13.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player13.Enabled = false;
-                player13HP.Value = 0;
-                player13optionsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(14))
-            {
-                player14.Text = _ELITEAPIMonitored.Party.GetPartyMember(14).Name;
-                player14.Enabled = true;
-                player14optionsButton.Enabled = true;
-            }
-            else
-            {
-                player14.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player14.Enabled = false;
-                player14HP.Value = 0;
-                player14optionsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(15))
-            {
-                player15.Text = _ELITEAPIMonitored.Party.GetPartyMember(15).Name;
-                player15.Enabled = true;
-                player15optionsButton.Enabled = true;
-            }
-            else
-            {
-                player15.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player15.Enabled = false;
-                player15HP.Value = 0;
-                player15optionsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(16))
-            {
-                player16.Text = _ELITEAPIMonitored.Party.GetPartyMember(16).Name;
-                player16.Enabled = true;
-                player16optionsButton.Enabled = true;
-            }
-            else
-            {
-                player16.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player16.Enabled = false;
-                player16HP.Value = 0;
-                player16optionsButton.Enabled = false;
-            }
-
-            if (PartyMemberUpdateable(17))
-            {
-                player17.Text = _ELITEAPIMonitored.Party.GetPartyMember(17).Name;
-                player17.Enabled = true;
-                player17optionsButton.Enabled = true;
-            }
-            else
-            {
-                player17.Text = Resources.Form1_partyMembersUpdate_Tick_Inactive;
-                player17.Enabled = false;
-                player17HP.Value = 0;
-                player17optionsButton.Enabled = false;
+                UpdatePartyMemberDetails(i, partyMembers[i]);
             }
         }
 
