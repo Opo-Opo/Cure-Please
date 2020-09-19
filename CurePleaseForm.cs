@@ -3355,18 +3355,13 @@
             var playerName = GetField<Label>(fieldPrefix);
             var playerHealth = GetField<NewProgressBar>($"{fieldPrefix}HP");
             var playerOptions = GetField<Button>($"{fieldPrefix}optionsButton");
-            var playerBuffs = (index < 6) ? GetField<Button>($"{fieldPrefix}buffsButton") : null;
 
             if (partyMember.Active == 1 && _ELITEAPIPL.Player.ZoneId == partyMember.Zone)
             {
                 playerName.Text = partyMember.Name;
                 playerName.Enabled = true;
                 playerOptions.Enabled = true;
-
-                if (playerBuffs != null)
-                {
-                    playerBuffs.Enabled = true;
-                }
+                UpdateHPProgressBar(playerHealth, partyMember.CurrentHPP);
 
                 return;
             }
@@ -3375,15 +3370,15 @@
             playerName.Enabled = false;
             playerHealth.Value = 0;
             playerOptions.Enabled = false;
-
-            if (playerBuffs != null)
-            {
-                playerBuffs.Enabled = false;
-            }
-
         }
 
-        private async void partyMembersUpdate_TickAsync(object sender, EventArgs e)
+        private void TogglePartyMemberBuffButton(int index, PartyMember partyMember)
+        {
+            GetField<Button>($"player{index}buffsButton").Enabled
+                = partyMember.Active == 1 && _ELITEAPIPL.Player.ZoneId == partyMember.Zone;
+        }
+
+        private async void PartyMembersUpdate_TickAsync(object sender, EventArgs e)
         {
             if (_ELITEAPIPL == null || _ELITEAPIMonitored == null)
             {
@@ -3431,135 +3426,32 @@
             for (int i = 0; i < partyMembers.Count; i++)
             {
                 UpdatePartyMemberDetails(i, partyMembers[i]);
+
+                if (i < 6)
+                {// Exclude Alliance Members
+                    TogglePartyMemberBuffButton(i, partyMembers[i]);
+                }
             }
         }
 
-        private void hpUpdates_Tick(object sender, EventArgs e)
+        private void UpdateHPProgressBar(ProgressBar healthBar, int healthPercent)
         {
-            if (_ELITEAPIPL == null || _ELITEAPIMonitored == null)
+            healthBar.Value = healthPercent;
+            if (healthPercent >= 75)
             {
-                return;
+                healthBar.ForeColor = Color.DarkGreen;
             }
-
-            if (_ELITEAPIPL.Player.LoginStatus != (int)LoginStatus.LoggedIn || _ELITEAPIMonitored.Player.LoginStatus != (int)LoginStatus.LoggedIn)
+            else if (healthPercent > 50)
             {
-                return;
+                healthBar.ForeColor = Color.Yellow;
             }
-
-            if (player0.Enabled)
+            else if (healthPercent > 25)
             {
-                UpdateHPProgressBar(player0HP, _ELITEAPIMonitored.Party.GetPartyMember(0).CurrentHPP);
+                healthBar.ForeColor = Color.Orange;
             }
-
-            if (player0.Enabled)
+            else
             {
-                UpdateHPProgressBar(player0HP, _ELITEAPIMonitored.Party.GetPartyMember(0).CurrentHPP);
-            }
-
-            if (player1.Enabled)
-            {
-                UpdateHPProgressBar(player1HP, _ELITEAPIMonitored.Party.GetPartyMember(1).CurrentHPP);
-            }
-
-            if (player2.Enabled)
-            {
-                UpdateHPProgressBar(player2HP, _ELITEAPIMonitored.Party.GetPartyMember(2).CurrentHPP);
-            }
-
-            if (player3.Enabled)
-            {
-                UpdateHPProgressBar(player3HP, _ELITEAPIMonitored.Party.GetPartyMember(3).CurrentHPP);
-            }
-
-            if (player4.Enabled)
-            {
-                UpdateHPProgressBar(player4HP, _ELITEAPIMonitored.Party.GetPartyMember(4).CurrentHPP);
-            }
-
-            if (player5.Enabled)
-            {
-                UpdateHPProgressBar(player5HP, _ELITEAPIMonitored.Party.GetPartyMember(5).CurrentHPP);
-            }
-
-            if (player6.Enabled)
-            {
-                UpdateHPProgressBar(player6HP, _ELITEAPIMonitored.Party.GetPartyMember(6).CurrentHPP);
-            }
-
-            if (player7.Enabled)
-            {
-                UpdateHPProgressBar(player7HP, _ELITEAPIMonitored.Party.GetPartyMember(7).CurrentHPP);
-            }
-
-            if (player8.Enabled)
-            {
-                UpdateHPProgressBar(player8HP, _ELITEAPIMonitored.Party.GetPartyMember(8).CurrentHPP);
-            }
-
-            if (player9.Enabled)
-            {
-                UpdateHPProgressBar(player9HP, _ELITEAPIMonitored.Party.GetPartyMember(9).CurrentHPP);
-            }
-
-            if (player10.Enabled)
-            {
-                UpdateHPProgressBar(player10HP, _ELITEAPIMonitored.Party.GetPartyMember(10).CurrentHPP);
-            }
-
-            if (player11.Enabled)
-            {
-                UpdateHPProgressBar(player11HP, _ELITEAPIMonitored.Party.GetPartyMember(11).CurrentHPP);
-            }
-
-            if (player12.Enabled)
-            {
-                UpdateHPProgressBar(player12HP, _ELITEAPIMonitored.Party.GetPartyMember(12).CurrentHPP);
-            }
-
-            if (player13.Enabled)
-            {
-                UpdateHPProgressBar(player13HP, _ELITEAPIMonitored.Party.GetPartyMember(13).CurrentHPP);
-            }
-
-            if (player14.Enabled)
-            {
-                UpdateHPProgressBar(player14HP, _ELITEAPIMonitored.Party.GetPartyMember(14).CurrentHPP);
-            }
-
-            if (player15.Enabled)
-            {
-                UpdateHPProgressBar(player15HP, _ELITEAPIMonitored.Party.GetPartyMember(15).CurrentHPP);
-            }
-
-            if (player16.Enabled)
-            {
-                UpdateHPProgressBar(player16HP, _ELITEAPIMonitored.Party.GetPartyMember(16).CurrentHPP);
-            }
-
-            if (player17.Enabled)
-            {
-                UpdateHPProgressBar(player17HP, _ELITEAPIMonitored.Party.GetPartyMember(17).CurrentHPP);
-            }
-        }
-
-        private void UpdateHPProgressBar(ProgressBar playerHP, int CurrentHPP)
-        {
-            playerHP.Value = CurrentHPP;
-            if (CurrentHPP >= 75)
-            {
-                playerHP.ForeColor = Color.DarkGreen;
-            }
-            else if (CurrentHPP > 50 && CurrentHPP < 75)
-            {
-                playerHP.ForeColor = Color.Yellow;
-            }
-            else if (CurrentHPP > 25 && CurrentHPP < 50)
-            {
-                playerHP.ForeColor = Color.Orange;
-            }
-            else if (CurrentHPP < 25)
-            {
-                playerHP.ForeColor = Color.Red;
+                healthBar.ForeColor = Color.Red;
             }
         }
 

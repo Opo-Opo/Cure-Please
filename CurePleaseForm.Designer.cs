@@ -1539,7 +1539,7 @@ namespace CurePlease
             // partyMembersUpdate
             // 
             this.partyMembersUpdate.Interval = 500;
-            this.partyMembersUpdate.Tick += new System.EventHandler(this.partyMembersUpdate_TickAsync);
+            this.partyMembersUpdate.Tick += new System.EventHandler(this.PartyMembersUpdate_TickAsync);
             // 
             // actionTimer
             // 
@@ -1983,11 +1983,6 @@ namespace CurePlease
             this.monitoredLabel.Size = new System.Drawing.Size(145, 13);
             this.monitoredLabel.TabIndex = 5;
             this.monitoredLabel.Text = "Monitored Player: NONE";
-            // 
-            // hpUpdates
-            // 
-            this.hpUpdates.Interval = 500;
-            this.hpUpdates.Tick += new System.EventHandler(this.hpUpdates_Tick);
             // 
             // plPosition
             // 
