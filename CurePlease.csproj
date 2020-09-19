@@ -115,7 +115,6 @@
     <Compile Include="ChatLogForm.Designer.cs">
       <DependentUpon>ChatLogForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PartyBuffsForm.cs">
       <SubType>Form</SubType>
     </Compile>

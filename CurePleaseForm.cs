@@ -32,13 +32,6 @@
             public string CharacterBuffs { get; set; }
         }
 
-        public class CharacterData : List<CharacterData>
-        {
-            public int TargetIndex { get; set; }
-
-            public int MemberNumber { get; set; }
-        }
-
         public class SongData : List<SongData>
         {
             public string song_type { get; set; }
@@ -72,13 +65,6 @@
             public string geo_spell { get; set; }
         }
 
-        public class JobTitles : List<JobTitles>
-        {
-            public int job_number { get; set; }
-
-            public string job_name { get; set; }
-        }
-
         private int currentSCHCharges = 0;
 
         private string debug_MSG_show = string.Empty;
@@ -93,14 +79,6 @@
         private int PL_BRDCount = 0;
         private bool ForceSongRecast = false;
         private string Last_Song_Cast = string.Empty;
-
-        //  private int song_casting = 0;
-        //  private string LastSongCast = String.Empty;
-
-
-        // private bool ForceSongRecast = false;
-        //  private string Last_Song_Cast = String.Empty;
-
 
         // GEO ENGAGED CHECK
         public bool targetEngaged = false;
@@ -119,10 +97,6 @@
         private List<string> characterNames_naRemoval = new List<string>();
 
         public IAddon AddonManager;
-
-        public string WindowerMode = "Windower";
-
-        public List<JobTitles> JobNames = new List<JobTitles>();
 
         public List<SpellsData> barspells = new List<SpellsData>();
 
@@ -382,7 +356,7 @@
         // PIANISSIMO TIME FORMAT
         // SONGNUMBER_SONGSET (Example: 1_2 = Song #1 in Set #2
         private bool[] autoHasteEnabled = new bool[]
-      {
+        {
             false,
             false,
             false,
@@ -401,10 +375,10 @@
             false,
             false,
             false
-      };
+        };
 
         private bool[] autoHaste_IIEnabled = new bool[]
-      {
+        {
             false,
             false,
             false,
@@ -423,10 +397,10 @@
             false,
             false,
             false
-      };
+        };
 
         private bool[] autoFlurryEnabled = new bool[]
-      {
+        {
             false,
             false,
             false,
@@ -445,10 +419,10 @@
             false,
             false,
             false
-      };
+        };
 
         private bool[] autoFlurry_IIEnabled = new bool[]
-      {
+        {
             false,
             false,
             false,
@@ -467,10 +441,10 @@
             false,
             false,
             false
-      };
+        };
 
         private bool[] autoPhalanx_IIEnabled = new bool[]
-       {
+        {
             false,
             false,
             false,
@@ -489,10 +463,10 @@
             false,
             false,
             false
-       };
+        };
 
         private bool[] autoRegen_Enabled = new bool[]
-      {
+        {
             false,
             false,
             false,
@@ -511,10 +485,10 @@
             false,
             false,
             false
-      };
+        };
 
         private bool[] autoShell_Enabled = new bool[]
-      {
+        {
             false,
             false,
             false,
@@ -533,10 +507,10 @@
             false,
             false,
             false
-      };
+        };
 
         private bool[] autoProtect_Enabled = new bool[]
-      {
+        {
             false,
             false,
             false,
@@ -555,10 +529,10 @@
             false,
             false,
             false
-      };
+        };
 
         private bool[] autoSandstormEnabled = new bool[]
-{
+        {
             false,
             false,
             false,
@@ -577,10 +551,10 @@
             false,
             false,
             false
-};
+        };
 
         private bool[] autoRainstormEnabled = new bool[]
-{
+        {
             false,
             false,
             false,
@@ -599,10 +573,10 @@
             false,
             false,
             false
-};
+        };
 
         private bool[] autoWindstormEnabled = new bool[]
-{
+        {
             false,
             false,
             false,
@@ -621,10 +595,10 @@
             false,
             false,
             false
-};
+        };
 
         private bool[] autoFirestormEnabled = new bool[]
-{
+        {
             false,
             false,
             false,
@@ -643,10 +617,10 @@
             false,
             false,
             false
-};
+        };
 
         private bool[] autoHailstormEnabled = new bool[]
-{
+        {
             false,
             false,
             false,
@@ -665,10 +639,10 @@
             false,
             false,
             false
-};
+        };
 
         private bool[] autoThunderstormEnabled = new bool[]
-{
+        {
             false,
             false,
             false,
@@ -687,10 +661,10 @@
             false,
             false,
             false
-};
+        };
 
         private bool[] autoVoidstormEnabled = new bool[]
-{
+        {
             false,
             false,
             false,
@@ -709,10 +683,10 @@
             false,
             false,
             false
-};
+        };
 
         private bool[] autoAurorastormEnabled = new bool[]
-{
+        {
             false,
             false,
             false,
@@ -731,12 +705,10 @@
             false,
             false,
             false
-};
-
-
+        };
 
         private bool[] autoRefreshEnabled = new bool[]
-      {
+        {
             false,
             false,
             false,
@@ -755,10 +727,10 @@
             false,
             false,
             false
-      };
+        };
 
         private bool[] autoAdloquium_Enabled = new bool[]
-      {
+        {
             false,
             false,
             false,
@@ -777,14 +749,12 @@
             false,
             false,
             false
-      };
-
-
+        };
 
         private DateTime currentTime = DateTime.Now;
 
         private DateTime[] playerHaste = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -803,10 +773,10 @@
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerHaste_II = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -825,10 +795,10 @@
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerStormspell = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -847,10 +817,10 @@
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerFlurry = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -869,10 +839,10 @@
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerFlurry_II = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -891,10 +861,10 @@
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerShell = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -913,10 +883,10 @@
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerProtect = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -935,10 +905,10 @@
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerPhalanx_II = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -957,10 +927,10 @@
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerRegen = new DateTime[]
-       {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -979,10 +949,10 @@
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-       };
+        };
 
         private DateTime[] playerRefresh = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -1001,10 +971,10 @@
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerAdloquium = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
@@ -1023,75 +993,75 @@
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerSong1 = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerSong2 = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerSong3 = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerSong4 = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] Last_SongCast_Timer = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerPianissimo1_1 = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerPianissimo2_1 = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerPianissimo1_2 = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private DateTime[] playerPianissimo2_2 = new DateTime[]
-      {
+        {
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0),
             new DateTime(1970, 1, 1, 0, 0, 0)
-      };
+        };
 
         private TimeSpan[] playerHasteSpan = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1110,10 +1080,10 @@
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerStormspellSpan = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1132,10 +1102,10 @@
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerHaste_IISpan = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1154,10 +1124,10 @@
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerFlurrySpan = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1176,10 +1146,10 @@
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerFlurry_IISpan = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1198,10 +1168,10 @@
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerShell_Span = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1220,10 +1190,10 @@
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerProtect_Span = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1242,10 +1212,10 @@
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerPhalanx_IISpan = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1264,10 +1234,10 @@
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerRegen_Span = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1286,10 +1256,10 @@
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerRefresh_Span = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1308,11 +1278,10 @@
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan()
-      };
-
+        };
 
         private TimeSpan[] playerAdloquium_Span = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
@@ -1331,72 +1300,72 @@
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerSong1_Span = new TimeSpan[]
-      {
+        {
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerSong2_Span = new TimeSpan[]
-      {
+        {
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerSong3_Span = new TimeSpan[]
-      {
+        {
             new TimeSpan()
-      };
+        };
 
         private TimeSpan[] playerSong4_Span = new TimeSpan[]
-     {
+        {
             new TimeSpan()
-     };
+        };
 
         private TimeSpan[] Last_SongCast_Timer_Span = new TimeSpan[]
-     {
+        {
             new TimeSpan()
-     };
+        };
 
         private TimeSpan[] pianissimo1_1_Span = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
-      };
+        };
 
         private TimeSpan[] pianissimo2_1_Span = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
-      };
+        };
 
         private TimeSpan[] pianissimo1_2_Span = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
-      };
+        };
 
         private TimeSpan[] pianissimo2_2_Span = new TimeSpan[]
-      {
+        {
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
             new TimeSpan(),
-      };
+        };
 
         private void PaintBorderlessGroupBox(object sender, PaintEventArgs e)
         {
@@ -1458,122 +1427,10 @@
 
             currentAction.Text = string.Empty;
 
-            if (System.IO.File.Exists("debug"))
+            if (File.Exists("debug"))
             {
                 debug.Visible = true;
             }
-
-            JobNames.Add(new JobTitles
-            {
-                job_number = 1,
-                job_name = "WAR",
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 2,
-                job_name = "MNK"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 3,
-                job_name = "WHM"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 4,
-                job_name = "BLM"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 5,
-                job_name = "RDM"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 6,
-                job_name = "THF"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 7,
-                job_name = "PLD"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 8,
-                job_name = "DRK"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 9,
-                job_name = "BST"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 10,
-                job_name = "BRD"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 11,
-                job_name = "RNG"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 12,
-                job_name = "SAM"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 13,
-                job_name = "NIN"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 14,
-                job_name = "DRG"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 15,
-                job_name = "SMN"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 16,
-                job_name = "BLU"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 17,
-                job_name = "COR"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 18,
-                job_name = "PUP"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 19,
-                job_name = "DNC"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 20,
-                job_name = "SCH"
-            });
-
-            JobNames.Add(new JobTitles
-            {
-                job_number = 21,
-                job_name = "GEO"
-            });
-            JobNames.Add(new JobTitles
-            {
-                job_number = 22,
-                job_name = "RUN"
-            });
 
             int position = 0;
 
@@ -2949,12 +2806,10 @@
                     if (dats.Modules[i].FileName.Contains("Ashita.dll"))
                     {
                         AddonManager = new Ashita(_ELITEAPIPL);
-                        WindowerMode = "Ashita";
                     }
                     else if (dats.Modules[i].FileName.Contains("Hook.dll"))
                     {
                         AddonManager = new Windower(_ELITEAPIPL);
-                        WindowerMode = "Windower";
                     }
                 }
             }
@@ -3091,11 +2946,8 @@
 
         private bool CheckForDLLFiles()
         {
-            if (!File.Exists("eliteapi.dll") || !File.Exists("elitemmo.api.dll"))
-            {
-                return false;
-            }
-            return true;
+            return File.Exists("eliteapi.dll")
+                && File.Exists("elitemmo.api.dll");
         }
 
         private string CureTiers(string cureSpell, bool HP)
@@ -5054,15 +4906,7 @@
             // IF ENABLED PAUSE ON KO
             if (OptionsForm.config.pauseOnKO && (_ELITEAPIPL.Player.Status == 2 || _ELITEAPIPL.Player.Status == 3))
             {
-                pauseButton.Text = "Paused!";
-                pauseButton.ForeColor = Color.Red;
-                actionTimer.Enabled = false;
-                ActiveBuffs.Clear();
-                pauseActions = true;
-                if (OptionsForm.config.FFXIDefaultAutoFollow == false)
-                {
-                    _ELITEAPIPL.AutoFollow.IsAutoFollowing = false;
-                }
+                Pause();
             }
 
             // IF YOU ARE DEAD BUT RERAISE IS AVAILABLE THEN ACCEPT RAISE
@@ -6402,6 +6246,25 @@
             }
         }
 
+        private void Pause()
+        {
+            pauseButton.Text = "Paused!";
+            pauseButton.ForeColor = Color.Red;
+
+            actionTimer.Enabled = false;
+
+            ActiveBuffs.Clear();
+
+            pauseActions = true;
+
+            song_casting = 0;
+            ForceSongRecast = true;
+
+            if (!OptionsForm.config.FFXIDefaultAutoFollow)
+            {
+                _ELITEAPIPL.AutoFollow.IsAutoFollowing = false;
+            }
+        }
 
         private bool CheckIfAutoStormspellEnabled(byte id)
         {
@@ -6671,12 +6534,6 @@
             {
                 return "SpellError_Cancel";
             }
-        }
-
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OptionsForm settings = new OptionsForm();
-            settings.Show();
         }
 
         private void player0optionsButton_Click(object sender, EventArgs e)
@@ -7004,78 +6861,6 @@
             autoOptions.Show(party0, new Point(0, 0));
         }
 
-        private void player6buffsButton_Click(object sender, EventArgs e)
-        {
-            autoOptionsSelected = 6;
-            autoOptions.Show(party1, new Point(0, 0));
-        }
-
-        private void player7buffsButton_Click(object sender, EventArgs e)
-        {
-            autoOptionsSelected = 7;
-            autoOptions.Show(party1, new Point(0, 0));
-        }
-
-        private void player8buffsButton_Click(object sender, EventArgs e)
-        {
-            autoOptionsSelected = 8;
-            autoOptions.Show(party1, new Point(0, 0));
-        }
-
-        private void player9buffsButton_Click(object sender, EventArgs e)
-        {
-            autoOptionsSelected = 9;
-            autoOptions.Show(party1, new Point(0, 0));
-        }
-
-        private void player10buffsButton_Click(object sender, EventArgs e)
-        {
-            autoOptionsSelected = 10;
-            autoOptions.Show(party1, new Point(0, 0));
-        }
-
-        private void player11buffsButton_Click(object sender, EventArgs e)
-        {
-            autoOptionsSelected = 11;
-            autoOptions.Show(party1, new Point(0, 0));
-        }
-
-        private void player12buffsButton_Click(object sender, EventArgs e)
-        {
-            autoOptionsSelected = 12;
-            autoOptions.Show(party2, new Point(0, 0));
-        }
-
-        private void player13buffsButton_Click(object sender, EventArgs e)
-        {
-            autoOptionsSelected = 13;
-            autoOptions.Show(party2, new Point(0, 0));
-        }
-
-        private void player14buffsButton_Click(object sender, EventArgs e)
-        {
-            autoOptionsSelected = 14;
-            autoOptions.Show(party2, new Point(0, 0));
-        }
-
-        private void player15buffsButton_Click(object sender, EventArgs e)
-        {
-            autoOptionsSelected = 15;
-            autoOptions.Show(party2, new Point(0, 0));
-        }
-
-        private void player16buffsButton_Click(object sender, EventArgs e)
-        {
-            autoOptionsSelected = 16;
-            autoOptions.Show(party2, new Point(0, 0));
-        }
-
-        private void player17buffsButton_Click(object sender, EventArgs e)
-        {
-            autoOptionsSelected = 17;
-            autoOptions.Show(party2, new Point(0, 0));
-        }
-
         private void Item_Wait(string ItemName)
         {
             if (CastingBackground_Check != true && JobAbilityLock_Check != true)
@@ -7167,14 +6952,6 @@
             autoShell_Enabled[playerOptionsSelected] = !autoShell_Enabled[playerOptionsSelected];
         }
 
-        private void autoHasteToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            autoHasteEnabled[autoOptionsSelected] = !autoHasteEnabled[autoOptionsSelected];
-            autoHaste_IIEnabled[playerOptionsSelected] = false;
-            autoFlurryEnabled[playerOptionsSelected] = false;
-            autoFlurry_IIEnabled[playerOptionsSelected] = false;
-        }
-
         private void autoPhalanxIIToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             autoPhalanx_IIEnabled[autoOptionsSelected] = !autoPhalanx_IIEnabled[autoOptionsSelected];
@@ -7223,96 +7000,6 @@
         private void HateEstablisherToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OptionsForm.config.autoTarget_Target = _ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name;
-        }
-
-        private void phalanxIIToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Phalanx II");
-        }
-
-        private void invisibleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Invisible");
-        }
-
-        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Refresh");
-        }
-
-        private void refreshIIToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Refresh II");
-        }
-
-        private void refreshIIIToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Refresh III");
-        }
-
-        private void sneakToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Sneak");
-        }
-
-        private void regenIIToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Regen II");
-        }
-
-        private void regenIIIToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Regen III");
-        }
-
-        private void regenIVToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Regen IV");
-        }
-
-        private void eraseToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Erase");
-        }
-
-        private void sacrificeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Sacrifice");
-        }
-
-        private void blindnaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Blindna");
-        }
-
-        private void cursnaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Cursna");
-        }
-
-        private void paralynaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Paralyna");
-        }
-
-        private void poisonaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Poisona");
-        }
-
-        private void stonaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Stona");
-        }
-
-        private void silenaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Silena");
-        }
-
-        private void virunaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Viruna");
         }
 
         private void setAllStormsFalse(byte autoOptionsSelected)
@@ -7385,26 +7072,6 @@
             autoAurorastormEnabled[autoOptionsSelected] = !currentStatus;
         }
 
-        private void protectIVToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Protect IV");
-        }
-
-        private void protectVToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Protect V");
-        }
-
-        private void shellIVToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Shell IV");
-        }
-
-        private void shellVToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[playerOptionsSelected].Name, "Shell V");
-        }
-
         private void PauseButton_Click(object sender, EventArgs e)
         {
             song_casting = 0;
@@ -7412,15 +7079,7 @@
 
             if (pauseActions == false)
             {
-                pauseButton.Text = "Paused!";
-                pauseButton.ForeColor = Color.Red;
-                actionTimer.Enabled = false;
-                ActiveBuffs.Clear();
-                pauseActions = true;
-                if (OptionsForm.config.FFXIDefaultAutoFollow == false)
-                {
-                    _ELITEAPIPL.AutoFollow.IsAutoFollowing = false;
-                }
+                Pause();
             }
             else
             {
@@ -7692,8 +7351,6 @@
             }
         }
 
-
-
         private bool CheckRegenLevelPossession()
         {
             switch (OptionsForm.config.plRegen_Level)
@@ -7717,51 +7374,6 @@
                     return false;
             }
         }
-
-        private void chatLogToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChatLogForm form4 = new ChatLogForm(this);
-            form4.Show();
-        }
-
-        private void partyBuffsdebugToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            PartyBuffsForm PartyBuffs = new PartyBuffsForm(this);
-            PartyBuffs.Show();
-        }
-
-        private void refreshCharactersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            IEnumerable<Process> pol = Process.GetProcessesByName("pol").Union(Process.GetProcessesByName("xiloader")).Union(Process.GetProcessesByName("edenxi"));
-
-            if (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading || _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading)
-            {
-            }
-            else
-            {
-                if (pol.Count() < 1)
-                {
-                    MessageBox.Show("FFXI not found");
-                }
-                else
-                {
-                    POLID.Items.Clear();
-                    POLID2.Items.Clear();
-                    processids.Items.Clear();
-
-                    for (int i = 0; i < pol.Count(); i++)
-                    {
-                        POLID.Items.Add(pol.ElementAt(i).MainWindowTitle);
-                        POLID2.Items.Add(pol.ElementAt(i).MainWindowTitle);
-                        processids.Items.Add(pol.ElementAt(i).Id);
-                    }
-
-                    POLID.SelectedIndex = 0;
-                    POLID2.SelectedIndex = 0;
-                }
-            }
-        }
-
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -8263,12 +7875,6 @@
             }
         }
 
-        private void notifyIcon1_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            Show();
-            WindowState = FormWindowState.Normal;
-        }
-
         private void CheckCustomActions_TickAsync(object sender, EventArgs e)
         {
             if (_ELITEAPIPL != null && _ELITEAPIMonitored != null)
@@ -8292,17 +7898,7 @@
                         {
                             if ((_ELITEAPIMonitored.ThirdParty.ConsoleGetArg(1) == "stop" || _ELITEAPIMonitored.ThirdParty.ConsoleGetArg(1) == "pause") && _ELITEAPIPL.Player.Name == _ELITEAPIMonitored.ThirdParty.ConsoleGetArg(2))
                             {
-                                pauseButton.Text = "Paused!";
-                                pauseButton.ForeColor = Color.Red;
-                                actionTimer.Enabled = false;
-                                ActiveBuffs.Clear();
-                                pauseActions = true;
-                                song_casting = 0;
-                                ForceSongRecast = true;
-                                if (OptionsForm.config.FFXIDefaultAutoFollow == false)
-                                {
-                                    _ELITEAPIPL.AutoFollow.IsAutoFollowing = false;
-                                }
+                                Pause();
                             }
                             else if ((_ELITEAPIMonitored.ThirdParty.ConsoleGetArg(1) == "unpause" || _ELITEAPIMonitored.ThirdParty.ConsoleGetArg(1) == "start") && _ELITEAPIPL.Player.Name.ToLower() == _ELITEAPIMonitored.ThirdParty.ConsoleGetArg(2).ToLower())
                             {
@@ -8326,17 +7922,7 @@
                         {
                             if (_ELITEAPIMonitored.ThirdParty.ConsoleGetArg(1) == "stop" || _ELITEAPIMonitored.ThirdParty.ConsoleGetArg(1) == "pause")
                             {
-                                pauseButton.Text = "Paused!";
-                                pauseButton.ForeColor = Color.Red;
-                                actionTimer.Enabled = false;
-                                ActiveBuffs.Clear();
-                                pauseActions = true;
-                                song_casting = 0;
-                                ForceSongRecast = true;
-                                if (OptionsForm.config.FFXIDefaultAutoFollow == false)
-                                {
-                                    _ELITEAPIPL.AutoFollow.IsAutoFollowing = false;
-                                }
+                                Pause();
                             }
                             else if (_ELITEAPIMonitored.ThirdParty.ConsoleGetArg(1) == "unpause" || _ELITEAPIMonitored.ThirdParty.ConsoleGetArg(1) == "start")
                             {
@@ -8815,139 +8401,129 @@
 
         private void AddonReader_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            if (OptionsForm.config.EnableAddOn == true && pauseActions == false && _ELITEAPIMonitored != null && _ELITEAPIPL != null)
+            if (!OptionsForm.config.EnableAddOn)
             {
+                return;
+            }
 
-                bool done = false;
+            if (_ELITEAPIMonitored == null || _ELITEAPIPL == null)
+            {
+                return;
+            }
 
-                UdpClient listener = new UdpClient(Convert.ToInt32(OptionsForm.config.listeningPort));
-                IPEndPoint groupEP = new IPEndPoint(IPAddress.Parse(OptionsForm.config.ipAddress), Convert.ToInt32(OptionsForm.config.listeningPort));
-                string received_data;
-                byte[] receive_byte_array;
-                try
+            bool done = false;
+
+            UdpClient listener = new UdpClient(Convert.ToInt32(OptionsForm.config.listeningPort));
+            IPEndPoint groupEP = new IPEndPoint(IPAddress.Parse(OptionsForm.config.ipAddress), Convert.ToInt32(OptionsForm.config.listeningPort));
+            string received_data;
+            byte[] receive_byte_array;
+            try
+            {
+                while (!done)
                 {
-                    while (!done)
+
+                    receive_byte_array = listener.Receive(ref groupEP);
+
+                    received_data = Encoding.ASCII.GetString(receive_byte_array, 0, receive_byte_array.Length);
+
+
+
+                    string[] commands = received_data.Split('_');
+
+                    // MessageBox.Show(commands[1] + " " + commands[2]);
+                    if (commands[1] == "casting" && commands.Count() == 3 && OptionsForm.config.trackCastingPackets == true)
                     {
-
-                        receive_byte_array = listener.Receive(ref groupEP);
-
-                        received_data = Encoding.ASCII.GetString(receive_byte_array, 0, receive_byte_array.Length);
-
-
-
-                        string[] commands = received_data.Split('_');
-
-                        // MessageBox.Show(commands[1] + " " + commands[2]);
-                        if (commands[1] == "casting" && commands.Count() == 3 && OptionsForm.config.trackCastingPackets == true)
+                        if (commands[2] == "blocked")
                         {
-                            if (commands[2] == "blocked")
+                            Invoke((MethodInvoker)(() =>
                             {
-                                Invoke((MethodInvoker)(() =>
-                          {
-                              CastingBackground_Check = true;
-                              castingLockLabel.Text = "PACKET: Casting is LOCKED";
-                          }));
+                                CastingBackground_Check = true;
+                                castingLockLabel.Text = "PACKET: Casting is LOCKED";
+                            }));
 
-                                if (!ProtectCasting.IsBusy) { ProtectCasting.RunWorkerAsync(); }
-                            }
-                            else if (commands[2] == "interrupted")
-                            {
-                                Invoke((MethodInvoker)(async () =>
-                          {
-                              ProtectCasting.CancelAsync();
-                              castingLockLabel.Text = "PACKET: Casting is INTERRUPTED";
-                              await Task.Delay(TimeSpan.FromSeconds(3));
-                              castingLockLabel.Text = "Casting is UNLOCKED";
-                              CastingBackground_Check = false;
-                          }));
-                            }
-                            else if (commands[2] == "finished")
-                            {
-
-                                Invoke((MethodInvoker)(async () =>
-                          {
-                              ProtectCasting.CancelAsync();
-                              castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
-                              await Task.Delay(TimeSpan.FromSeconds(3));
-                              castingLockLabel.Text = "Casting is UNLOCKED";
-                              currentAction.Text = string.Empty;
-                              castingSpell = string.Empty;
-                              CastingBackground_Check = false;
-                          }));
-                            }
+                            if (!ProtectCasting.IsBusy) { ProtectCasting.RunWorkerAsync(); }
                         }
-                        else if (commands[1] == "confirmed")
+                        else if (commands[2] == "interrupted")
                         {
-                            AddOnStatus.BackColor = Color.ForestGreen;
+                            Invoke((MethodInvoker)(async () =>
+                            {
+                                ProtectCasting.CancelAsync();
+                                castingLockLabel.Text = "PACKET: Casting is INTERRUPTED";
+                                await Task.Delay(TimeSpan.FromSeconds(3));
+                                castingLockLabel.Text = "Casting is UNLOCKED";
+                                CastingBackground_Check = false;
+                            }));
                         }
-                        else if (commands[1] == "command")
+                        else if (commands[2] == "finished")
                         {
-
-
-
-                            // MessageBox.Show(commands[2]);
-                            if (commands[2] == "start" || commands[2] == "unpause")
+                            Invoke((MethodInvoker)(async () =>
                             {
-                                Invoke((MethodInvoker)(() =>
-                                {
-                                    pauseButton.Text = "Pause";
-                                    pauseButton.ForeColor = Color.Black;
-                                    actionTimer.Enabled = true;
-                                    pauseActions = false;
-                                    song_casting = 0;
-                                    ForceSongRecast = true;
-                                }));
-                            }
-                            if (commands[2] == "stop" || commands[2] == "pause")
-                            {
-                                Invoke((MethodInvoker)(() =>
-                                {
-
-                                    pauseButton.Text = "Paused!";
-                                    pauseButton.ForeColor = Color.Red;
-                                    actionTimer.Enabled = false;
-                                    ActiveBuffs.Clear();
-                                    pauseActions = true;
-                                    if (OptionsForm.config.FFXIDefaultAutoFollow == false)
-                                    {
-                                        _ELITEAPIPL.AutoFollow.IsAutoFollowing = false;
-                                    }
-
-                                }));
-                            }
-                            if (commands[2] == "toggle")
-                            {
-                                Invoke((MethodInvoker)(() =>
-                                {
-                                    pauseButton.PerformClick();
-                                }));
-                            }
-                        }
-                        else if (commands[1] == "buffs" && commands.Count() == 4)
-                        {
-                            lock (ActiveBuffs)
-                            {
-
-                                ActiveBuffs.RemoveAll(buf => buf.CharacterName == commands[2]);
-
-                                ActiveBuffs.Add(new BuffStorage
-                                {
-                                    CharacterName = commands[2],
-                                    CharacterBuffs = commands[3]
-                                });
-                            }
-
+                                ProtectCasting.CancelAsync();
+                                castingLockLabel.Text = "PACKET: Casting is soon to be AVAILABLE!";
+                                await Task.Delay(TimeSpan.FromSeconds(3));
+                                castingLockLabel.Text = "Casting is UNLOCKED";
+                                currentAction.Text = string.Empty;
+                                castingSpell = string.Empty;
+                                CastingBackground_Check = false;
+                            }));
                         }
                     }
-                }
-                catch (Exception)
-                {
-                    //  Console.WriteLine(error1.ToString());
-                }
+                    else if (commands[1] == "confirmed")
+                    {
+                        AddOnStatus.BackColor = Color.ForestGreen;
+                    }
+                    else if (commands[1] == "command")
+                    {
+                        // MessageBox.Show(commands[2]);
+                        if (commands[2] == "start" || commands[2] == "unpause")
+                        {
+                            Invoke((MethodInvoker)(() =>
+                            {
+                                pauseButton.Text = "Pause";
+                                pauseButton.ForeColor = Color.Black;
+                                actionTimer.Enabled = true;
+                                pauseActions = false;
+                                song_casting = 0;
+                                ForceSongRecast = true;
+                            }));
+                        }
+                        if (commands[2] == "stop" || commands[2] == "pause")
+                        {
+                            Invoke((MethodInvoker)(() =>
+                            {
+                                Pause();
+                            }));
+                        }
+                        if (commands[2] == "toggle")
+                        {
+                            Invoke((MethodInvoker)(() =>
+                            {
+                                pauseButton.PerformClick();
+                            }));
+                        }
+                    }
+                    else if (commands[1] == "buffs" && commands.Count() == 4)
+                    {
+                        lock (ActiveBuffs)
+                        {
+                            ActiveBuffs.RemoveAll(buf => buf.CharacterName == commands[2]);
 
-                listener.Close();
+                            ActiveBuffs.Add(new BuffStorage
+                            {
+                                CharacterName = commands[2],
+                                CharacterBuffs = commands[3]
+                            });
+                        }
 
+                    }
+                }
             }
+            catch (Exception)
+            {
+                //  Console.WriteLine(error1.ToString());
+            }
+
+            listener.Close();
 
             Thread.Sleep(TimeSpan.FromSeconds(0.3));
         }
@@ -9032,47 +8608,6 @@
             AddonManager.Verify();
         }
 
-        private void CastingCheck_BackgroundTask_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-            if (_ELITEAPIMonitored != null && _ELITEAPIPL != null)
-            {
-                if (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading || _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading)
-                {
-                    Thread.Sleep(TimeSpan.FromSeconds(2));
-                }
-                Thread.Sleep(TimeSpan.FromSeconds(0.5));
-                var count = 0;
-                float lastPercent = 0;
-                var castPercent = _ELITEAPIPL.CastBar.Percent;
-                while (castPercent < 1 && CastingBackground_Check == true)
-                {
-
-
-                    Thread.Sleep(TimeSpan.FromSeconds(0.1));
-                    castPercent = _ELITEAPIPL.CastBar.Percent;
-                    if (lastPercent != castPercent)
-                    {
-                        count = 0;
-                        lastPercent = castPercent;
-                    }
-                    else if (count == 10)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        count++;
-                        lastPercent = castPercent;
-                    }
-                }
-                Thread.Sleep(TimeSpan.FromSeconds(2));
-                CastingBackground_Check = false;
-            }
-            else { return; }
-
-            Thread.Sleep(TimeSpan.FromMilliseconds(500));
-        }
-
         private void ProtectCasting_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             Thread.Sleep(TimeSpan.FromSeconds(1.0));
@@ -9113,67 +8648,21 @@
         private void JobAbility_Delay_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             Invoke((MethodInvoker)(() =>
-      {
-          JobAbilityLock_Check = true;
-          castingLockLabel.Text = "Casting is LOCKED for a JA.";
-          currentAction.Text = "Using a Job Ability: " + JobAbilityCMD;
-          Thread.Sleep(TimeSpan.FromSeconds(2));
-          castingLockLabel.Text = "Casting is UNLOCKED";
-          currentAction.Text = string.Empty;
-          castingSpell = string.Empty;
-          // JobAbilityLock_Check = false;
-          JobAbilityCMD = String.Empty;
-      }));
+            {
+                JobAbilityLock_Check = true;
+                castingLockLabel.Text = "Casting is LOCKED for a JA.";
+                currentAction.Text = "Using a Job Ability: " + JobAbilityCMD;
+                Thread.Sleep(TimeSpan.FromSeconds(2));
+                castingLockLabel.Text = "Casting is UNLOCKED";
+                currentAction.Text = string.Empty;
+                castingSpell = string.Empty;
+                // JobAbilityLock_Check = false;
+                JobAbilityCMD = String.Empty;
+            }));
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         private void CustomCommand_Tracker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
 
         private void CustomCommand_Tracker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
