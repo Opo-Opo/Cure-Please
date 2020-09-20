@@ -4462,9 +4462,8 @@
             }
         }
 
-        private bool CanCastOnPartyMember(byte id)
+        private bool CanCastOnPartyMember(PartyMember partyMember)
         {
-            var partyMember = _ELITEAPIMonitored.Party.GetPartyMember(id);
             var entity = _ELITEAPIPL.Entity.GetEntity((int)partyMember.TargetIndex);
 
             if (partyMember.CurrentHP < 1)
@@ -4484,6 +4483,11 @@
 
             // Player in spell casting range
             return entity.Distance < 21;
+        }
+
+        private bool CanCastOnPartyMember(int index)
+        {
+            return CanCastOnPartyMember(_ELITEAPIMonitored.Party.GetPartyMember(index));
         }
 
         private bool plStatusCheck(StatusEffect requestedStatus)
@@ -4644,9 +4648,6 @@
 
         private async void ActionTimer_TickAsync(object sender, EventArgs e)
         {
-            string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
-            string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
-
             if (_ELITEAPIPL == null || _ELITEAPIMonitored == null)
             {
                 return;
@@ -5985,6 +5986,8 @@
 
                 var playerBuffOrder = _ELITEAPIMonitored.Party.GetPartyMembers().OrderBy(p => p.MemberNumber).OrderBy(p => p.Active == 0).Where(p => p.Active == 1);
 
+                string[] shell_spells = { "Shell", "Shell II", "Shell III", "Shell IV", "Shell V" };
+                string[] protect_spells = { "Protect", "Protect II", "Protect III", "Protect IV", "Protect V" };
                 string[] regen_spells = { "Regen", "Regen II", "Regen III", "Regen IV", "Regen V" };
                 string[] refresh_spells = { "Refresh", "Refresh II", "Refresh III" };
 
@@ -6160,7 +6163,7 @@
                 .Where(p => p.Active != 0 && p.Zone == _ELITEAPIPL.Player.ZoneId)
                 .OrderBy(p => p.CurrentHPP);
 
-            foreach (EliteAPI.PartyMember pData in cParty_curaga)
+            foreach (var pData in cParty_curaga)
             {
                 if (memberOF_curaga == 1 && pData.MemberNumber >= 0 && pData.MemberNumber <= 5)
                 {
@@ -6204,7 +6207,7 @@
         private void RunCures(bool[] partyMembersEnabled)
         {
             // Set array values for GUI "High Priority" checkboxes
-            var highPriorityBoxes = new bool[18] 
+            var highPriorityBoxes = new bool[18]
             {
                 player0priority.Checked,
                 player1priority.Checked,
@@ -6226,46 +6229,20 @@
                 player17priority.Checked,
             };
 
-            IEnumerable<byte> playerHpOrder = _ELITEAPIMonitored.Party.GetPartyMembers()
-                .OrderBy(p => p.CurrentHPP)
-                .OrderBy(p => p.Active == 0)
-                .Select(p => p.MemberNumber);
+            var playerHpOrder = _ELITEAPIMonitored.Party.GetPartyMembers()
+                .Where(p => partyMembersEnabled[p.MemberNumber])
+                .Where(p => p.Active == 1 && p.CurrentHP > 0)
+                .Where(CanCastOnPartyMember)
+                .OrderByDescending(p => OptionsForm.config.enableMonitoredPriority && p.ID == _ELITEAPIMonitored.Player.TargetID)
+                .OrderByDescending(p => {
+                    return highPriorityBoxes[p.MemberNumber]
+                        || p.CurrentHP <= OptionsForm.config.priorityCurePercentage;
+                })
+                .OrderBy(p => p.CurrentHPP);
 
-            // First run a check on the monitored target
-            byte playerMonitoredHp = _ELITEAPIMonitored.Party.GetPartyMembers()
-                .Where(p => p.Name == _ELITEAPIMonitored.Player.Name)
-                .OrderBy(p => p.Active == 0)
-                .Select(p => p.MemberNumber)
-                .FirstOrDefault();
-
-            if (OptionsForm.config.enableMonitoredPriority && _ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].Name == _ELITEAPIMonitored.Player.Name && _ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].CurrentHP > 0 && (_ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].CurrentHPP <= OptionsForm.config.monitoredCurePercentage))
+            if (playerHpOrder.Any())
             {
-                CureCalculator(playerMonitoredHp, false);
-                return;
-            }
-
-            // Now run a scan to check all targets in the High Priority Threshold
-            foreach (byte id in playerHpOrder)
-            {
-                if ((highPriorityBoxes[id]) && _ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHP > 0 && (_ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHPP <= OptionsForm.config.priorityCurePercentage))
-                {
-                    CureCalculator(id, true);
-                    break;
-                }
-            }
-
-            // Now run everyone else
-            foreach (byte id in playerHpOrder)
-            {
-                // Cures First, is casting possible, and enabled?
-                if (CanCastOnPartyMember(id) && (_ELITEAPIMonitored.Party.GetPartyMembers()[id].Active >= 1) && (partyMembersEnabled[id]) && (_ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHP > 0))
-                {
-                    if ((_ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHPP <= OptionsForm.config.curePercentage) && (CanCastOnPartyMember(id)))
-                    {
-                        CureCalculator(id, false);
-                        break;
-                    }
-                }
+                CureCalculator(playerHpOrder.First().MemberNumber, true);
             }
         }
 
@@ -7479,47 +7456,49 @@
         public int GeneratePT_structure()
         {
             // FIRST CHECK THAT BOTH THE PL AND MONITORED PLAYER ARE IN THE SAME PT/ALLIANCE
-            List<EliteAPI.PartyMember> currentPT = _ELITEAPIMonitored.Party.GetPartyMembers();
+            var party = _ELITEAPIMonitored.Party.GetPartyMembers();
 
             int partyChecker = 0;
 
-            foreach (EliteAPI.PartyMember PTMember in currentPT)
+            foreach (var member in party)
             {
-                if (PTMember.Name == _ELITEAPIPL.Player.Name)
+                if (member.Name == _ELITEAPIPL.Player.Name)
                 {
                     partyChecker++;
                 }
-                if (PTMember.Name == _ELITEAPIMonitored.Player.Name)
+                if (member.Name == _ELITEAPIMonitored.Player.Name)
                 {
                     partyChecker++;
                 }
             }
 
-            if (partyChecker >= 2)
-            {
-                int plParty = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Name == _ELITEAPIPL.Player.Name).Select(p => p.MemberNumber).FirstOrDefault();
-
-                if (plParty <= 5)
-                {
-                    return 1;
-                }
-                else if (plParty <= 11 && plParty >= 6)
-                {
-                    return 2;
-                }
-                else if (plParty <= 17 && plParty >= 12)
-                {
-                    return 3;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            else
-            {
+            if (partyChecker < 2)
+            {// PL not in party
                 return 4;
             }
+
+            int plParty = party
+                .Where(p => p.Name == _ELITEAPIPL.Player.Name)
+                .Select(p => p.MemberNumber)
+                .FirstOrDefault();
+
+            if (plParty <= 5)
+            {// Same Party
+                return 1;
+            }
+
+            if (plParty <= 11)
+            {// Alli Party 1
+                return 2;
+            }
+
+            if (plParty <= 17)
+            {// Alli Party 2
+                return 3;
+            }
+
+            // PL not in party
+            return 0;
         }
 
         private void resetSongTimer_Tick(object sender, EventArgs e)
