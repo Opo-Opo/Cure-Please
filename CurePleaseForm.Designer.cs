@@ -1544,7 +1544,7 @@ namespace CurePlease
             // actionTimer
             // 
             this.actionTimer.Interval = 500;
-            this.actionTimer.Tick += new System.EventHandler(this.actionTimer_TickAsync);
+            this.actionTimer.Tick += new System.EventHandler(this.ActionTimer_TickAsync);
             // 
             // player6
             // 
