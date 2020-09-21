@@ -23,7 +23,7 @@
     public partial class CurePleaseForm : Form
     {
 
-        private OptionsForm Form2 = new CurePlease.OptionsForm();
+        private OptionsForm Form2 = new OptionsForm();
 
         public class BuffStorage : List<BuffStorage>
         {
@@ -3363,65 +3363,35 @@
             }
         }
 
-        private void CureCalculator(byte partyMemberId, bool HP)
+        private void CureCalculator(PartyMember partyMember, bool HP)
         {
-            // FIRST GET HOW MUCH HP IS MISSING FROM THE CURRENT PARTY MEMBER
-            if (_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP > 0)
-            {
-                uint HP_Loss = (_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP * 100) / (_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHPP) - (_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP);
+            uint lostHealth = (partyMember.CurrentHP * 100) / (partyMember.CurrentHPP) - (partyMember.CurrentHP);
 
-                if (OptionsForm.config.cure6enabled && HP_Loss >= OptionsForm.config.cure6amount && _ELITEAPIPL.Player.MP > 227 && CanCastSpell("Cure VI"))
-                {
-                    string cureSpell = CureTiers("Cure VI", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure5enabled && HP_Loss >= OptionsForm.config.cure5amount && _ELITEAPIPL.Player.MP > 125 && CanCastSpell("Cure V"))
-                {
-                    string cureSpell = CureTiers("Cure V", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure4enabled && HP_Loss >= OptionsForm.config.cure4amount && _ELITEAPIPL.Player.MP > 88 && CanCastSpell("Cure IV"))
-                {
-                    string cureSpell = CureTiers("Cure IV", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure3enabled && HP_Loss >= OptionsForm.config.cure3amount && _ELITEAPIPL.Player.MP > 46 && CanCastSpell("Cure III"))
-                {
-                    if (OptionsForm.config.PrioritiseOverLowerTier == true) { RunDebuffChecker(); }
-                    string cureSpell = CureTiers("Cure III", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure2enabled && HP_Loss >= OptionsForm.config.cure2amount && _ELITEAPIPL.Player.MP > 24 && CanCastSpell("Cure II"))
-                {
-                    if (OptionsForm.config.PrioritiseOverLowerTier == true) { RunDebuffChecker(); }
-                    string cureSpell = CureTiers("Cure II", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure1enabled && HP_Loss >= OptionsForm.config.cure1amount && _ELITEAPIPL.Player.MP > 8 && CanCastSpell("Cure"))
-                {
-                    if (OptionsForm.config.PrioritiseOverLowerTier == true) { RunDebuffChecker(); }
-                    string cureSpell = CureTiers("Cure", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                    }
-                }
+            var cures = new List<(string name, bool eneabled, int amount)>()
+            {
+                ("Cure VI",  OptionsForm.config.cure6enabled, OptionsForm.config.cure6amount),
+                ("Cure V",   OptionsForm.config.cure5enabled, OptionsForm.config.cure5amount),
+                ("Cure IV",  OptionsForm.config.cure4enabled, OptionsForm.config.cure4amount),
+                ("Cure III", OptionsForm.config.cure3enabled, OptionsForm.config.cure3amount),
+                ("Cure II",  OptionsForm.config.cure2enabled, OptionsForm.config.cure2amount),
+                ("Cure",     OptionsForm.config.cure1enabled, OptionsForm.config.cure1amount),
             }
+                .Where(s => s.eneabled)
+                .Where(s => s.amount <= lostHealth);
+
+            if (!cures.Any())
+            {
+                return;
+            }
+
+            var cureSpell = CureTiers(cures.First().name, HP);
+
+            if (cureSpell == "false")
+            {
+                return;
+            }
+
+            CastSpell(partyMember.Name, cureSpell);
         }
 
         private void RunDebuffChecker()
@@ -4783,14 +4753,11 @@
                 return;
             }
 
-
             // If CastingLock is not FALSE and you're not Terrorized, Petrified, or Stunned run the actions
             if (plStatusCheck(StatusEffect.Terror) || plStatusCheck(StatusEffect.Petrification) || plStatusCheck(StatusEffect.Stun))
             {
                 return;
             }
-
-
 
             // FIRST IF YOU ARE SILENCED OR DOOMED ATTEMPT REMOVAL NOW
             if (plStatusCheck(StatusEffect.Silence) && OptionsForm.config.plSilenceItemEnabled)
@@ -6105,7 +6072,7 @@
 
             if (playerHpOrder.Any())
             {
-                CureCalculator(playerHpOrder.First().MemberNumber, true);
+                CureCalculator(playerHpOrder.First(), true);
             }
         }
 
