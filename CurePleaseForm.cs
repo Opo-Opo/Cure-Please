@@ -2,6 +2,7 @@
 {
     using CurePlease.Addon;
     using CurePlease.Properties;
+    using CurePlease.Xi;
     using EliteMMO.API;
     using System;
     using System.Collections.Generic;
@@ -3302,70 +3303,9 @@
             }
         }
 
-        private void CureCalculator_PL(bool HP)
+        private void CureCalculator(Character toon, bool HP)
         {
-            // FIRST GET HOW MUCH HP IS MISSING FROM THE CURRENT PARTY MEMBER
-            if (_ELITEAPIPL.Player.HP > 0)
-            {
-                uint HP_Loss = (_ELITEAPIPL.Player.HP * 100) / (_ELITEAPIPL.Player.HPP) - (_ELITEAPIPL.Player.HP);
-
-                if (OptionsForm.config.cure6enabled && HP_Loss >= OptionsForm.config.cure6amount && CanCastSpell("Cure VI"))
-                {
-                    string cureSpell = CureTiers("Cure VI", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure5enabled && HP_Loss >= OptionsForm.config.cure5amount && CanCastSpell("Cure V"))
-                {
-                    string cureSpell = CureTiers("Cure V", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure4enabled && HP_Loss >= OptionsForm.config.cure4amount && CanCastSpell("Cure IV"))
-                {
-                    string cureSpell = CureTiers("Cure IV", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure3enabled && HP_Loss >= OptionsForm.config.cure3amount && CanCastSpell("Cure III"))
-                {
-                    if (OptionsForm.config.PrioritiseOverLowerTier == true) { RunDebuffChecker(); }
-                    string cureSpell = CureTiers("Cure III", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure2enabled && HP_Loss >= OptionsForm.config.cure2amount && CanCastSpell("Cure II"))
-                {
-                    if (OptionsForm.config.PrioritiseOverLowerTier == true) { RunDebuffChecker(); }
-                    string cureSpell = CureTiers("Cure II", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure1enabled && HP_Loss >= OptionsForm.config.cure1amount && CanCastSpell("Cure"))
-                {
-                    if (OptionsForm.config.PrioritiseOverLowerTier == true) { RunDebuffChecker(); }
-                    string cureSpell = CureTiers("Cure", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
-                    }
-                }
-            }
-        }
-
-        private void CureCalculator(PartyMember partyMember, bool HP)
-        {
-            uint lostHealth = (partyMember.CurrentHP * 100) / (partyMember.CurrentHPP) - (partyMember.CurrentHP);
+            uint lostHealth = toon.HPMax - toon.HP;
 
             var cures = new List<(string name, bool eneabled, int amount)>()
             {
@@ -3391,7 +3331,7 @@
                 return;
             }
 
-            CastSpell(partyMember.Name, cureSpell);
+            CastSpell(toon.Name, cureSpell);
         }
 
         private void RunDebuffChecker()
@@ -4959,9 +4899,9 @@
                 /////////////////////////// PL CURE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-                if (_ELITEAPIPL.Player.HP > 0 && (_ELITEAPIPL.Player.HPP <= OptionsForm.config.monitoredCurePercentage) && OptionsForm.config.enableOutOfPartyHealing == true && PLInParty() == false)
+                if (_ELITEAPIPL.Player.HPP <= OptionsForm.config.monitoredCurePercentage && OptionsForm.config.enableOutOfPartyHealing && !PLInParty())
                 {
-                    CureCalculator_PL(false);
+                    CureCalculator(new Character(_ELITEAPIPL.Player), false);
                 }
 
                 /////////////////////////// CURAGA //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -6072,7 +6012,7 @@
 
             if (playerHpOrder.Any())
             {
-                CureCalculator(playerHpOrder.First(), true);
+                CureCalculator(new Character(playerHpOrder.First()), true);
             }
         }
 
