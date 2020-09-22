@@ -124,7 +124,7 @@ namespace CurePlease
             this.autoProtectIVToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.autoProtectVToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.setinstance = new System.Windows.Forms.Button();
-            this.POLID = new System.Windows.Forms.ComboBox();
+            this.SelectPlPolInstance = new System.Windows.Forms.ComboBox();
             this.plLabel = new System.Windows.Forms.Label();
             this.party2 = new System.Windows.Forms.GroupBox();
             this.player17HP = new CurePlease.NewProgressBar();
@@ -190,7 +190,7 @@ namespace CurePlease
             this.player8priority = new System.Windows.Forms.CheckBox();
             this.player7priority = new System.Windows.Forms.CheckBox();
             this.player6priority = new System.Windows.Forms.CheckBox();
-            this.POLID2 = new System.Windows.Forms.ComboBox();
+            this.SelectMonitoredPolInstance = new System.Windows.Forms.ComboBox();
             this.setinstance2 = new System.Windows.Forms.Button();
             this.monitoredLabel = new System.Windows.Forms.Label();
             this.hpUpdates = new System.Windows.Forms.Timer(this.components);
@@ -1113,18 +1113,19 @@ namespace CurePlease
             this.setinstance.Text = "Select";
             this.toolTips.SetToolTip(this.setinstance, "Select Power Leveler");
             this.setinstance.UseVisualStyleBackColor = false;
-            this.setinstance.Click += new System.EventHandler(this.setinstance_Click);
+            this.setinstance.Click += new System.EventHandler(this.SetPlInstance_Click);
             this.setinstance.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // POLID
             // 
-            this.POLID.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.POLID.FormattingEnabled = true;
-            this.POLID.Location = new System.Drawing.Point(178, 11);
-            this.POLID.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.POLID.Name = "POLID";
-            this.POLID.Size = new System.Drawing.Size(117, 21);
-            this.POLID.TabIndex = 3;
+            this.SelectPlPolInstance.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.SelectPlPolInstance.FormattingEnabled = true;
+            this.SelectPlPolInstance.Location = new System.Drawing.Point(178, 11);
+            this.SelectPlPolInstance.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.SelectPlPolInstance.Name = "POLID";
+            this.SelectPlPolInstance.Size = new System.Drawing.Size(117, 21);
+            this.SelectPlPolInstance.TabIndex = 3;
+            this.SelectPlPolInstance.DisplayMember = "MainWindowTitle";
             // 
             // plLabel
             // 
@@ -1947,13 +1948,14 @@ namespace CurePlease
             // 
             // POLID2
             // 
-            this.POLID2.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.POLID2.FormattingEnabled = true;
-            this.POLID2.Location = new System.Drawing.Point(178, 36);
-            this.POLID2.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
-            this.POLID2.Name = "POLID2";
-            this.POLID2.Size = new System.Drawing.Size(117, 21);
-            this.POLID2.TabIndex = 3;
+            this.SelectMonitoredPolInstance.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.SelectMonitoredPolInstance.FormattingEnabled = true;
+            this.SelectMonitoredPolInstance.Location = new System.Drawing.Point(178, 36);
+            this.SelectMonitoredPolInstance.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.SelectMonitoredPolInstance.Name = "POLID2";
+            this.SelectMonitoredPolInstance.Size = new System.Drawing.Size(117, 21);
+            this.SelectMonitoredPolInstance.TabIndex = 3;
+            this.SelectMonitoredPolInstance.DisplayMember = "MainWindowTitle";
             // 
             // setinstance2
             // 
@@ -1969,7 +1971,7 @@ namespace CurePlease
             this.setinstance2.Text = "Select";
             this.toolTips.SetToolTip(this.setinstance2, "Select Monitored Player");
             this.setinstance2.UseVisualStyleBackColor = false;
-            this.setinstance2.Click += new System.EventHandler(this.setinstance2_Click);
+            this.setinstance2.Click += new System.EventHandler(this.SetMonitoredInstance_Click);
             this.setinstance2.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintButton);
             // 
             // monitoredLabel
@@ -2142,10 +2144,10 @@ namespace CurePlease
             // charselect
             // 
             this.charselect.BackColor = System.Drawing.Color.Transparent;
-            this.charselect.Controls.Add(this.POLID2);
+            this.charselect.Controls.Add(this.SelectMonitoredPolInstance);
             this.charselect.Controls.Add(this.monitoredLabel);
             this.charselect.Controls.Add(this.plLabel);
-            this.charselect.Controls.Add(this.POLID);
+            this.charselect.Controls.Add(this.SelectPlPolInstance);
             this.charselect.Controls.Add(this.setinstance);
             this.charselect.Controls.Add(this.setinstance2);
             this.charselect.ForeColor = System.Drawing.SystemColors.GrayText;
@@ -2445,7 +2447,7 @@ namespace CurePlease
         private System.Windows.Forms.GroupBox party0;
         private System.Windows.Forms.Label player0;
         private System.Windows.Forms.CheckBox player0enabled;
-        private System.Windows.Forms.ComboBox POLID;
+        private System.Windows.Forms.ComboBox SelectPlPolInstance;
         private System.Windows.Forms.Label plLabel;
         private System.Windows.Forms.CheckBox player1enabled;
         private System.Windows.Forms.Label player1;
@@ -2485,7 +2487,7 @@ namespace CurePlease
         private System.Windows.Forms.CheckBox player10enabled;
         private System.Windows.Forms.CheckBox player11enabled;
         private System.Windows.Forms.GroupBox party1;
-        private System.Windows.Forms.ComboBox POLID2;
+        private System.Windows.Forms.ComboBox SelectMonitoredPolInstance;
         private System.Windows.Forms.Label monitoredLabel;
         private System.Windows.Forms.Timer hpUpdates;
         private System.Windows.Forms.CheckBox player5priority;
