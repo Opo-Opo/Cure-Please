@@ -2743,7 +2743,7 @@
                 buffID = 595
             });
 
-            IEnumerable<Process> pol = Process.GetProcessesByName("pol").Union(Process.GetProcessesByName("xiloader")).Union(Process.GetProcessesByName("edenxi"));
+            IEnumerable<Process> pol = GetPol();
 
             if (pol.Count() < 1)
             {
@@ -2771,6 +2771,13 @@
             notifyIcon1.BalloonTipIcon = ToolTipIcon.Info;
         }
 
+        private static IEnumerable<Process> GetPol()
+        {
+            return Process.GetProcessesByName("pol")
+                .Union(Process.GetProcessesByName("xiloader"))
+                .Union(Process.GetProcessesByName("edenxi"));
+        }
+
         private void setinstance_Click(object sender, EventArgs e)
         {
             if (!CheckForDLLFiles())
@@ -2795,7 +2802,7 @@
 
             ForceSongRecast = true;
 
-            foreach (Process dats in Process.GetProcessesByName("pol").Union(Process.GetProcessesByName("xiloader")).Union(Process.GetProcessesByName("edenxi")).Where(dats => POLID.Text == dats.MainWindowTitle))
+            foreach (Process dats in GetPol().Where(dats => POLID.Text == dats.MainWindowTitle))
             {
                 for (int i = 0; i < dats.Modules.Count; i++)
                 {
@@ -3194,34 +3201,8 @@
 
             if (_ELITEAPIPL.Player.LoginStatus == (int)LoginStatus.Loading || _ELITEAPIMonitored.Player.LoginStatus == (int)LoginStatus.Loading)
             {
-                if (OptionsForm.config.pauseOnZoneBox == true)
-                {
-                    song_casting = 0;
-                    ForceSongRecast = true;
-                    if (pauseActions != true)
-                    {
-                        pauseButton.Text = "Zoned, paused.";
-                        pauseButton.ForeColor = Color.Red;
-                        pauseActions = true;
-                        actionTimer.Enabled = false;
-                    }
-                }
-                else
-                {
-                    song_casting = 0;
-                    ForceSongRecast = true;
-
-                    if (pauseActions != true)
-                    {
-                        pauseButton.Text = "Zoned, waiting.";
-                        pauseButton.ForeColor = Color.Red;
-                        await Task.Delay(100);
-                        Thread.Sleep(17000);
-                        pauseButton.Text = "Pause";
-                        pauseButton.ForeColor = Color.Black;
-                    }
-                }
-                ActiveBuffs.Clear();
+                await HandleZoning();
+                return;
             }
 
             if (_ELITEAPIPL.Player.LoginStatus != (int)LoginStatus.LoggedIn || _ELITEAPIMonitored.Player.LoginStatus != (int)LoginStatus.LoggedIn)
@@ -3239,6 +3220,27 @@
                     TogglePartyMemberBuffButton(i, partyMembers[i]);
                 }
             }
+        }
+
+        private async Task HandleZoning()
+        {
+            if (pauseActions)
+            {
+                return;
+            }
+
+            if (OptionsForm.config.pauseOnZoneBox)
+            {
+                Pause("Zoned, paused.");
+                return;
+            }
+
+            Pause("Zoned, waiting.");
+
+            await Task.Delay(100);
+            Thread.Sleep(17000);
+            pauseButton.Text = "Pause";
+            pauseButton.ForeColor = Color.Black;
         }
 
         private void UpdateHPProgressBar(ProgressBar healthBar, int healthPercent)
@@ -4327,7 +4329,7 @@
 
             var spell = _ELITEAPIPL.Resources.GetSpell(spellName.Trim(), 0);
 
-            castingSpell = spell.Name[0];
+            castingSpell = spell.Name[(int) Language.EN];
 
             _ELITEAPIPL.ThirdParty.SendString("/ma \"" + castingSpell + "\" " + partyMemberName);
 
@@ -6016,9 +6018,9 @@
             }
         }
 
-        private void Pause()
+        private void Pause(string message = "Paused!")
         {
-            pauseButton.Text = "Paused!";
+            pauseButton.Text = message;
             pauseButton.ForeColor = Color.Red;
 
             actionTimer.Enabled = false;
@@ -7590,7 +7592,7 @@
                 return;
             }
 
-            IEnumerable<Process> pol = Process.GetProcessesByName("pol").Union(Process.GetProcessesByName("xiloader")).Union(Process.GetProcessesByName("edenxi"));
+            IEnumerable<Process> pol = GetPol();
 
             if (pol.Count() < 1)
             {
