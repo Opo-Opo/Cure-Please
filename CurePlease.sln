@@ -3,18 +3,58 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurePlease", "CurePlease.csproj", "{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurePlease.App", "CurePlease.App\CurePlease.App.csproj", "{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurePlease.Test", "CurePlease.Test\CurePlease.Test.csproj", "{06B09570-C4B6-4726-B1CF-94DDA9EF7DCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurePlease.Domain", "CurePlease.Domain\CurePlease.Domain.csproj", "{25FDC8C9-7F86-4E4B-A14E-D8B724D1EE68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurePlease.Xi", "CurePlease.Xi\CurePlease.Xi.csproj", "{B01B92F0-A40E-4A47-979F-8B95563BAA1F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D0A2ACA7-DE4A-4D8D-8C8B-3F1C1A6B99B3}"
+	ProjectSection(SolutionItems) = preProject
+		EliteAPI.dll = EliteAPI.dll
+		EliteMMO.API.dll = EliteMMO.API.dll
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}.Debug|x86.ActiveCfg = Debug|x86
 		{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}.Debug|x86.Build.0 = Debug|x86
+		{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}.Release|Any CPU.ActiveCfg = Release|x86
 		{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}.Release|x86.ActiveCfg = Release|x86
 		{E5FD7062-1824-4D6C-B4CD-DF94355B73C0}.Release|x86.Build.0 = Release|x86
+		{06B09570-C4B6-4726-B1CF-94DDA9EF7DCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06B09570-C4B6-4726-B1CF-94DDA9EF7DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06B09570-C4B6-4726-B1CF-94DDA9EF7DCE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{06B09570-C4B6-4726-B1CF-94DDA9EF7DCE}.Debug|x86.Build.0 = Debug|Any CPU
+		{06B09570-C4B6-4726-B1CF-94DDA9EF7DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06B09570-C4B6-4726-B1CF-94DDA9EF7DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06B09570-C4B6-4726-B1CF-94DDA9EF7DCE}.Release|x86.ActiveCfg = Release|Any CPU
+		{06B09570-C4B6-4726-B1CF-94DDA9EF7DCE}.Release|x86.Build.0 = Release|Any CPU
+		{25FDC8C9-7F86-4E4B-A14E-D8B724D1EE68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25FDC8C9-7F86-4E4B-A14E-D8B724D1EE68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25FDC8C9-7F86-4E4B-A14E-D8B724D1EE68}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{25FDC8C9-7F86-4E4B-A14E-D8B724D1EE68}.Debug|x86.Build.0 = Debug|Any CPU
+		{25FDC8C9-7F86-4E4B-A14E-D8B724D1EE68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25FDC8C9-7F86-4E4B-A14E-D8B724D1EE68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25FDC8C9-7F86-4E4B-A14E-D8B724D1EE68}.Release|x86.ActiveCfg = Release|Any CPU
+		{25FDC8C9-7F86-4E4B-A14E-D8B724D1EE68}.Release|x86.Build.0 = Release|Any CPU
+		{B01B92F0-A40E-4A47-979F-8B95563BAA1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B01B92F0-A40E-4A47-979F-8B95563BAA1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B01B92F0-A40E-4A47-979F-8B95563BAA1F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B01B92F0-A40E-4A47-979F-8B95563BAA1F}.Debug|x86.Build.0 = Debug|Any CPU
+		{B01B92F0-A40E-4A47-979F-8B95563BAA1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B01B92F0-A40E-4A47-979F-8B95563BAA1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B01B92F0-A40E-4A47-979F-8B95563BAA1F}.Release|x86.ActiveCfg = Release|Any CPU
+		{B01B92F0-A40E-4A47-979F-8B95563BAA1F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
