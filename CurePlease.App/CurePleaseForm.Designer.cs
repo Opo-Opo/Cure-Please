@@ -2020,7 +2020,7 @@ namespace CurePlease.App
             this.checkBox1.Text = "Always on Top";
             this.toolTips.SetToolTip(this.checkBox1, "Always on Top");
             this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.AlwaysOnTop_CheckedChanged);
             // 
             // trackBar1
             // 

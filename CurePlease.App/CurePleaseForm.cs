@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using CurePlease.App.Addon;
+using CurePlease.Domain;
 using CurePlease.Xi;
 using EliteMMO.API;
 
@@ -32,15 +33,20 @@ namespace CurePlease.App
             public string CharacterBuffs { get; set; }
         }
 
-        public class SongData : List<SongData>
+        public class BardSong : List<BardSong>
         {
-            public string song_type { get; set; }
+            public BardSong(string type, string name, int buffId)
+            {
+                Type = type;
+                Name = name;
+                BuffId = buffId;
+            }
 
-            public int song_position { get; set; }
+            public string Type { get; set; }
 
-            public string song_name { get; set; }
+            public string Name { get; set; }
 
-            public int buff_id { get; set; }
+            public int BuffId { get; set; }
         }
 
         public class SpellsData : List<SpellsData>
@@ -56,13 +62,20 @@ namespace CurePlease.App
             public bool aoe_version { get; set; }
         }
 
-        public class GeoData : List<GeoData>
+        public class GeomancerSpell : List<GeomancerSpell>
         {
-            public int geo_position { get; set; }
+            public GeomancerSpell() {}
 
-            public string indi_spell { get; set; }
+            public GeomancerSpell(string closure)
+            {
+                Closure = closure;
+            }
 
-            public string geo_spell { get; set; }
+            public readonly string Closure;
+
+            public string Indi { get => $"Indi-{Closure}"; }
+
+            public string Geo { get => $"Geo-{Closure}"; }
         }
 
         private int currentSCHCharges = 0;
@@ -185,11 +198,115 @@ namespace CurePlease.App
         // Stores the previously-colored button, if any
         public List<BuffStorage> ActiveBuffs = new List<BuffStorage>();
 
-        public List<SongData> SongInfo = new List<SongData>();
+        public List<BardSong> BardSongs = new List<BardSong>()
+        {
+            new BardSong("Blank", "Blank", 0),
+            new BardSong("Minne", "Knight's Minne", 197),
+            new BardSong("Minne", "Knight's Minne II", 197),
+            new BardSong("Minne", "Knight's Minne III", 197),
+            new BardSong("Minne", "Knight's Minne IV", 197),
+            new BardSong("Minne", "Knight's Minne V", 197),
+            new BardSong("Blank", "Blank", 0),
+            new BardSong("Minuet", "Valor Minuet", 198),
+            new BardSong("Minuet", "Valor Minuet II", 198),
+            new BardSong("Minuet", "Valor Minuet III", 198),
+            new BardSong("Minuet", "Valor Minuet IV", 198),
+            new BardSong("Minuet", "Valor Minuet V", 198),
+            new BardSong("Blank", "Blank", 0),
+            new BardSong("Paeon", "Army's Paeon", 195),
+            new BardSong("Paeon", "Army's Paeon II", 195),
+            new BardSong("Paeon", "Army's Paeon III", 195),
+            new BardSong("Paeon", "Army's Paeon IV", 195),
+            new BardSong("Paeon", "Army's Paeon V", 195),
+            new BardSong("Paeon", "Army's Paeon VI", 195),
+            new BardSong("Blank", "Blank", 0),
+            new BardSong("Madrigal", "Sword Madrigal", 199),
+            new BardSong("Madrigal", "Blade Madrigal", 199),
+            new BardSong("Blank", "Blank", 0),
+            new BardSong("Prelude", "Hunter's Prelude", 200),
+            new BardSong("Prelude", "Archer's Prelude", 200),
+            new BardSong("Blank", "Blank", 0),
+            new BardSong("Etude", "Sinewy Etude", 215),
+            new BardSong("Etude", "Dextrous Etude", 215),
+            new BardSong("Etude", "Vivacious Etude", 215),
+            new BardSong("Etude", "Quick Etude", 215),
+            new BardSong("Etude", "Learned Etude", 215),
+            new BardSong("Etude", "Spirited Etude", 215),
+            new BardSong("Etude", "Enchanting Etude", 215),
+            new BardSong("Etude", "Herculean Etude", 215),
+            new BardSong("Etude", "Uncanny Etude", 215),
+            new BardSong("Etude", "Vital Etude", 215),
+            new BardSong("Etude", "Swift Etude", 215),
+            new BardSong("Etude", "Sage Etude", 215),
+            new BardSong("Etude", "Logical Etude", 215),
+            new BardSong("Etude", "Bewitching Etude", 215),
+            new BardSong("Blank", "Blank", 0),
+            new BardSong("Mambo", "Sheepfoe Mambo", 201),
+            new BardSong("Mambo", "Dragonfoe Mambo", 201),
+            new BardSong("Blank", "Blank", 0),
+            new BardSong("Ballad", "Mage's Ballad", 196),
+            new BardSong("Ballad", "Mage's Ballad II", 196),
+            new BardSong("Ballad", "Mage's Ballad III", 196),
+            new BardSong("Blank", "Blank", 0),
+            new BardSong("March", "Advancing March", 214),
+            new BardSong("March", "Victory March", 214),
+            new BardSong("March", "Honor March", 214),
+            new BardSong("Blank", "Blank", 0),
+            new BardSong("Carol", "Fire Carol", 216),
+            new BardSong("Carol", "Fire Carol II", 216),
+            new BardSong("Carol", "Ice Carol", 216),
+            new BardSong("Carol", "Ice Carol II", 216),
+            new BardSong("Carol", "Wind Carol", 216),
+            new BardSong("Carol", "Wind Carol II", 216),
+            new BardSong("Carol", "Earth Carol", 216),
+            new BardSong("Carol", "Earth Carol II", 216),
+            new BardSong("Carol", "Lightning Carol", 216),
+            new BardSong("Carol", "Lightning Carol II", 216),
+            new BardSong("Carol", "Water Carol", 216),
+            new BardSong("Carol", "Water Carol II", 216),
+            new BardSong("Carol", "Light Carol", 216),
+            new BardSong("Carol", "Light Carol II", 216),
+            new BardSong("Carol", "Dark Carol", 216),
+            new BardSong("Carol", "Dark Carol II", 216),
+            new BardSong("Blank", "Blank", 0),
+            new BardSong("Hymnus", "Godess's Hymnus", 218),
+            new BardSong("Blank", "Blank", 0),
+            new BardSong("Scherzo", "Sentinel's Scherzo", 222),
+        };
 
-        public List<GeoData> GeomancerInfo = new List<GeoData>();
-
-        public List<int> known_song_buffs = new List<int>();
+        public List<GeomancerSpell> GeomancerSpells = new List<GeomancerSpell>()
+        {
+            new GeomancerSpell("Voidance"),
+            new GeomancerSpell("Precision"),
+            new GeomancerSpell("Regen"),
+            new GeomancerSpell("Haste"),
+            new GeomancerSpell("Attunement"),
+            new GeomancerSpell("Focus"),
+            new GeomancerSpell("Barrier"),
+            new GeomancerSpell("Refresh"),
+            new GeomancerSpell("CHR"),
+            new GeomancerSpell("MND"),
+            new GeomancerSpell("Fury"),
+            new GeomancerSpell("INT"),
+            new GeomancerSpell("AGI"),
+            new GeomancerSpell("Fend"),
+            new GeomancerSpell("VIT"),
+            new GeomancerSpell("DEX"),
+            new GeomancerSpell("Acumen"),
+            new GeomancerSpell("STR"),
+            new GeomancerSpell("Poison"),
+            new GeomancerSpell("Slow"),
+            new GeomancerSpell("Torpor"),
+            new GeomancerSpell("Slip"),
+            new GeomancerSpell("Languor"),
+            new GeomancerSpell("Paralysis"),
+            new GeomancerSpell("Vex"),
+            new GeomancerSpell("Frailty"),
+            new GeomancerSpell("Wilt"),
+            new GeomancerSpell("Malaise"),
+            new GeomancerSpell("Gravity"),
+            new GeomancerSpell("Fade"),
+        };
 
         public List<string> TemporaryItem_Zones = new List<string> { "Escha Ru'Aun", "Escha Zi'Tah", "Reisenjima", "Abyssea - La Theine", "Abyssea - Konschtat", "Abyssea - Tahrongi",
                                                                         "Abyssea - Attohwa", "Abyssea - Misareaux", "Abyssea - Vunkerl", "Abyssea - Altepa", "Abyssea - Uleguerand", "Abyssea - Grauberg", "Walk of Echoes" };
@@ -1429,908 +1546,7 @@ namespace CurePlease.App
                 debug.Visible = true;
             }
 
-            int position = 0;
 
-            // Buff lists
-            known_song_buffs.Add(197);
-            known_song_buffs.Add(198);
-            known_song_buffs.Add(195);
-            known_song_buffs.Add(199);
-            known_song_buffs.Add(200);
-            known_song_buffs.Add(215);
-            known_song_buffs.Add(196);
-            known_song_buffs.Add(214);
-            known_song_buffs.Add(216);
-            known_song_buffs.Add(218);
-            known_song_buffs.Add(222);
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Blank",
-                song_name = "Blank",
-                song_position = position,
-                buff_id = 0
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Minne",
-                song_name = "Knight's Minne",
-                song_position = position,
-                buff_id = 197
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Minne",
-                song_name = "Knight's Minne II",
-                song_position = position,
-                buff_id = 197
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Minne",
-                song_name = "Knight's Minne III",
-                song_position = position,
-                buff_id = 197
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Minne",
-                song_name = "Knight's Minne IV",
-                song_position = position,
-                buff_id = 197
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Minne",
-                song_name = "Knight's Minne V",
-                song_position = position,
-                buff_id = 197
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Blank",
-                song_name = "Blank",
-                song_position = position,
-                buff_id = 0
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Minuet",
-                song_name = "Valor Minuet",
-                song_position = position,
-                buff_id = 198
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Minuet",
-                song_name = "Valor Minuet II",
-                song_position = position,
-                buff_id = 198
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Minuet",
-                song_name = "Valor Minuet III",
-                song_position = position,
-                buff_id = 198
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Minuet",
-                song_name = "Valor Minuet IV",
-                song_position = position,
-                buff_id = 198
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Minuet",
-                song_name = "Valor Minuet V",
-                song_position = position,
-                buff_id = 198
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Blank",
-                song_name = "Blank",
-                song_position = position,
-                buff_id = 0
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Paeon",
-                song_name = "Army's Paeon",
-                song_position = position,
-                buff_id = 195
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Paeon",
-                song_name = "Army's Paeon II",
-                song_position = position,
-                buff_id = 195
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Paeon",
-                song_name = "Army's Paeon III",
-                song_position = position,
-                buff_id = 195
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Paeon",
-                song_name = "Army's Paeon IV",
-                song_position = position,
-                buff_id = 195
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Paeon",
-                song_name = "Army's Paeon V",
-                song_position = position,
-                buff_id = 195
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Paeon",
-                song_name = "Army's Paeon VI",
-                song_position = position,
-                buff_id = 195
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Blank",
-                song_name = "Blank",
-                song_position = position,
-                buff_id = 0
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Madrigal",
-                song_name = "Sword Madrigal",
-                song_position = position,
-                buff_id = 199
-            });
-            position++;
-            SongInfo.Add(new SongData
-            {
-                song_type = "Madrigal",
-                song_name = "Blade Madrigal",
-                song_position = position,
-                buff_id = 199
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Blank",
-                song_name = "Blank",
-                song_position = position,
-                buff_id = 0
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Prelude",
-                song_name = "Hunter's Prelude",
-                song_position = position,
-                buff_id = 200
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Prelude",
-                song_name = "Archer's Prelude",
-                song_position = position,
-                buff_id = 200
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Blank",
-                song_name = "Blank",
-                song_position = position,
-                buff_id = 0
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Sinewy Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Dextrous Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Vivacious Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Quick Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Learned Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Spirited Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Enchanting Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Herculean Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Uncanny Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Vital Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Swift Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Sage Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Logical Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Etude",
-                song_name = "Bewitching Etude",
-                song_position = position,
-                buff_id = 215
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Blank",
-                song_name = "Blank",
-                song_position = position,
-                buff_id = 0
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Mambo",
-                song_name = "Sheepfoe Mambo",
-                song_position = position,
-                buff_id = 201
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Mambo",
-                song_name = "Dragonfoe Mambo",
-                song_position = position,
-                buff_id = 201
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Blank",
-                song_name = "Blank",
-                song_position = position,
-                buff_id = 0
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Ballad",
-                song_name = "Mage's Ballad",
-                song_position = position,
-                buff_id = 196
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Ballad",
-                song_name = "Mage's Ballad II",
-                song_position = position,
-                buff_id = 196
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Ballad",
-                song_name = "Mage's Ballad III",
-                song_position = position,
-                buff_id = 196
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Blank",
-                song_name = "Blank",
-                song_position = position,
-                buff_id = 0
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "March",
-                song_name = "Advancing March",
-                song_position = position,
-                buff_id = 214
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "March",
-                song_name = "Victory March",
-                song_position = position,
-                buff_id = 214
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "March",
-                song_name = "Honor March",
-                song_position = position,
-                buff_id = 214
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Blank",
-                song_name = "Blank",
-                song_position = position,
-                buff_id = 0
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Fire Carol",
-                song_position = position
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Fire Carol II",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Ice Carol",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Ice Carol II",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = " Wind Carol",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Wind Carol II",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Earth Carol",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Earth Carol II",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Lightning Carol",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Lightning Carol II",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Water Carol",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Water Carol II",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Light Carol",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Light Carol II",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Dark Carol",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Carol",
-                song_name = "Dark Carol II",
-                song_position = position,
-                buff_id = 216
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Blank",
-                song_name = "Blank",
-                song_position = position,
-                buff_id = 0
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Hymnus",
-                song_name = "Godess's Hymnus",
-                song_position = position,
-                buff_id = 218
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Blank",
-                song_name = "Blank",
-                song_position = position,
-                buff_id = 0
-            });
-            position++;
-
-            SongInfo.Add(new SongData
-            {
-                song_type = "Scherzo",
-                song_name = "Sentinel's Scherzo",
-                song_position = position,
-                buff_id = 222
-            });
-            position++;
-
-            int geo_position = 0;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Voidance",
-                geo_spell = "Geo-Voidance",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Precision",
-                geo_spell = "Geo-Precision",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Regen",
-                geo_spell = "Geo-Regen",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Haste",
-                geo_spell = "Geo-Haste",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Attunement",
-                geo_spell = "Geo-Attunement",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Focus",
-                geo_spell = "Geo-Focus",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Barrier",
-                geo_spell = "Geo-Barrier",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Refresh",
-                geo_spell = "Geo-Refresh",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-CHR",
-                geo_spell = "Geo-CHR",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-MND",
-                geo_spell = "Geo-MND",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Fury",
-                geo_spell = "Geo-Fury",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-INT",
-                geo_spell = "Geo-INT",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-AGI",
-                geo_spell = "Geo-AGI",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Fend",
-                geo_spell = "Geo-Fend",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-VIT",
-                geo_spell = "Geo-VIT",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-DEX",
-                geo_spell = "Geo-DEX",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Acumen",
-                geo_spell = "Geo-Acumen",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-STR",
-                geo_spell = "Geo-STR",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Poison",
-                geo_spell = "Geo-Poison",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Slow",
-                geo_spell = "Geo-Slow",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Torpor",
-                geo_spell = "Geo-Torpor",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Slip",
-                geo_spell = "Geo-Slip",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Languor",
-                geo_spell = "Geo-Languor",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Paralysis",
-                geo_spell = "Geo-Paralysis",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Vex",
-                geo_spell = "Geo-Vex",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Frailty",
-                geo_spell = "Geo-Frailty",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Wilt",
-                geo_spell = "Geo-Wilt",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Malaise",
-                geo_spell = "Geo-Malaise",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Gravity",
-                geo_spell = "Geo-Gravity",
-                geo_position = geo_position,
-            });
-            geo_position++;
-
-            GeomancerInfo.Add(new GeoData
-            {
-                indi_spell = "Indi-Fade",
-                geo_spell = "Geo-Fade",
-                geo_position = geo_position,
-            });
-            geo_position++;
 
             barspells.Add(new SpellsData
             {
@@ -2808,10 +2024,12 @@ namespace CurePlease.App
                 if (polProcess.Modules[i].FileName.Contains("Ashita.dll"))
                 {
                     AddonManager = new Ashita(_ELITEAPIPL);
+                    break;
                 }
                 else if (polProcess.Modules[i].FileName.Contains("Hook.dll"))
                 {
                     AddonManager = new Windower(_ELITEAPIPL);
+                    break;
                 }
             }
 
@@ -2948,206 +2166,14 @@ namespace CurePlease.App
                 && File.Exists("elitemmo.api.dll");
         }
 
-        private string CureTiers(string cureSpell, bool HP)
+        private string CureTiers(string cureSpell, bool priorityPlayer)
         {
-            if (cureSpell.ToLower() == "cure vi")
-            {
-                if (CanCastSpell("Cure VI"))
-                {
-                    return "Cure VI";
-                }
-                else if (CanCastSpell("Cure V") && OptionsForm.config.Undercure)
-                {
-                    return "Cure V";
-                }
-                else if (CanCastSpell("Cure IV") && OptionsForm.config.Undercure)
-                {
-                    return "Cure IV";
-                }
-                else
-                {
-                    return "false";
-                }
-            }
-            else if (cureSpell.ToLower() == "cure v")
-            {
-                if (CanCastSpell("Cure V"))
-                {
-                    return "Cure V";
-                }
-                else if (CanCastSpell("Cure IV") && OptionsForm.config.Undercure)
-                {
-                    return "Cure IV";
-                }
-                else if (CanCastSpell("Cure VI") && (OptionsForm.config.Overcure && !OptionsForm.config.OvercureOnHighPriority || OptionsForm.config.OvercureOnHighPriority && HP))
-                {
-                    return "Cure VI";
-                }
-                else
-                {
-                    return "false";
-                }
-            }
-            else if (cureSpell.ToLower() == "cure iv")
-            {
-                if (CanCastSpell("Cure IV"))
-                {
-                    return "Cure IV";
-                }
-                else if (CanCastSpell("Cure III") && OptionsForm.config.Undercure)
-                {
-                    return "Cure III";
-                }
-                else if (CanCastSpell("Cure V") && (OptionsForm.config.Overcure && !OptionsForm.config.OvercureOnHighPriority || OptionsForm.config.OvercureOnHighPriority && HP))
-                {
-                    return "Cure V";
-                }
-                else
-                {
-                    return "false";
-                }
-            }
-            else if (cureSpell.ToLower() == "cure iii")
-            {
-                if (CanCastSpell("Cure III"))
-                {
-                    return "Cure III";
-                }
-                else if (CanCastSpell("Cure IV") && (OptionsForm.config.Overcure && !OptionsForm.config.OvercureOnHighPriority || OptionsForm.config.OvercureOnHighPriority && HP))
-                {
-                    return "Cure IV";
-                }
-                else if (CanCastSpell("Cure II") && OptionsForm.config.Undercure)
-                {
-                    return "Cure II";
-                }
-                else
-                {
-                    return "false";
-                }
-            }
-            else if (cureSpell.ToLower() == "cure ii")
-            {
-                if (CanCastSpell("Cure II"))
-                {
-                    return "Cure II";
-                }
-                else if (CanCastSpell("Cure") && OptionsForm.config.Undercure)
-                {
-                    return "Cure";
-                }
-                else if (CanCastSpell("Cure III") && (OptionsForm.config.Overcure && !OptionsForm.config.OvercureOnHighPriority || OptionsForm.config.OvercureOnHighPriority && HP))
-                {
-                    return "Cure III";
-                }
-                else
-                {
-                    return "false";
-                }
-            }
-            else if (cureSpell.ToLower() == "cure")
-            {
-                if (CanCastSpell("Cure"))
-                {
-                    return "Cure";
-                }
-                else if (CanCastSpell("Cure II") && (OptionsForm.config.Overcure && !OptionsForm.config.OvercureOnHighPriority || OptionsForm.config.OvercureOnHighPriority && HP))
-                {
-                    return "Cure II";
-                }
-                else
-                {
-                    return "false";
-                }
-            }
-            else if (cureSpell.ToLower() == "curaga v")
-            {
-                if (CanCastSpell("Curaga V"))
-                {
-                    return "Curaga V";
-                }
-                else if (CanCastSpell("Curaga IV") && OptionsForm.config.Undercure)
-                {
-                    return "Curaga IV";
-                }
-                else
-                {
-                    return "false";
-                }
-            }
-            else if (cureSpell.ToLower() == "curaga iv")
-            {
-                if (CanCastSpell("Curaga IV"))
-                {
-                    return "Curaga IV";
-                }
-                else if (CanCastSpell("Curaga V") && OptionsForm.config.Overcure)
-                {
-                    return "Curaga V";
-                }
-                else if (CanCastSpell("Curaga III") && OptionsForm.config.Undercure)
-                {
-                    return "Curaga III";
-                }
-                else
-                {
-                    return "false";
-                }
-            }
-            else if (cureSpell.ToLower() == "curaga iii")
-            {
-                if (CanCastSpell("Curaga III"))
-                {
-                    return "Curaga III";
-                }
-                else if (CanCastSpell("Curaga IV") && OptionsForm.config.Overcure)
-                {
-                    return "Curaga IV";
-                }
-                else if (CanCastSpell("Curaga II") && OptionsForm.config.Undercure)
-                {
-                    return "Curaga II";
-                }
-                else
-                {
-                    return "false";
-                }
-            }
-            else if (cureSpell.ToLower() == "curaga ii")
-            {
-                if (CanCastSpell("Curaga II"))
-                {
-                    return "Curaga II";
-                }
-                else if (CanCastSpell("Curaga") && OptionsForm.config.Undercure)
-                {
-                    return "Curaga";
-                }
-                else if (CanCastSpell("Curaga III") && OptionsForm.config.Overcure)
-                {
-                    return "Curaga III";
-                }
-                else
-                {
-                    return "false";
-                }
-            }
-            else if (cureSpell.ToLower() == "curaga")
-            {
-                if (CanCastSpell("Curaga"))
-                {
-                    return "Curaga";
-                }
-                else if (CanCastSpell("Curaga II") && OptionsForm.config.Overcure)
-                {
-                    return "Curaga II";
-                }
-                else
-                {
-                    return "false";
-                }
-            }
-            return "false";
+            return new CureTiers(
+                CanCastSpell,
+                OptionsForm.config.Overcure,
+                OptionsForm.config.Undercure,
+                OptionsForm.config.OvercureOnHighPriority
+            ).Tier(cureSpell, priorityPlayer);
         }
 
         private T GetField<T>(string name)
@@ -6035,90 +5061,19 @@ namespace CurePlease.App
 
         private bool CheckIfAutoStormspellEnabled(byte id)
         {
-
-            if (OptionsForm.config.autoStorm_Spell == 0)
-            {
-                if (autoSandstormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoWindstormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoFirestormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoRainstormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoHailstormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoThunderstormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoVoidstormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoAurorastormEnabled[id])
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else if (OptionsForm.config.autoStorm_Spell == 1)
-            {
-                if (autoSandstormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoWindstormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoFirestormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoRainstormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoHailstormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoThunderstormEnabled[id])
-                {
-                    return true;
-                }
-
-                else if (autoVoidstormEnabled[id])
-                {
-                    return true;
-                }
-                else if (autoAurorastormEnabled[id])
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            return (
+                    OptionsForm.config.autoStorm_Spell == 0
+                    || OptionsForm.config.autoStorm_Spell == 1
+                ) && (
+                    autoSandstormEnabled[id]
+                    || autoWindstormEnabled[id]
+                    || autoFirestormEnabled[id]
+                    || autoRainstormEnabled[id]
+                    || autoHailstormEnabled[id]
+                    || autoThunderstormEnabled[id]
+                    || autoVoidstormEnabled[id]
+                    || autoAurorastormEnabled[id]
+                );
         }
 
         private string CheckStormspell(byte id)
@@ -6259,15 +5214,15 @@ namespace CurePlease.App
         private string ReturnGeoSpell(int GEOSpell_ID, int GeoSpell_Type)
         {
             // GRAB THE SPELL FROM THE CUSTOM LIST
-            GeoData GeoSpell = GeomancerInfo.Where(c => c.geo_position == GEOSpell_ID).FirstOrDefault();
+            GeomancerSpell GeoSpell = GeomancerSpells[GEOSpell_ID] ?? new GeomancerSpell();
 
             if (GeoSpell_Type == 1)
             {
-                if (CanCastSpell(GeoSpell.indi_spell))
+                if (CanCastSpell(GeoSpell.Indi))
                 {
-                    if (CheckSpellRecast(GeoSpell.indi_spell) == 0)
+                    if (CheckSpellRecast(GeoSpell.Indi) == 0)
                     {
-                        return GeoSpell.indi_spell;
+                        return GeoSpell.Indi;
                     }
                     else
                     {
@@ -6281,11 +5236,11 @@ namespace CurePlease.App
             }
             else if (GeoSpell_Type == 2)
             {
-                if (CanCastSpell(GeoSpell.geo_spell))
+                if (CanCastSpell(GeoSpell.Geo))
                 {
-                    if (CheckSpellRecast(GeoSpell.geo_spell) == 0)
+                    if (CheckSpellRecast(GeoSpell.Geo) == 0)
                     {
-                        return GeoSpell.geo_spell;
+                        return GeoSpell.Geo;
                     }
                     else
                     {
@@ -6630,40 +5585,44 @@ namespace CurePlease.App
 
         private void Item_Wait(string ItemName)
         {
-            if (!CastingBackground_Check && !JobAbilityLock_Check)
+            if (CastingBackground_Check && JobAbilityLock_Check)
             {
-                Invoke((MethodInvoker)(async () =>
-                {
-                    JobAbilityLock_Check = true;
-                    castingLockLabel.Text = "Casting is LOCKED for ITEM Use.";
-                    currentAction.Text = "Using an Item: " + ItemName;
-                    _ELITEAPIPL.ThirdParty.SendString("/item \"" + ItemName + "\" <me>");
-                    await Task.Delay(TimeSpan.FromSeconds(5));
-                    castingLockLabel.Text = "Casting is UNLOCKED";
-                    currentAction.Text = string.Empty;
-                    castingSpell = string.Empty;
-                    JobAbilityLock_Check = false;
-                }));
+                return;
             }
+
+            Invoke((MethodInvoker)(async () =>
+            {
+                JobAbilityLock_Check = true;
+                castingLockLabel.Text = "Casting is LOCKED for ITEM Use.";
+                currentAction.Text = "Using an Item: " + ItemName;
+                _ELITEAPIPL.ThirdParty.SendString("/item \"" + ItemName + "\" <me>");
+                await Task.Delay(TimeSpan.FromSeconds(5));
+                castingLockLabel.Text = "Casting is UNLOCKED";
+                currentAction.Text = string.Empty;
+                castingSpell = string.Empty;
+                JobAbilityLock_Check = false;
+            }));
         }
 
         private void JobAbility_Wait(string JobabilityDATA, string JobAbilityName)
         {
-            if (!CastingBackground_Check && !JobAbilityLock_Check)
+            if (CastingBackground_Check && JobAbilityLock_Check)
             {
-                Invoke((MethodInvoker)(async () =>
-          {
-              JobAbilityLock_Check = true;
-              castingLockLabel.Text = "Casting is LOCKED for a JA.";
-              currentAction.Text = "Using a Job Ability: " + JobabilityDATA;
-              _ELITEAPIPL.ThirdParty.SendString("/ja \"" + JobAbilityName + "\" <me>");
-              await Task.Delay(TimeSpan.FromSeconds(2));
-              castingLockLabel.Text = "Casting is UNLOCKED";
-              currentAction.Text = string.Empty;
-              castingSpell = string.Empty;
-              JobAbilityLock_Check = false;
-          }));
+                return;
             }
+
+            Invoke((MethodInvoker)(async () =>
+            {
+                JobAbilityLock_Check = true;
+                castingLockLabel.Text = "Casting is LOCKED for a JA.";
+                currentAction.Text = "Using a Job Ability: " + JobabilityDATA;
+                _ELITEAPIPL.ThirdParty.SendString("/ja \"" + JobAbilityName + "\" <me>");
+                await Task.Delay(TimeSpan.FromSeconds(2));
+                castingLockLabel.Text = "Casting is UNLOCKED";
+                currentAction.Text = string.Empty;
+                castingSpell = string.Empty;
+                JobAbilityLock_Check = false;
+            }));
         }
 
         private void autoHasteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -6876,16 +5835,9 @@ namespace CurePlease.App
             MessageBox.Show(debug_MSG_show);
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void AlwaysOnTop_CheckedChanged(object sender, EventArgs e)
         {
-            if (TopMost)
-            {
-                TopMost = false;
-            }
-            else
-            {
-                TopMost = true;
-            }
+            TopMost = !TopMost;
         }
 
         private void MouseClickTray(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -7084,32 +6036,8 @@ namespace CurePlease.App
         {
             int PT_Structutre_NO = GeneratePT_structure();
 
-            // Now generate the party
-            IEnumerable<EliteAPI.PartyMember> cParty = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Active != 0 && p.Zone == _ELITEAPIPL.Player.ZoneId);
-
             // Make sure member number is not 0 (null) or 4 (void)
-            if (PT_Structutre_NO != 0 && PT_Structutre_NO != 4)
-            {
-                // Run through Each party member as we're looking for either a specific name or if set
-                // otherwise anyone with the MP criteria in the current party.
-                foreach (EliteAPI.PartyMember pData in cParty)
-                {
-                    if (PT_Structutre_NO == 1 && pData.MemberNumber >= 0 && pData.MemberNumber <= 5 && pData.Name == _ELITEAPIMonitored.Player.Name)
-                    {
-                        return true;
-                    }
-                    else if (PT_Structutre_NO == 2 && pData.MemberNumber >= 6 && pData.MemberNumber <= 11 && pData.Name == _ELITEAPIMonitored.Player.Name)
-                    {
-                        return true;
-                    }
-                    else if (PT_Structutre_NO == 3 && pData.MemberNumber >= 12 && pData.MemberNumber <= 17 && pData.Name == _ELITEAPIMonitored.Player.Name)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            return PT_Structutre_NO != 0 && PT_Structutre_NO != 4;
         }
 
         public int GeneratePT_structure()
@@ -7117,22 +6045,10 @@ namespace CurePlease.App
             // FIRST CHECK THAT BOTH THE PL AND MONITORED PLAYER ARE IN THE SAME PT/ALLIANCE
             var party = _ELITEAPIMonitored.Party.GetPartyMembers();
 
-            int partyChecker = 0;
-
-            foreach (var member in party)
-            {
-                if (member.Name == _ELITEAPIPL.Player.Name)
-                {
-                    partyChecker++;
-                }
-                if (member.Name == _ELITEAPIMonitored.Player.Name)
-                {
-                    partyChecker++;
-                }
-            }
+            int partyChecker = party.Count(member => member.ID == _ELITEAPIMonitored.Player.TargetID || member.ID == _ELITEAPIPL.Player.TargetID);
 
             if (partyChecker < 2)
-            {// PL not in party
+            {// Shouldn't happen
                 return 4;
             }
 
@@ -7584,13 +6500,13 @@ namespace CurePlease.App
 
                 debug_MSG_show = "ORDER: " + song_casting;
 
-                SongData song_1 = SongInfo.Where(c => c.song_position == OptionsForm.config.song1).FirstOrDefault();
-                SongData song_2 = SongInfo.Where(c => c.song_position == OptionsForm.config.song2).FirstOrDefault();
-                SongData song_3 = SongInfo.Where(c => c.song_position == OptionsForm.config.song3).FirstOrDefault();
-                SongData song_4 = SongInfo.Where(c => c.song_position == OptionsForm.config.song4).FirstOrDefault();
+                BardSong song_1 = BardSongs[OptionsForm.config.song1] ?? null;
+                BardSong song_2 = BardSongs[OptionsForm.config.song2] ?? null;
+                BardSong song_3 = BardSongs[OptionsForm.config.song3] ?? null;
+                BardSong song_4 = BardSongs[OptionsForm.config.song4] ?? null;
 
-                SongData dummy1_song = SongInfo.Where(c => c.song_position == OptionsForm.config.dummy1).FirstOrDefault();
-                SongData dummy2_song = SongInfo.Where(c => c.song_position == OptionsForm.config.dummy2).FirstOrDefault();
+                BardSong dummy1_song = BardSongs[OptionsForm.config.dummy1] ?? null;
+                BardSong dummy2_song = BardSongs[OptionsForm.config.dummy1] ?? null;
 
                 // Check the distance of the Monitored player
                 int Monitoreddistance = 50;
@@ -7601,61 +6517,61 @@ namespace CurePlease.App
 
                 int Songs_Possible = 0;
 
-                if (song_1.song_name.ToLower() != "blank")
+                if (song_1.Name.ToLower() != "blank")
                 {
                     Songs_Possible++;
                 }
-                if (song_2.song_name.ToLower() != "blank")
+                if (song_2.Name.ToLower() != "blank")
                 {
                     Songs_Possible++;
                 }
-                if (dummy1_song != null && dummy1_song.song_name.ToLower() != "blank")
+                if (dummy1_song != null && dummy1_song.Name.ToLower() != "blank")
                 {
                     Songs_Possible++;
                 }
-                if (dummy2_song != null && dummy2_song.song_name.ToLower() != "blank")
+                if (dummy2_song != null && dummy2_song.Name.ToLower() != "blank")
                 {
                     Songs_Possible++;
                 }
 
                 // List to make it easy to check how many of each buff is needed.
-                List<int> SongDataMax = new List<int> { song_1.buff_id, song_2.buff_id, song_3.buff_id, song_4.buff_id };
+                List<int> SongDataMax = new List<int> { song_1.BuffId, song_2.BuffId, song_3.BuffId, song_4.BuffId };
 
                 // Check Whether e have the songs Currently Up
-                int count1_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_1.buff_id).Count();
-                int count2_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_2.buff_id).Count();
-                int count3_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == dummy1_song.buff_id).Count();
-                int count4_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_3.buff_id).Count();
-                int count5_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == dummy2_song.buff_id).Count();
-                int count6_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_4.buff_id).Count();
+                int count1_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_1.BuffId).Count();
+                int count2_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_2.BuffId).Count();
+                int count3_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == dummy1_song.BuffId).Count();
+                int count4_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_3.BuffId).Count();
+                int count5_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == dummy2_song.BuffId).Count();
+                int count6_type = _ELITEAPIPL.Player.GetPlayerInfo().Buffs.Where(b => b == song_4.BuffId).Count();
 
-                int MON_count1_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_1.buff_id).Count();
-                int MON_count2_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_2.buff_id).Count();
-                int MON_count3_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == dummy1_song.buff_id).Count();
-                int MON_count4_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_3.buff_id).Count();
-                int MON_count5_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == dummy2_song.buff_id).Count();
-                int MON_count6_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_4.buff_id).Count();
+                int MON_count1_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_1.BuffId).Count();
+                int MON_count2_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_2.BuffId).Count();
+                int MON_count3_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == dummy1_song.BuffId).Count();
+                int MON_count4_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_3.BuffId).Count();
+                int MON_count5_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == dummy2_song.BuffId).Count();
+                int MON_count6_type = _ELITEAPIMonitored.Player.GetPlayerInfo().Buffs.Where(b => b == song_4.BuffId).Count();
 
 
                 if (ForceSongRecast) { song_casting = 0; ForceSongRecast = false; }
 
 
                 // SONG NUMBER #4
-                if (song_casting == 3 && PL_BRDCount >= 3 && song_4.song_name.ToLower() != "blank" && count6_type < SongDataMax.Where(c => c == song_4.buff_id).Count() && Last_Song_Cast != song_4.song_name)
+                if (song_casting == 3 && PL_BRDCount >= 3 && song_4.Name.ToLower() != "blank" && count6_type < SongDataMax.Where(c => c == song_4.BuffId).Count() && Last_Song_Cast != song_4.Name)
                 {
                     if (PL_BRDCount == 3)
                     {
-                        if (CanCastSpell(dummy2_song.song_name))
+                        if (CanCastSpell(dummy2_song.Name))
                         {
-                            CastSpell("<me>", dummy2_song.song_name);
+                            CastSpell("<me>", dummy2_song.Name);
                         }
                     }
                     else
                     {
-                        if (CanCastSpell(song_4.song_name))
+                        if (CanCastSpell(song_4.Name))
                         {
-                            CastSpell("<me>", song_4.song_name);
-                            Last_Song_Cast = song_4.song_name;
+                            CastSpell("<me>", song_4.Name);
+                            Last_Song_Cast = song_4.Name;
                             Last_SongCast_Timer[0] = DateTime.Now;
                             playerSong4[0] = DateTime.Now;
                             song_casting = 0;
@@ -7663,71 +6579,71 @@ namespace CurePlease.App
                     }
 
                 }
-                else if (song_casting == 3 && song_4.song_name.ToLower() != "blank" && count6_type >= SongDataMax.Where(c => c == song_4.buff_id).Count())
+                else if (song_casting == 3 && song_4.Name.ToLower() != "blank" && count6_type >= SongDataMax.Where(c => c == song_4.BuffId).Count())
                 {
                     song_casting = 0;
                 }
 
 
                 // SONG NUMBER #3
-                else if (song_casting == 2 && PL_BRDCount >= 2 && song_3.song_name.ToLower() != "blank" && count4_type < SongDataMax.Where(c => c == song_3.buff_id).Count() && Last_Song_Cast != song_3.song_name)
+                else if (song_casting == 2 && PL_BRDCount >= 2 && song_3.Name.ToLower() != "blank" && count4_type < SongDataMax.Where(c => c == song_3.BuffId).Count() && Last_Song_Cast != song_3.Name)
                 {
                     if (PL_BRDCount == 2)
                     {
-                        if (CanCastSpell(dummy1_song.song_name))
+                        if (CanCastSpell(dummy1_song.Name))
                         {
-                            CastSpell("<me>", dummy1_song.song_name);
+                            CastSpell("<me>", dummy1_song.Name);
                         }
                     }
                     else
                     {
-                        if (CanCastSpell(song_3.song_name))
+                        if (CanCastSpell(song_3.Name))
                         {
-                            CastSpell("<me>", song_3.song_name);
-                            Last_Song_Cast = song_3.song_name;
+                            CastSpell("<me>", song_3.Name);
+                            Last_Song_Cast = song_3.Name;
                             Last_SongCast_Timer[0] = DateTime.Now;
                             playerSong3[0] = DateTime.Now;
                             song_casting = 3;
                         }
                     }
                 }
-                else if (song_casting == 2 && song_3.song_name.ToLower() != "blank" && count4_type >= SongDataMax.Where(c => c == song_3.buff_id).Count())
+                else if (song_casting == 2 && song_3.Name.ToLower() != "blank" && count4_type >= SongDataMax.Where(c => c == song_3.BuffId).Count())
                 {
                     song_casting = 3;
                 }
 
 
                 // SONG NUMBER #2
-                else if (song_casting == 1 && song_2.song_name.ToLower() != "blank" && count2_type < SongDataMax.Where(c => c == song_2.buff_id).Count() && Last_Song_Cast != song_4.song_name)
+                else if (song_casting == 1 && song_2.Name.ToLower() != "blank" && count2_type < SongDataMax.Where(c => c == song_2.BuffId).Count() && Last_Song_Cast != song_4.Name)
                 {
-                    if (CanCastSpell(song_2.song_name))
+                    if (CanCastSpell(song_2.Name))
                     {
-                        CastSpell("<me>", song_2.song_name);
-                        Last_Song_Cast = song_2.song_name;
+                        CastSpell("<me>", song_2.Name);
+                        Last_Song_Cast = song_2.Name;
                         Last_SongCast_Timer[0] = DateTime.Now;
                         playerSong2[0] = DateTime.Now;
                         song_casting = 2;
                     }
                 }
-                else if (song_casting == 1 && song_2.song_name.ToLower() != "blank" && count2_type >= SongDataMax.Where(c => c == song_2.buff_id).Count())
+                else if (song_casting == 1 && song_2.Name.ToLower() != "blank" && count2_type >= SongDataMax.Where(c => c == song_2.BuffId).Count())
                 {
                     song_casting = 2;
                 }
 
                 // SONG NUMBER #1
-                else if ((song_casting == 0) && song_1.song_name.ToLower() != "blank" && count1_type < SongDataMax.Where(c => c == song_1.buff_id).Count() && Last_Song_Cast != song_4.song_name)
+                else if ((song_casting == 0) && song_1.Name.ToLower() != "blank" && count1_type < SongDataMax.Where(c => c == song_1.BuffId).Count() && Last_Song_Cast != song_4.Name)
                 {
-                    if (CanCastSpell(song_1.song_name))
+                    if (CanCastSpell(song_1.Name))
                     {
-                        CastSpell("<me>", song_1.song_name);
-                        Last_Song_Cast = song_1.song_name;
+                        CastSpell("<me>", song_1.Name);
+                        Last_Song_Cast = song_1.Name;
                         Last_SongCast_Timer[0] = DateTime.Now;
                         playerSong1[0] = DateTime.Now;
                         song_casting = 1;
                     }
 
                 }
-                else if (song_casting == 0 && song_2.song_name.ToLower() != "blank" && count1_type >= SongDataMax.Where(c => c == song_1.buff_id).Count())
+                else if (song_casting == 0 && song_2.Name.ToLower() != "blank" && count1_type >= SongDataMax.Where(c => c == song_1.BuffId).Count())
                 {
                     song_casting = 1;
                 }
@@ -7738,9 +6654,9 @@ namespace CurePlease.App
                 {
                     if ((OptionsForm.config.SongsOnlyWhenNear && Monitoreddistance < 10) || !OptionsForm.config.SongsOnlyWhenNear)
                     {
-                        if (CanCastSpell(song_1.song_name))
+                        if (CanCastSpell(song_1.Name))
                         {
-                            CastSpell("<me>", song_1.song_name);
+                            CastSpell("<me>", song_1.Name);
                             playerSong1[0] = DateTime.Now;
                             song_casting = 0;
                         }
@@ -7750,9 +6666,9 @@ namespace CurePlease.App
                 {
                     if ((OptionsForm.config.SongsOnlyWhenNear && Monitoreddistance < 10) || !OptionsForm.config.SongsOnlyWhenNear)
                     {
-                        if (CanCastSpell(song_2.song_name))
+                        if (CanCastSpell(song_2.Name))
                         {
-                            CastSpell("<me>", song_2.song_name);
+                            CastSpell("<me>", song_2.Name);
                             playerSong2[0] = DateTime.Now;
                             song_casting = 0;
                         }
@@ -7762,9 +6678,9 @@ namespace CurePlease.App
                 {
                     if ((OptionsForm.config.SongsOnlyWhenNear && Monitoreddistance < 10) || !OptionsForm.config.SongsOnlyWhenNear)
                     {
-                        if (CanCastSpell(song_3.song_name))
+                        if (CanCastSpell(song_3.Name))
                         {
-                            CastSpell("<me>", song_3.song_name);
+                            CastSpell("<me>", song_3.Name);
                             playerSong3[0] = DateTime.Now;
                             song_casting = 0;
                         }
@@ -7774,9 +6690,9 @@ namespace CurePlease.App
                 {
                     if ((OptionsForm.config.SongsOnlyWhenNear && Monitoreddistance < 10) || !OptionsForm.config.SongsOnlyWhenNear)
                     {
-                        if (CanCastSpell(song_4.song_name))
+                        if (CanCastSpell(song_4.Name))
                         {
-                            CastSpell("<me>", song_4.song_name);
+                            CastSpell("<me>", song_4.Name);
                             playerSong4[0] = DateTime.Now;
                             song_casting = 0;
                         }

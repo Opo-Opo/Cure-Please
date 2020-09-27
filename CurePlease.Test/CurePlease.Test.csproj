@@ -40,6 +40,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EliteMMO.API">
+      <HintPath>..\CurePlease.App\bin\Debug\EliteMMO.API.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.2.1.1\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -55,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CureCalculatorTest.cs" />
+    <Compile Include="CureTiersTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -63,6 +67,10 @@
     <ProjectReference Include="..\CurePlease.Domain\CurePlease.Domain.csproj">
       <Project>{25fdc8c9-7f86-4e4b-a14e-d8b724d1ee68}</Project>
       <Name>CurePlease.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CurePlease.Xi\CurePlease.Xi.csproj">
+      <Project>{B01B92F0-A40E-4A47-979F-8B95563BAA1F}</Project>
+      <Name>CurePlease.Xi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

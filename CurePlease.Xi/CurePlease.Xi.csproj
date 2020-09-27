@@ -35,6 +35,7 @@
       <HintPath>..\EliteMMO.API.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,6 +47,10 @@
   <ItemGroup>
     <Compile Include="CharacterHealth.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpellId.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

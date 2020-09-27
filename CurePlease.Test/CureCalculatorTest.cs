@@ -12,19 +12,24 @@ namespace CurePlease.Test
         {
             var cureTiers = new List<CureSpell>()
             {
-                new CureSpell("Cure", true, 30),
-                new CureSpell("Cure III", true, 90),
-                new CureSpell("Cure II", true, 60),
+                new CureSpell("Cure", false, 100),
+                new CureSpell("Cure II", false, 300),
+                new CureSpell("Cure III", true, 600),
+                new CureSpell("Cure IV", true, 1100),
+                new CureSpell("Cure V", true, 1300),
             };
 
             var sut = new CureCalculator(cureTiers);
 
-            Assert.IsNull(sut.CureFor(20));
-            Assert.AreEqual("Cure", sut.CureFor(50));
-            Assert.AreEqual("Cure II", sut.CureFor(60));
-            Assert.AreEqual("Cure II", sut.CureFor(70));
-            Assert.AreEqual("Cure III", sut.CureFor(90));
-            Assert.AreEqual("Cure III", sut.CureFor(1000));
+            // Disabled Spells
+            Assert.IsNull(sut.CureFor(100));
+            Assert.IsNull(sut.CureFor(300));
+            // Enabled Spells
+            Assert.AreEqual("Cure III", sut.CureFor(600));
+            Assert.AreEqual("Cure III", sut.CureFor(1099));
+            Assert.AreEqual("Cure IV", sut.CureFor(1100));
+            Assert.AreEqual("Cure IV", sut.CureFor(1299));
+            Assert.AreEqual("Cure V", sut.CureFor(1300));
         }
     }
 }

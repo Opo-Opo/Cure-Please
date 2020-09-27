@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EliteMMO.API">
+      <HintPath>..\CurePlease.App\bin\Debug\EliteMMO.API.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,8 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CanCastSpell.cs" />
     <Compile Include="CureCalculator.cs" />
+    <Compile Include="CureTiers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CurePlease.Xi\CurePlease.Xi.csproj">
+      <Project>{B01B92F0-A40E-4A47-979F-8B95563BAA1F}</Project>
+      <Name>CurePlease.Xi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
