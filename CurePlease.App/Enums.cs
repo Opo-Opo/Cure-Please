@@ -1,5 +1,28 @@
-﻿namespace CurePlease.App
+﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
+
+namespace CurePlease.App
 {
+    public static class EnumExtensionMethods
+    {
+        public static string GetDescription(this Enum @enum)
+        {
+            var genericEnumType = @enum.GetType();
+            var memberInfo = genericEnumType.GetMember(@enum.ToString());
+
+            if (memberInfo.Length <= 0)
+            {
+                return @enum.ToString();
+            }
+
+            var attributes = memberInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+            return attributes.Any() ? ((DescriptionAttribute)attributes.ElementAt(0)).Description : @enum.ToString();
+        }
+    }
 
     public enum LoginStatus
     {
@@ -89,14 +112,24 @@
         RUN = 22,
     }
 
-    public enum Spell
+    public enum SilenceRemovalItem
     {
-        HonorMarch = 417,
-        Reraise4 = 848,
-        Distract3 = 882,
-        Frazzle3 = 883,
-        Refresh3 = 894,
-        Temper2 = 895,
-        FullCure = 893,
+        [Description("Catholicon")]
+        Catholicon,
+        [Description("Echo Drops")]
+        EchoDrops,
+        [Description("Remedy")]
+        Remedy,
+        [Description("Remedy Ointment")]
+        RemedyOintment,
+        [Description("Vicar's Drink")]
+        VicarsDrink,
+    }
+
+    public enum WakeSleepSpell
+    {
+        Cure,
+        Cura,
+        Curaga,
     }
 }

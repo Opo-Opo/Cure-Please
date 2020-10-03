@@ -48,6 +48,8 @@
     <Compile Include="CanCastSpell.cs" />
     <Compile Include="CureCalculator.cs" />
     <Compile Include="CureTiers.cs" />
+    <Compile Include="DebuffRemoval.cs" />
+    <Compile Include="Extension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -57,4 +59,8 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>copy  $(SolutionDir)EliteAPI.dll $(TargetDir)EliteAPI.dll
+copy  $(SolutionDir)EliteMMO.API.dll $(TargetDir)EliteMMO.API.dll</PreBuildEvent>
+  </PropertyGroup>
 </Project>
