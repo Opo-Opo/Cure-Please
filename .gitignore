@@ -175,3 +175,7 @@ FakesAssemblies/
 
 # Rider
 .idea
+
+# EliteAPI
+EliteAPI.dll
+EliteMMO.API.dll

@@ -159,7 +159,6 @@
         <None Include="AshitaAddon\CurePlease_Addon\CurePlease_Addon.lua">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Include="ClassDiagram1.cd" />
         <None Include="packages.config" />
         <None Include="WindowerAddon\CurePlease_Addon\CurePlease_Addon.lua" />
     </ItemGroup>
@@ -186,7 +185,10 @@
         </BootstrapperPackage>
     </ItemGroup>
     <ItemGroup>
+        <Content Include=".gitignore" />
         <Content Include="Cure Please Icon.ico" />
+        <Content Include="EliteAPI.dll" />
+        <Content Include="EliteMMO.API.dll" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
