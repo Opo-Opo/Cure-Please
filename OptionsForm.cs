@@ -1,1807 +1,762 @@
-﻿namespace CurePlease
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Windows.Forms;
-    using System.Xml.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
+using System.Xml.Serialization;
 
+namespace CurePlease
+{
     #region "== Form2"
 
     public partial class OptionsForm : Form
     {
         #region "== Settings Class"
+
         public class JobTitles : List<JobTitles>
         {
-            public int job_number
-            {
-                get; set;
-            }
+            public int job_number { get; set; }
 
-            public string job_name
-            {
-                get; set;
-            }
+            public string job_name { get; set; }
         }
 
         [Serializable]
         public class MySettings
         {
             // BASE NEEDED FOR CONFIRMATION
-            public bool settingsSet
-            {
-                get; set;
-            }
+            public bool settingsSet { get; set; }
 
             // HEALING SPELLS TAB
-            public bool cure1enabled
-            {
-                get; set;
-            }
+            public bool cure1enabled { get; set; }
 
-            public int cure1amount
-            {
-                get; set;
-            }
+            public int cure1amount { get; set; }
 
-            public bool cure2enabled
-            {
-                get; set;
-            }
+            public bool cure2enabled { get; set; }
 
-            public int cure2amount
-            {
-                get; set;
-            }
+            public int cure2amount { get; set; }
 
-            public bool cure3enabled
-            {
-                get; set;
-            }
+            public bool cure3enabled { get; set; }
 
-            public int cure3amount
-            {
-                get; set;
-            }
+            public int cure3amount { get; set; }
 
-            public bool cure4enabled
-            {
-                get; set;
-            }
+            public bool cure4enabled { get; set; }
 
-            public int cure4amount
-            {
-                get; set;
-            }
+            public int cure4amount { get; set; }
 
-            public bool cure5enabled
-            {
-                get; set;
-            }
+            public bool cure5enabled { get; set; }
 
-            public int cure5amount
-            {
-                get; set;
-            }
+            public int cure5amount { get; set; }
 
-            public bool cure6enabled
-            {
-                get; set;
-            }
+            public bool cure6enabled { get; set; }
 
-            public int cure6amount
-            {
-                get; set;
-            }
+            public int cure6amount { get; set; }
 
-            public bool curagaEnabled
-            {
-                get; set;
-            }
+            public bool curagaEnabled { get; set; }
 
-            public int curagaAmount
-            {
-                get; set;
-            }
+            public int curagaAmount { get; set; }
 
-            public bool curaga2enabled
-            {
-                get; set;
-            }
+            public bool curaga2enabled { get; set; }
 
-            public int curaga2Amount
-            {
-                get; set;
-            }
+            public int curaga2Amount { get; set; }
 
-            public bool curaga3enabled
-            {
-                get; set;
-            }
+            public bool curaga3enabled { get; set; }
 
-            public int curaga3Amount
-            {
-                get; set;
-            }
+            public int curaga3Amount { get; set; }
 
-            public bool curaga4enabled
-            {
-                get; set;
-            }
+            public bool curaga4enabled { get; set; }
 
-            public int curaga4Amount
-            {
-                get; set;
-            }
+            public int curaga4Amount { get; set; }
 
-            public bool curaga5enabled
-            {
-                get; set;
-            }
+            public bool curaga5enabled { get; set; }
 
-            public int curaga5Amount
-            {
-                get; set;
-            }
+            public int curaga5Amount { get; set; }
 
-            public int curePercentage
-            {
-                get; set;
-            }
+            public int curePercentage { get; set; }
 
-            public int priorityCurePercentage
-            {
-                get; set;
-            }
+            public int priorityCurePercentage { get; set; }
 
-            public int monitoredCurePercentage
-            {
-                get; set;
-            }
+            public int monitoredCurePercentage { get; set; }
 
-            public int curagaCurePercentage
-            {
-                get; set;
-            }
+            public int curagaCurePercentage { get; set; }
 
-            public int curagaTargetType
-            {
-                get; set;
-            }
+            public int curagaTargetType { get; set; }
 
-            public string curagaTargetName
-            {
-                get; set;
-            }
+            public string curagaTargetName { get; set; }
 
-            public decimal curagaRequiredMembers
-            {
-                get; set;
-            }
+            public decimal curagaRequiredMembers { get; set; }
 
             // ENHANCING MAGIC TAB / BASIC
-            public decimal autoHasteMinutes
-            {
-                get; set;
-            }
+            public decimal autoHasteMinutes { get; set; }
 
-            public decimal autoAdloquiumMinutes
-            {
-                get; set;
-            }
+            public decimal autoAdloquiumMinutes { get; set; }
 
-            public decimal autoPhalanxIIMinutes
-            {
-                get; set;
-            }
+            public decimal autoPhalanxIIMinutes { get; set; }
 
-            public decimal autoStormspellMinutes
-            {
-                get; set;
-            }
+            public decimal autoStormspellMinutes { get; set; }
 
-            public decimal autoRefresh_Minutes
-            {
-                get; set;
-            }
+            public decimal autoRefresh_Minutes { get; set; }
 
-            public int autoRefresh_Spell
-            {
-                get; set;
-            }
+            public int autoRefresh_Spell { get; set; }
 
-            public decimal autoRegen_Minutes
-            {
-                get; set;
-            }
+            public decimal autoRegen_Minutes { get; set; }
 
-            public int autoRegen_Spell
-            {
-                get; set;
-            }
+            public int autoRegen_Spell { get; set; }
 
-            public decimal autoProtect_Minutes
-            {
-                get; set;
-            }
+            public decimal autoProtect_Minutes { get; set; }
 
-            public int autoProtect_Spell
-            {
-                get; set;
-            }
+            public int autoProtect_Spell { get; set; }
 
-            public decimal autoShellMinutes
-            {
-                get; set;
-            }
+            public decimal autoShellMinutes { get; set; }
 
-            public int autoShell_Spell
-            {
-                get; set;
-            }
-            public int autoStorm_Spell
-            {
-                get; set;
-            }
+            public int autoShell_Spell { get; set; }
 
-            public bool plShellra
-            {
-                get; set;
-            }
+            public int autoStorm_Spell { get; set; }
 
-            public decimal plShellra_Level
-            {
-                get; set;
-            }
+            public bool plShellra { get; set; }
 
-            public bool plProtectra
-            {
-                get; set;
-            }
+            public decimal plShellra_Level { get; set; }
 
-            public decimal plProtectra_Level
-            {
-                get; set;
-            }
+            public bool plProtectra { get; set; }
 
-            public bool plGainBoost
-            {
-                get; set;
-            }
+            public decimal plProtectra_Level { get; set; }
 
-            public int plGainBoost_Spell
-            {
-                get; set;
-            }
+            public bool plGainBoost { get; set; }
 
-            public bool plBarElement
-            {
-                get; set;
-            }
+            public int plGainBoost_Spell { get; set; }
 
-            public int plBarElement_Spell
-            {
-                get; set;
-            }
+            public bool plBarElement { get; set; }
 
-            public bool AOE_Barelemental
-            {
-                get; set;
-            }
+            public int plBarElement_Spell { get; set; }
 
-            public bool plBarStatus
-            {
-                get; set;
-            }
+            public bool AOE_Barelemental { get; set; }
 
-            public int plBarStatus_Spell
-            {
-                get; set;
-            }
+            public bool plBarStatus { get; set; }
 
-            public bool AOE_Barstatus
-            {
-                get; set;
-            }
+            public int plBarStatus_Spell { get; set; }
 
-            public bool plAuspice
-            {
-                get; set;
-            }
+            public bool AOE_Barstatus { get; set; }
 
-            public bool plRegen
-            {
-                get; set;
-            }
+            public bool plAuspice { get; set; }
 
-            public int plRegen_Level
-            {
-                get; set;
-            }
+            public bool plRegen { get; set; }
 
-            public bool plReraise
-            {
-                get; set;
-            }
+            public int plRegen_Level { get; set; }
 
-            public int plReraise_Level
-            {
-                get; set;
-            }
+            public bool plReraise { get; set; }
 
-            public bool plRefresh
-            {
-                get; set;
-            }
+            public int plReraise_Level { get; set; }
 
-            public int plRefresh_Level
-            {
-                get; set;
-            }
+            public bool plRefresh { get; set; }
 
-            public bool plProtect
-            {
-                get; set;
-            }
+            public int plRefresh_Level { get; set; }
 
-            public bool plShell
-            {
-                get; set;
-            }
+            public bool plProtect { get; set; }
 
-            public bool plBlink
-            {
-                get; set;
-            }
+            public bool plShell { get; set; }
 
-            public bool plPhalanx
-            {
-                get; set;
-            }
+            public bool plBlink { get; set; }
 
-            public bool plStoneskin
-            {
-                get; set;
-            }
+            public bool plPhalanx { get; set; }
 
-            public bool plTemper
-            {
-                get; set;
-            }
+            public bool plStoneskin { get; set; }
 
-            public int plTemper_Level
-            {
-                get; set;
-            }
+            public bool plTemper { get; set; }
 
-            public bool plEnspell
-            {
-                get; set;
-            }
+            public int plTemper_Level { get; set; }
 
-            public int plEnspell_Spell
-            {
-                get; set;
-            }
+            public bool plEnspell { get; set; }
 
-            public bool plStormSpell
-            {
-                get; set;
-            }
+            public int plEnspell_Spell { get; set; }
 
-            public int plStormSpell_Spell
-            {
-                get; set;
-            }
+            public bool plStormSpell { get; set; }
 
-            public bool plAdloquium
-            {
-                get; set;
-            }
+            public int plStormSpell_Spell { get; set; }
 
-            public bool plKlimaform
-            {
-                get; set;
-            }
+            public bool plAdloquium { get; set; }
 
-            public bool plAquaveil
-            {
-                get; set;
-            }
+            public bool plKlimaform { get; set; }
 
-            public bool plHaste
-            {
-                get; set;
-            }
+            public bool plAquaveil { get; set; }
 
-            public int plHaste_Level
-            {
-                get; set;
-            }
+            public bool plHaste { get; set; }
 
-            public bool plSpikes
-            {
-                get; set;
-            }
+            public int plHaste_Level { get; set; }
 
-            public int plSpikes_Spell
-            {
-                get; set;
-            }
+            public bool plSpikes { get; set; }
 
-            public bool plUtsusemi
-            {
-                get; set;
-            }
+            public int plSpikes_Spell { get; set; }
+
+            public bool plUtsusemi { get; set; }
 
             // ENHANCING MAGIC TAB / SCHOLAR
 
-            public bool accessionCure
-            {
-                get; set;
-            }
+            public bool accessionCure { get; set; }
 
-            public bool accessionProShell
-            {
-                get; set;
-            }
+            public bool accessionProShell { get; set; }
 
-            public bool AccessionRegen
-            {
-                get; set;
-            }
+            public bool AccessionRegen { get; set; }
 
-            public bool PerpetuanceRegen
-            {
-                get; set;
-            }
+            public bool PerpetuanceRegen { get; set; }
 
 
-            public bool regenPerpetuance
-            {
-                get; set;
-            }
+            public bool regenPerpetuance { get; set; }
 
-            public bool regenAccession
-            {
-                get; set;
-            }
+            public bool regenAccession { get; set; }
 
 
+            public bool refreshPerpetuance { get; set; }
 
+            public bool refreshAccession { get; set; }
 
-            public bool refreshPerpetuance
-            {
-                get; set;
-            }
+            public bool blinkPerpetuance { get; set; }
 
-            public bool refreshAccession
-            {
-                get; set;
-            }
+            public bool blinkAccession { get; set; }
 
-            public bool blinkPerpetuance
-            {
-                get; set;
-            }
+            public bool phalanxPerpetuance { get; set; }
 
-            public bool blinkAccession
-            {
-                get; set;
-            }
+            public bool phalanxAccession { get; set; }
 
-            public bool phalanxPerpetuance
-            {
-                get; set;
-            }
+            public bool stoneskinPerpetuance { get; set; }
 
-            public bool phalanxAccession
-            {
-                get; set;
-            }
+            public bool stoneskinAccession { get; set; }
 
-            public bool stoneskinPerpetuance
-            {
-                get; set;
-            }
+            public bool enspellPerpetuance { get; set; }
 
-            public bool stoneskinAccession
-            {
-                get; set;
-            }
+            public bool enspellAccession { get; set; }
 
-            public bool enspellPerpetuance
-            {
-                get; set;
-            }
+            public bool stormspellPerpetuance { get; set; }
 
-            public bool enspellAccession
-            {
-                get; set;
-            }
+            public bool stormspellAccession { get; set; }
 
-            public bool stormspellPerpetuance
-            {
-                get; set;
-            }
+            public bool adloquiumPerpetuance { get; set; }
 
-            public bool stormspellAccession
-            {
-                get; set;
-            }
+            public bool adloquiumAccession { get; set; }
 
-            public bool adloquiumPerpetuance
-            {
-                get; set;
-            }
+            public bool aquaveilPerpetuance { get; set; }
 
-            public bool adloquiumAccession
-            {
-                get; set;
-            }
+            public bool aquaveilAccession { get; set; }
 
-            public bool aquaveilPerpetuance
-            {
-                get; set;
-            }
+            public bool barspellPerpetuance { get; set; }
 
-            public bool aquaveilAccession
-            {
-                get; set;
-            }
+            public bool barspellAccession { get; set; }
 
-            public bool barspellPerpetuance
-            {
-                get; set;
-            }
+            public bool barstatusPerpetuance { get; set; }
 
-            public bool barspellAccession
-            {
-                get; set;
-            }
+            public bool barstatusAccession { get; set; }
 
-            public bool barstatusPerpetuance
-            {
-                get; set;
-            }
-
-            public bool barstatusAccession
-            {
-                get; set;
-            }
-
-            public bool EnlightenmentReraise
-            {
-                get; set;
-            }
+            public bool EnlightenmentReraise { get; set; }
 
             // GEOMANCY MAGIC TAB
-            public bool EnableGeoSpells
-            {
-                get; set;
-            }
+            public bool EnableGeoSpells { get; set; }
 
-            public bool IndiWhenEngaged
-            {
-                get; set;
-            }
+            public bool IndiWhenEngaged { get; set; }
 
-            public bool EnableLuopanSpells
-            {
-                get; set;
-            }
+            public bool EnableLuopanSpells { get; set; }
 
-            public bool GeoWhenEngaged
-            {
-                get; set;
-            }
+            public bool GeoWhenEngaged { get; set; }
 
-            public bool specifiedEngageTarget
-            {
-                get; set;
-            }
+            public bool specifiedEngageTarget { get; set; }
 
-            public int IndiSpell_Spell
-            {
-                get; set;
-            }
+            public int IndiSpell_Spell { get; set; }
 
-            public int GeoSpell_Spell
-            {
-                get; set;
-            }
+            public int GeoSpell_Spell { get; set; }
 
-            public int EntrustedSpell_Spell
-            {
-                get; set;
-            }
+            public int EntrustedSpell_Spell { get; set; }
 
-            public string LuopanSpell_Target
-            {
-                get; set;
-            }
+            public string LuopanSpell_Target { get; set; }
 
-            public string EntrustedSpell_Target
-            {
-                get; set;
-            }
+            public string EntrustedSpell_Target { get; set; }
 
             // SINGING MAGIC TAB
-            public bool enableSinging
-            {
-                get; set;
-            }
+            public bool enableSinging { get; set; }
 
-            public bool recastSongs_Monitored
-            {
-                get; set;
-            }
+            public bool recastSongs_Monitored { get; set; }
 
-            public bool SongsOnlyWhenNear
-            {
-                get; set;
-            }
+            public bool SongsOnlyWhenNear { get; set; }
 
-            public int song1
-            {
-                get; set;
-            }
+            public int song1 { get; set; }
 
-            public int song2
-            {
-                get; set;
-            }
+            public int song2 { get; set; }
 
-            public int song3
-            {
-                get; set;
-            }
+            public int song3 { get; set; }
 
-            public int song4
-            {
-                get; set;
-            }
+            public int song4 { get; set; }
 
-            public int dummy1
-            {
-                get; set;
-            }
+            public int dummy1 { get; set; }
 
-            public int dummy2
-            {
-                get; set;
-            }
+            public int dummy2 { get; set; }
 
-            public decimal recastSongTime
-            {
-                get; set;
-            }
+            public decimal recastSongTime { get; set; }
 
             // JOB ABILITIES
 
             // SCH
-            public bool LightArts
-            {
-                get; set;
-            }
+            public bool LightArts { get; set; }
 
-            public bool Sublimation
-            {
-                get; set;
-            }
+            public bool Sublimation { get; set; }
 
-            public bool AddendumWhite
-            {
-                get; set;
-            }
+            public bool AddendumWhite { get; set; }
 
-            public bool Celerity
-            {
-                get; set;
-            }
+            public bool Celerity { get; set; }
 
-            public bool Accession
-            {
-                get; set;
-            }
+            public bool Accession { get; set; }
 
-            public bool Perpetuance
-            {
-                get; set;
-            }
+            public bool Perpetuance { get; set; }
 
-            public bool Penury
-            {
-                get; set;
-            }
+            public bool Penury { get; set; }
 
-            public bool Rapture
-            {
-                get; set;
-            }
-            public bool DarkArts
-            {
-                get; set;
-            }
+            public bool Rapture { get; set; }
 
-            public bool AddendumBlack
-            {
-                get; set;
-            }
+            public bool DarkArts { get; set; }
+
+            public bool AddendumBlack { get; set; }
 
             // WHM
-            public bool AfflatusSolace
-            {
-                get; set;
-            }
+            public bool AfflatusSolace { get; set; }
 
-            public bool AfflatusMisery
-            {
-                get; set;
-            }
+            public bool AfflatusMisery { get; set; }
 
-            public bool DivineSeal
-            {
-                get; set;
-            }
+            public bool DivineSeal { get; set; }
 
-            public bool Devotion
-            {
-                get; set;
-            }
+            public bool Devotion { get; set; }
 
-            public bool DivineCaress
-            {
-                get; set;
-            }
+            public bool DivineCaress { get; set; }
 
             // RDM
-            public bool Composure
-            {
-                get; set;
-            }
+            public bool Composure { get; set; }
 
-            public bool Convert
-            {
-                get; set;
-            }
+            public bool Convert { get; set; }
 
             // GEO
-            public bool Entrust
-            {
-                get; set;
-            }
+            public bool Entrust { get; set; }
 
-            public bool FullCircle
-            {
-                get; set;
-            }
+            public bool FullCircle { get; set; }
 
-            public bool Dematerialize
-            {
-                get; set;
-            }
+            public bool Dematerialize { get; set; }
 
-            public bool BlazeOfGlory
-            {
-                get; set;
-            }
+            public bool BlazeOfGlory { get; set; }
 
-            public bool RadialArcana
-            {
-                get; set;
-            }
+            public bool RadialArcana { get; set; }
 
-            public bool EclipticAttrition
-            {
-                get; set;
-            }
+            public bool EclipticAttrition { get; set; }
 
-            public bool LifeCycle
-            {
-                get; set;
-            }
+            public bool LifeCycle { get; set; }
 
             // BRD
-            public bool Pianissimo
-            {
-                get; set;
-            }
+            public bool Pianissimo { get; set; }
 
-            public bool Nightingale
-            {
-                get; set;
-            }
+            public bool Nightingale { get; set; }
 
-            public bool Troubadour
-            {
-                get; set;
-            }
+            public bool Troubadour { get; set; }
 
-            public bool Marcato
-            {
-                get; set;
-            }
+            public bool Marcato { get; set; }
 
             // DEBUFF REMOVAL
-            public bool plDebuffEnabled
-            {
-                get; set;
-            }
+            public bool plDebuffEnabled { get; set; }
 
-            public bool monitoredDebuffEnabled
-            {
-                get; set;
-            }
+            public bool monitoredDebuffEnabled { get; set; }
 
-            public bool enablePartyDebuffRemoval
-            {
-                get; set;
-            }
+            public bool enablePartyDebuffRemoval { get; set; }
 
-            public bool SpecifiednaSpellsenable
-            {
-                get; set;
-            }
+            public bool SpecifiednaSpellsenable { get; set; }
 
-            public bool PrioritiseOverLowerTier
-            {
-                get; set;
-            }
+            public bool PrioritiseOverLowerTier { get; set; }
 
-            public bool plSilenceItemEnabled
-            {
-                get; set;
-            }
+            public bool plSilenceItemEnabled { get; set; }
 
-            public int plSilenceItem
-            {
-                get; set;
-            }
+            public int plSilenceItem { get; set; }
 
-            public bool plDoomEnabled
-            {
-                get; set;
-            }
+            public bool plDoomEnabled { get; set; }
 
-            public int plDoomitem
-            {
-                get; set;
-            }
+            public int plDoomitem { get; set; }
 
-            public bool wakeSleepEnabled
-            {
-                get; set;
-            }
+            public bool wakeSleepEnabled { get; set; }
 
-            public int wakeSleepSpell
-            {
-                get; set;
-            }
+            public int wakeSleepSpell { get; set; }
 
             // PARTY DEBUFFS
-            public bool naBlindness
-            {
-                get; set;
-            }
+            public bool naBlindness { get; set; }
 
-            public bool naCurse
-            {
-                get; set;
-            }
+            public bool naCurse { get; set; }
 
-            public bool naDisease
-            {
-                get; set;
-            }
+            public bool naDisease { get; set; }
 
-            public bool naParalysis
-            {
-                get; set;
-            }
+            public bool naParalysis { get; set; }
 
-            public bool naPetrification
-            {
-                get; set;
-            }
+            public bool naPetrification { get; set; }
 
-            public bool naPlague
-            {
-                get; set;
-            }
+            public bool naPlague { get; set; }
 
-            public bool naPoison
-            {
-                get; set;
-            }
+            public bool naPoison { get; set; }
 
-            public bool naSilence
-            {
-                get; set;
-            }
+            public bool naSilence { get; set; }
 
-            public bool naErase
-            {
-                get; set;
-            }
+            public bool naErase { get; set; }
 
-            public bool Esuna
-            {
-                get;
-                set;
-            }
+            public bool Esuna { get; set; }
 
-            public bool EsunaOnlyAmnesia
-            {
-                get;
-                set;
-            }
+            public bool EsunaOnlyAmnesia { get; set; }
 
             // PL DEBUFFS
-            public bool plAgiDown
-            {
-                get; set;
-            }
+            public bool plAgiDown { get; set; }
 
-            public bool plAccuracyDown
-            {
-                get; set;
-            }
+            public bool plAccuracyDown { get; set; }
 
-            public bool plAddle
-            {
-                get; set;
-            }
+            public bool plAddle { get; set; }
 
-            public bool plAttackDown
-            {
-                get; set;
-            }
+            public bool plAttackDown { get; set; }
 
-            public bool plBane
-            {
-                get; set;
-            }
+            public bool plBane { get; set; }
 
-            public bool plBind
-            {
-                get; set;
-            }
+            public bool plBind { get; set; }
 
-            public bool plBio
-            {
-                get; set;
-            }
+            public bool plBio { get; set; }
 
-            public bool plBlindness
-            {
-                get; set;
-            }
+            public bool plBlindness { get; set; }
 
-            public bool plBurn
-            {
-                get; set;
-            }
+            public bool plBurn { get; set; }
 
-            public bool plChrDown
-            {
-                get; set;
-            }
+            public bool plChrDown { get; set; }
 
-            public bool plChoke
-            {
-                get; set;
-            }
+            public bool plChoke { get; set; }
 
-            public bool plCurse
-            {
-                get; set;
-            }
+            public bool plCurse { get; set; }
 
-            public bool plCurse2
-            {
-                get; set;
-            }
+            public bool plCurse2 { get; set; }
 
-            public bool plDexDown
-            {
-                get; set;
-            }
+            public bool plDexDown { get; set; }
 
-            public bool plDefenseDown
-            {
-                get; set;
-            }
+            public bool plDefenseDown { get; set; }
 
-            public bool plDia
-            {
-                get; set;
-            }
+            public bool plDia { get; set; }
 
-            public bool plDisease
-            {
-                get; set;
-            }
+            public bool plDisease { get; set; }
 
-            public bool plDoom
-            {
-                get; set;
-            }
+            public bool plDoom { get; set; }
 
-            public bool plDrown
-            {
-                get; set;
-            }
+            public bool plDrown { get; set; }
 
-            public bool plElegy
-            {
-                get; set;
-            }
+            public bool plElegy { get; set; }
 
-            public bool plEvasionDown
-            {
-                get; set;
-            }
+            public bool plEvasionDown { get; set; }
 
-            public bool plFlash
-            {
-                get; set;
-            }
+            public bool plFlash { get; set; }
 
-            public bool plFrost
-            {
-                get; set;
-            }
+            public bool plFrost { get; set; }
 
-            public bool plHelix
-            {
-                get; set;
-            }
+            public bool plHelix { get; set; }
 
-            public bool plIntDown
-            {
-                get; set;
-            }
+            public bool plIntDown { get; set; }
 
-            public bool plMndDown
-            {
-                get; set;
-            }
+            public bool plMndDown { get; set; }
 
-            public bool plMagicAccDown
-            {
-                get; set;
-            }
+            public bool plMagicAccDown { get; set; }
 
-            public bool plMagicAtkDown
-            {
-                get; set;
-            }
+            public bool plMagicAtkDown { get; set; }
 
-            public bool plMaxHpDown
-            {
-                get; set;
-            }
+            public bool plMaxHpDown { get; set; }
 
-            public bool plMaxMpDown
-            {
-                get; set;
-            }
+            public bool plMaxMpDown { get; set; }
 
-            public bool plMaxTpDown
-            {
-                get; set;
-            }
+            public bool plMaxTpDown { get; set; }
 
-            public bool plParalysis
-            {
-                get; set;
-            }
+            public bool plParalysis { get; set; }
 
-            public bool plPlague
-            {
-                get; set;
-            }
+            public bool plPlague { get; set; }
 
-            public bool plPoison
-            {
-                get; set;
-            }
+            public bool plPoison { get; set; }
 
-            public bool plRasp
-            {
-                get; set;
-            }
+            public bool plRasp { get; set; }
 
-            public bool plRequiem
-            {
-                get; set;
-            }
+            public bool plRequiem { get; set; }
 
-            public bool plStrDown
-            {
-                get; set;
-            }
+            public bool plStrDown { get; set; }
 
-            public bool plShock
-            {
-                get; set;
-            }
+            public bool plShock { get; set; }
 
-            public bool plSilence
-            {
-                get; set;
-            }
+            public bool plSilence { get; set; }
 
-            public bool plSlow
-            {
-                get; set;
-            }
+            public bool plSlow { get; set; }
 
-            public bool plThrenody
-            {
-                get; set;
-            }
+            public bool plThrenody { get; set; }
 
-            public bool plVitDown
-            {
-                get; set;
-            }
+            public bool plVitDown { get; set; }
 
-            public bool plWeight
-            {
-                get; set;
-            }
+            public bool plWeight { get; set; }
 
-            public bool plAmnesia
-            {
-                get;
-                set;
-            }
+            public bool plAmnesia { get; set; }
 
             // MONITORED DEBUFFS
-            public bool monitoredAgiDown
-            {
-                get; set;
-            }
+            public bool monitoredAgiDown { get; set; }
 
-            public bool monitoredAccuracyDown
-            {
-                get; set;
-            }
+            public bool monitoredAccuracyDown { get; set; }
 
-            public bool monitoredAddle
-            {
-                get; set;
-            }
+            public bool monitoredAddle { get; set; }
 
-            public bool monitoredAttackDown
-            {
-                get; set;
-            }
+            public bool monitoredAttackDown { get; set; }
 
-            public bool monitoredBane
-            {
-                get; set;
-            }
+            public bool monitoredBane { get; set; }
 
-            public bool monitoredBind
-            {
-                get; set;
-            }
+            public bool monitoredBind { get; set; }
 
-            public bool monitoredBio
-            {
-                get; set;
-            }
+            public bool monitoredBio { get; set; }
 
-            public bool monitoredBlindness
-            {
-                get; set;
-            }
+            public bool monitoredBlindness { get; set; }
 
-            public bool monitoredBurn
-            {
-                get; set;
-            }
+            public bool monitoredBurn { get; set; }
 
-            public bool monitoredChrDown
-            {
-                get; set;
-            }
+            public bool monitoredChrDown { get; set; }
 
-            public bool monitoredChoke
-            {
-                get; set;
-            }
+            public bool monitoredChoke { get; set; }
 
-            public bool monitoredCurse
-            {
-                get; set;
-            }
+            public bool monitoredCurse { get; set; }
 
-            public bool monitoredCurse2
-            {
-                get; set;
-            }
+            public bool monitoredCurse2 { get; set; }
 
-            public bool monitoredDexDown
-            {
-                get; set;
-            }
+            public bool monitoredDexDown { get; set; }
 
-            public bool monitoredDefenseDown
-            {
-                get; set;
-            }
+            public bool monitoredDefenseDown { get; set; }
 
-            public bool monitoredDia
-            {
-                get; set;
-            }
+            public bool monitoredDia { get; set; }
 
-            public bool monitoredDisease
-            {
-                get; set;
-            }
+            public bool monitoredDisease { get; set; }
 
-            public bool monitoredDoom
-            {
-                get; set;
-            }
+            public bool monitoredDoom { get; set; }
 
-            public bool monitoredDrown
-            {
-                get; set;
-            }
+            public bool monitoredDrown { get; set; }
 
-            public bool monitoredElegy
-            {
-                get; set;
-            }
+            public bool monitoredElegy { get; set; }
 
-            public bool monitoredEvasionDown
-            {
-                get; set;
-            }
+            public bool monitoredEvasionDown { get; set; }
 
-            public bool monitoredFlash
-            {
-                get; set;
-            }
+            public bool monitoredFlash { get; set; }
 
-            public bool monitoredFrost
-            {
-                get; set;
-            }
+            public bool monitoredFrost { get; set; }
 
-            public bool monitoredHelix
-            {
-                get; set;
-            }
+            public bool monitoredHelix { get; set; }
 
-            public bool monitoredIntDown
-            {
-                get; set;
-            }
+            public bool monitoredIntDown { get; set; }
 
-            public bool monitoredMndDown
-            {
-                get; set;
-            }
+            public bool monitoredMndDown { get; set; }
 
-            public bool monitoredMagicAccDown
-            {
-                get; set;
-            }
+            public bool monitoredMagicAccDown { get; set; }
 
-            public bool monitoredMagicAtkDown
-            {
-                get; set;
-            }
+            public bool monitoredMagicAtkDown { get; set; }
 
-            public bool monitoredMaxHpDown
-            {
-                get; set;
-            }
+            public bool monitoredMaxHpDown { get; set; }
 
-            public bool monitoredMaxMpDown
-            {
-                get; set;
-            }
+            public bool monitoredMaxMpDown { get; set; }
 
-            public bool monitoredMaxTpDown
-            {
-                get; set;
-            }
+            public bool monitoredMaxTpDown { get; set; }
 
-            public bool monitoredParalysis
-            {
-                get; set;
-            }
+            public bool monitoredParalysis { get; set; }
 
-            public bool monitoredPetrification
-            {
-                get; set;
-            }
+            public bool monitoredPetrification { get; set; }
 
-            public bool monitoredPlague
-            {
-                get; set;
-            }
+            public bool monitoredPlague { get; set; }
 
-            public bool monitoredPoison
-            {
-                get; set;
-            }
+            public bool monitoredPoison { get; set; }
 
-            public bool monitoredRasp
-            {
-                get; set;
-            }
+            public bool monitoredRasp { get; set; }
 
-            public bool monitoredRequiem
-            {
-                get; set;
-            }
+            public bool monitoredRequiem { get; set; }
 
-            public bool monitoredStrDown
-            {
-                get; set;
-            }
+            public bool monitoredStrDown { get; set; }
 
-            public bool monitoredShock
-            {
-                get; set;
-            }
+            public bool monitoredShock { get; set; }
 
-            public bool monitoredSilence
-            {
-                get; set;
-            }
+            public bool monitoredSilence { get; set; }
 
-            public bool monitoredSleep
-            {
-                get; set;
-            }
+            public bool monitoredSleep { get; set; }
 
-            public bool monitoredSleep2
-            {
-                get; set;
-            }
+            public bool monitoredSleep2 { get; set; }
 
-            public bool monitoredSlow
-            {
-                get; set;
-            }
+            public bool monitoredSlow { get; set; }
 
-            public bool monitoredThrenody
-            {
-                get; set;
-            }
+            public bool monitoredThrenody { get; set; }
 
-            public bool monitoredVitDown
-            {
-                get; set;
-            }
+            public bool monitoredVitDown { get; set; }
 
-            public bool monitoredWeight
-            {
-                get; set;
-            }
+            public bool monitoredWeight { get; set; }
 
-            public bool monitoredAmnesia
-            {
-                get;
-                set;
-            }
+            public bool monitoredAmnesia { get; set; }
 
             // NA SPECIFICATION CHECKBOXES
 
-            public bool na_Weight
-            {
-                get; set;
-            }
+            public bool na_Weight { get; set; }
 
-            public bool na_VitDown
-            {
-                get; set;
-            }
+            public bool na_VitDown { get; set; }
 
-            public bool na_Threnody
-            {
-                get; set;
-            }
+            public bool na_Threnody { get; set; }
 
-            public bool na_Slow
-            {
-                get; set;
-            }
+            public bool na_Slow { get; set; }
 
-            public bool na_Shock
-            {
-                get; set;
-            }
+            public bool na_Shock { get; set; }
 
-            public bool na_StrDown
-            {
-                get; set;
-            }
+            public bool na_StrDown { get; set; }
 
-            public bool na_Requiem
-            {
-                get; set;
-            }
+            public bool na_Requiem { get; set; }
 
-            public bool na_Rasp
-            {
-                get; set;
-            }
+            public bool na_Rasp { get; set; }
 
-            public bool na_MaxTpDown
-            {
-                get; set;
-            }
+            public bool na_MaxTpDown { get; set; }
 
-            public bool na_MaxMpDown
-            {
-                get; set;
-            }
+            public bool na_MaxMpDown { get; set; }
 
-            public bool na_MaxHpDown
-            {
-                get; set;
-            }
+            public bool na_MaxHpDown { get; set; }
 
-            public bool na_MagicAttackDown
-            {
-                get; set;
-            }
+            public bool na_MagicAttackDown { get; set; }
 
-            public bool na_MagicAccDown
-            {
-                get; set;
-            }
+            public bool na_MagicAccDown { get; set; }
 
-            public bool na_MagicDefenseDown
-            {
-                get; set;
-            }
+            public bool na_MagicDefenseDown { get; set; }
 
-            public bool na_MndDown
-            {
-                get; set;
-            }
+            public bool na_MndDown { get; set; }
 
-            public bool na_IntDown
-            {
-                get; set;
-            }
+            public bool na_IntDown { get; set; }
 
-            public bool na_Helix
-            {
-                get; set;
-            }
+            public bool na_Helix { get; set; }
 
-            public bool na_Frost
-            {
-                get; set;
-            }
+            public bool na_Frost { get; set; }
 
-            public bool na_EvasionDown
-            {
-                get; set;
-            }
+            public bool na_EvasionDown { get; set; }
 
-            public bool na_Elegy
-            {
-                get; set;
-            }
+            public bool na_Elegy { get; set; }
 
-            public bool na_Drown
-            {
-                get; set;
-            }
+            public bool na_Drown { get; set; }
 
-            public bool na_Dia
-            {
-                get; set;
-            }
+            public bool na_Dia { get; set; }
 
-            public bool na_DefenseDown
-            {
-                get; set;
-            }
+            public bool na_DefenseDown { get; set; }
 
-            public bool na_DexDown
-            {
-                get; set;
-            }
+            public bool na_DexDown { get; set; }
 
-            public bool na_Choke
-            {
-                get; set;
-            }
+            public bool na_Choke { get; set; }
 
-            public bool na_ChrDown
-            {
-                get; set;
-            }
+            public bool na_ChrDown { get; set; }
 
-            public bool na_Burn
-            {
-                get; set;
-            }
+            public bool na_Burn { get; set; }
 
-            public bool na_Bio
-            {
-                get; set;
-            }
+            public bool na_Bio { get; set; }
 
-            public bool na_Bind
-            {
-                get; set;
-            }
+            public bool na_Bind { get; set; }
 
-            public bool na_AttackDown
-            {
-                get; set;
-            }
+            public bool na_AttackDown { get; set; }
 
-            public bool na_Addle
-            {
-                get; set;
-            }
+            public bool na_Addle { get; set; }
 
-            public bool na_AccuracyDown
-            {
-                get; set;
-            }
+            public bool na_AccuracyDown { get; set; }
 
-            public bool na_AgiDown
-            {
-                get; set;
-            }
+            public bool na_AgiDown { get; set; }
 
             // OTHER SETTINGS
 
             // MP OPTIONS
-            public decimal mpMinCastValue
-            {
-                get; set;
-            }
+            public decimal mpMinCastValue { get; set; }
 
-            public bool lowMPcheckBox
-            {
-                get; set;
-            }
+            public bool lowMPcheckBox { get; set; }
 
-            public bool healLowMP
-            {
-                get; set;
-            }
+            public bool healLowMP { get; set; }
 
-            public decimal healWhenMPBelow
-            {
-                get; set;
-            }
+            public decimal healWhenMPBelow { get; set; }
 
-            public bool standAtMP
-            {
-                get; set;
-            }
+            public bool standAtMP { get; set; }
 
-            public decimal standAtMP_Percentage
-            {
-                get; set;
-            }
+            public decimal standAtMP_Percentage { get; set; }
 
             // CONVERT SETTINGS
-            public decimal convertMP
-            {
-                get; set;
-            }
+            public decimal convertMP { get; set; }
 
             // SUBLIMATION SETTINGS
-            public decimal sublimationMP
-            {
-                get; set;
-            }
+            public decimal sublimationMP { get; set; }
 
             // FULL CIRCLE SETTINGS
-            public bool Fullcircle_DisableEnemy
-            {
-                get; set;
-            }
-            public bool Fullcircle_GEOTarget
-            {
-                get; set;
-            }
+            public bool Fullcircle_DisableEnemy { get; set; }
+
+            public bool Fullcircle_GEOTarget { get; set; }
 
             // RADIAL ARCANA SETTINGS
-            public decimal RadialArcanaMP
-            {
-                get; set;
-            }
+            public decimal RadialArcanaMP { get; set; }
 
-            public int RadialArcana_Spell
-            {
-                get; set;
-            }
+            public int RadialArcana_Spell { get; set; }
 
             // DEVOTION SETTINGS
-            public decimal DevotionMP
-            {
-                get; set;
-            }
+            public decimal DevotionMP { get; set; }
 
-            public int DevotionTargetType
-            {
-                get; set;
-            }
+            public int DevotionTargetType { get; set; }
 
-            public string DevotionTargetName
-            {
-                get; set;
-            }
+            public string DevotionTargetName { get; set; }
 
-            public bool DevotionWhenEngaged
-            {
-                get; set;
-            }
+            public bool DevotionWhenEngaged { get; set; }
 
             //AUTO CASTING SPELLS OPTIONS
-            public bool autoTarget
-            {
-                get; set;
-            }
+            public bool autoTarget { get; set; }
 
-            public int Hate_SpellType
-            {
-                get; set;
-            }
+            public int Hate_SpellType { get; set; }
 
-            public string autoTargetSpell
-            {
-                get; set;
-            }
+            public string autoTargetSpell { get; set; }
 
-            public string autoTarget_Target
-            {
-                get; set;
-            }
+            public string autoTarget_Target { get; set; }
 
-            public bool AssistSpecifiedTarget
-            {
-                get; set;
-            }
+            public bool AssistSpecifiedTarget { get; set; }
 
             // DISABLE CANCEL TARGETTING
-            public bool DisableTargettingCancel
-            {
-                get; set;
-            }
+            public bool DisableTargettingCancel { get; set; }
 
             // DELAY BEFORE REMOVING TARGET
-            public decimal TargetRemoval_Delay
-            {
-                get; set;
-            }
+            public decimal TargetRemoval_Delay { get; set; }
 
             // RAISE SETTINGS
-            public bool AcceptRaise
-            {
-                get; set;
-            }
+            public bool AcceptRaise { get; set; }
 
-            public bool AcceptRaiseOnlyWhenNotInCombat
-            {
-                get; set;
-            }
+            public bool AcceptRaiseOnlyWhenNotInCombat { get; set; }
 
             // CURING OPTIONS
-            public bool Overcure
-            {
-                get; set;
-            }
+            public bool Overcure { get; set; }
 
-            public bool Undercure
-            {
-                get; set;
-            }
+            public bool Undercure { get; set; }
 
-            public bool enableMonitoredPriority
-            {
-                get; set;
-            }
+            public bool enableMonitoredPriority { get; set; }
 
-            public bool enableOutOfPartyHealing
-            {
-                get; set;
-            }
+            public bool enableOutOfPartyHealing { get; set; }
 
-            public bool OvercureOnHighPriority
-            {
-                get; set;
-            }
+            public bool OvercureOnHighPriority { get; set; }
 
-            public bool EnableAddOn
-            {
-                get; set;
-            }
+            public bool EnableAddOn { get; set; }
 
             // PROGRAM OPTIONS
 
             // PAUSE OPTIONS
-            public bool pauseOnZoneBox
-            {
-                get; set;
-            }
+            public bool pauseOnZoneBox { get; set; }
 
-            public bool pauseOnStartBox
-            {
-                get; set;
-            }
+            public bool pauseOnStartBox { get; set; }
 
-            public bool pauseOnKO
-            {
-                get; set;
-            }
+            public bool pauseOnKO { get; set; }
 
-            public bool MinimiseonStart
-            {
-                get; set;
-            }
+            public bool MinimiseonStart { get; set; }
 
             // AUTO FOLLOW OPTIONS
-            public string autoFollowName
-            {
-                get; set;
-            }
+            public string autoFollowName { get; set; }
 
-            public decimal autoFollowDistance
-            {
-                get; set;
-            }
+            public decimal autoFollowDistance { get; set; }
 
-            public bool autoFollow_Warning
-            {
-                get; set;
-            }
+            public bool autoFollow_Warning { get; set; }
 
-            public bool FFXIDefaultAutoFollow
-            {
-                get; set;
-            }
-            public bool enableHotKeys
-            {
-                get; set;
-            }
+            public bool FFXIDefaultAutoFollow { get; set; }
+
+            public bool enableHotKeys { get; set; }
 
             // FAST CAST MODE
-            public bool enableFastCast_Mode
-            {
-                get; set;
-            }
+            public bool enableFastCast_Mode { get; set; }
 
             // trackCastingPacketsMODE
-            public bool trackCastingPackets
-            {
-                get; set;
-            }
+            public bool trackCastingPackets { get; set; }
 
             // ADD ON OPTIONS
-            public string ipAddress
-            {
-                get; set;
-            }
+            public string ipAddress { get; set; }
 
-            public string listeningPort
-            {
-                get; set;
-            }
+            public string listeningPort { get; set; }
         }
 
         #endregion "== Settings Class"
@@ -1810,125 +765,125 @@
         public List<JobTitles> JobNames = new List<JobTitles>();
         public int runOnce = 0;
 
-        public OptionsForm ( )
+        public OptionsForm()
         {
             StartPosition = FormStartPosition.CenterScreen;
 
-            InitializeComponent ( );
+            InitializeComponent();
 
-            JobNames.Add ( new JobTitles
+            JobNames.Add(new JobTitles
             {
                 job_number = 1,
-                job_name = "WAR",
-            } );
-            JobNames.Add ( new JobTitles
+                job_name = "WAR"
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 2,
                 job_name = "MNK"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 3,
                 job_name = "WHM"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 4,
                 job_name = "BLM"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 5,
                 job_name = "RDM"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 6,
                 job_name = "THF"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 7,
                 job_name = "PLD"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 8,
                 job_name = "DRK"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 9,
                 job_name = "BST"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 10,
                 job_name = "BRD"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 11,
                 job_name = "RNG"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 12,
                 job_name = "SAM"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 13,
                 job_name = "NIN"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 14,
                 job_name = "DRG"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 15,
                 job_name = "SMN"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 16,
                 job_name = "BLU"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 17,
                 job_name = "COR"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 18,
                 job_name = "PUP"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 19,
                 job_name = "DNC"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 20,
                 job_name = "SCH"
-            } );
+            });
 
-            JobNames.Add ( new JobTitles
+            JobNames.Add(new JobTitles
             {
                 job_number = 21,
                 job_name = "GEO"
-            } );
-            JobNames.Add ( new JobTitles
+            });
+            JobNames.Add(new JobTitles
             {
                 job_number = 22,
                 job_name = "RUN"
-            } );
+            });
 
-            if ( config.settingsSet != true )
+            if (config.settingsSet != true)
             {
                 // HEALING MAGIC
                 config.cure1enabled = false;
@@ -2331,48 +1286,20 @@
                 config.settingsSet = true;
             }
 
-            updateForm ( config );
+            updateForm(config);
 
-            string path = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Settings");
-            if ( loadJobSettings.Checked == false && System.IO.File.Exists ( path + "/loadSettings" ) )
-            {
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings");
+            if (loadJobSettings.Checked == false && File.Exists(path + "/loadSettings"))
                 loadJobSettings.Checked = true;
-            }
             else
-            {
                 loadJobSettings.Checked = false;
-            }
         }
 
         #endregion "== Form2"
 
-        #region "== Cure Percentage's Changed"
-
-        private void curePercentage_ValueChanged ( object sender, EventArgs e )
-        {
-            curePercentageValueLabel.Text = curePercentage.Value.ToString ( );
-        }
-
-        private void priorityCurePercentage_ValueChanged ( object sender, EventArgs e )
-        {
-            priorityCurePercentageValueLabel.Text = priorityCurePercentage.Value.ToString ( );
-        }
-
-        private void curagaPercentage_ValueChanged ( object sender, EventArgs e )
-        {
-            curagaPercentageValueLabel.Text = curagaCurePercentage.Value.ToString ( );
-        }
-
-        private void monitoredPercentage_ValueChanged ( object sender, EventArgs e )
-        {
-            monitoredCurePercentageValueLabel.Text = monitoredCurePercentage.Value.ToString ( );
-        }
-
-        #endregion "== Cure Percentage's Changed"
-
         #region "== All Settings Saved"
 
-        public void button4_Click ( object sender, EventArgs e )
+        public void button4_Click(object sender, EventArgs e)
         {
             // HEALING MAGIC
             config.cure1enabled = cure1enabled.Checked;
@@ -2381,12 +1308,12 @@
             config.cure4enabled = cure4enabled.Checked;
             config.cure5enabled = cure5enabled.Checked;
             config.cure6enabled = cure6enabled.Checked;
-            config.cure1amount = Convert.ToInt32 ( cure1amount.Value );
-            config.cure2amount = Convert.ToInt32 ( cure2amount.Value );
-            config.cure3amount = Convert.ToInt32 ( cure3amount.Value );
-            config.cure4amount = Convert.ToInt32 ( cure4amount.Value );
-            config.cure5amount = Convert.ToInt32 ( cure5amount.Value );
-            config.cure6amount = Convert.ToInt32 ( cure6amount.Value );
+            config.cure1amount = Convert.ToInt32(cure1amount.Value);
+            config.cure2amount = Convert.ToInt32(cure2amount.Value);
+            config.cure3amount = Convert.ToInt32(cure3amount.Value);
+            config.cure4amount = Convert.ToInt32(cure4amount.Value);
+            config.cure5amount = Convert.ToInt32(cure5amount.Value);
+            config.cure6amount = Convert.ToInt32(cure6amount.Value);
             config.curePercentage = curePercentage.Value;
             config.priorityCurePercentage = priorityCurePercentage.Value;
             config.monitoredCurePercentage = monitoredCurePercentage.Value;
@@ -2396,11 +1323,11 @@
             config.curaga3enabled = curaga3Enabled.Checked;
             config.curaga4enabled = curaga4Enabled.Checked;
             config.curaga5enabled = curaga5Enabled.Checked;
-            config.curagaAmount = Convert.ToInt32 ( curagaAmount.Value );
-            config.curaga2Amount = Convert.ToInt32 ( curaga2Amount.Value );
-            config.curaga3Amount = Convert.ToInt32 ( curaga3Amount.Value );
-            config.curaga4Amount = Convert.ToInt32 ( curaga4Amount.Value );
-            config.curaga5Amount = Convert.ToInt32 ( curaga5Amount.Value );
+            config.curagaAmount = Convert.ToInt32(curagaAmount.Value);
+            config.curaga2Amount = Convert.ToInt32(curaga2Amount.Value);
+            config.curaga3Amount = Convert.ToInt32(curaga3Amount.Value);
+            config.curaga4Amount = Convert.ToInt32(curaga4Amount.Value);
+            config.curaga5Amount = Convert.ToInt32(curaga5Amount.Value);
             config.curagaCurePercentage = curagaCurePercentage.Value;
             config.curagaTargetType = curagaTargetType.SelectedIndex;
             config.curagaTargetName = curagaTargetName.Text;
@@ -2421,43 +1348,23 @@
             config.plShell = plShell.Checked;
             config.plBlink = plBlink.Checked;
             config.plReraise = plReraise.Checked;
-            if ( plReraiseLevel1.Checked )
-            {
+            if (plReraiseLevel1.Checked)
                 config.plReraise_Level = 1;
-            }
-            else if ( plReraiseLevel2.Checked )
-            {
+            else if (plReraiseLevel2.Checked)
                 config.plReraise_Level = 2;
-            }
-            else if ( plReraiseLevel3.Checked )
-            {
+            else if (plReraiseLevel3.Checked)
                 config.plReraise_Level = 3;
-            }
-            else if ( plReraiseLevel4.Checked )
-            {
-                config.plReraise_Level = 4;
-            }
+            else if (plReraiseLevel4.Checked) config.plReraise_Level = 4;
             config.plRegen = plRegen.Checked;
-            if ( plRegenLevel1.Checked )
-            {
+            if (plRegenLevel1.Checked)
                 config.plRegen_Level = 1;
-            }
-            else if ( plRegenLevel2.Checked )
-            {
+            else if (plRegenLevel2.Checked)
                 config.plRegen_Level = 2;
-            }
-            else if ( plRegenLevel3.Checked )
-            {
+            else if (plRegenLevel3.Checked)
                 config.plRegen_Level = 3;
-            }
-            else if ( plRegenLevel4.Checked )
-            {
+            else if (plRegenLevel4.Checked)
                 config.plRegen_Level = 4;
-            }
-            else if ( plRegenLevel5.Checked )
-            {
-                config.plRegen_Level = 5;
-            }
+            else if (plRegenLevel5.Checked) config.plRegen_Level = 5;
             config.plStoneskin = plStoneskin.Checked;
             config.plPhalanx = plPhalanx.Checked;
             config.plShellra = plShellra.Checked;
@@ -2470,14 +1377,9 @@
             config.autoStorm_Spell = autoStorm.SelectedIndex;
             config.autoProtect_Spell = autoProtect.SelectedIndex;
             config.plTemper = plTemper.Checked;
-            if ( plTemperLevel1.Checked )
-            {
+            if (plTemperLevel1.Checked)
                 config.plTemper_Level = 1;
-            }
-            else if ( plTemperLevel2.Checked )
-            {
-                config.plTemper_Level = 2;
-            }
+            else if (plTemperLevel2.Checked) config.plTemper_Level = 2;
             config.plEnspell = plEnspell.Checked;
             config.plEnspell_Spell = plEnspell_spell.SelectedIndex;
             config.plGainBoost = plGainBoost.Checked;
@@ -2496,32 +1398,20 @@
             config.plAquaveil = plAquaveil.Checked;
 
             config.plHaste = plHaste.Checked;
-            if ( plHasteLevel1.Checked )
-            {
+            if (plHasteLevel1.Checked)
                 config.plHaste_Level = 1;
-            }
-            else if ( plHasteLevel2.Checked )
-            {
-                config.plHaste_Level = 2;
-            }
+            else if (plHasteLevel2.Checked) config.plHaste_Level = 2;
 
             config.plSpikes = plSpikes.Checked;
             config.plSpikes_Spell = plSpikes_Spell.SelectedIndex;
 
             config.plUtsusemi = plUtsusemi.Checked;
             config.plRefresh = plRefresh.Checked;
-            if ( plRefreshLevel1.Checked )
-            {
+            if (plRefreshLevel1.Checked)
                 config.plRefresh_Level = 1;
-            }
-            else if ( plRefreshLevel2.Checked )
-            {
+            else if (plRefreshLevel2.Checked)
                 config.plRefresh_Level = 2;
-            }
-            else if ( plRefreshLevel3.Checked )
-            {
-                config.plRefresh_Level = 3;
-            }
+            else if (plRefreshLevel3.Checked) config.plRefresh_Level = 3;
 
             // SCHOLAR STRATAGEMS
             config.accessionCure = accessionCure.Checked;
@@ -2837,29 +1727,29 @@
 
             // OTHERS
 
-            string path = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Settings");
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings");
 
-            if ( loadJobSettings.Checked == true )
+            if (loadJobSettings.Checked)
             {
-                string fileName = "loadSettings";
-                FileStream stream = File.Create(path + "/" + fileName);
-                stream.Close ( );
-                stream.Dispose ( );
+                var fileName = "loadSettings";
+                var stream = File.Create(path + "/" + fileName);
+                stream.Close();
+                stream.Dispose();
             }
-            else if ( loadJobSettings.Checked == false && System.IO.File.Exists ( path + "/loadSettings" ) )
+            else if (loadJobSettings.Checked == false && File.Exists(path + "/loadSettings"))
             {
                 try
                 {
-                    System.IO.File.Delete ( path + "/loadSettings" );
+                    File.Delete(path + "/loadSettings");
                 }
-                catch ( System.IO.IOException )
+                catch (IOException)
                 {
                     //Console.WriteLine(e.Message);
                     return;
                 }
             }
 
-            Close ( );
+            Close();
             //MessageBox.Show("Saved!", "All Settings");
         }
 
@@ -2867,9 +1757,9 @@
 
         #region "== PL Debuff Check Boxes"
 
-        private void plDebuffEnabled_CheckedChanged ( object sender, EventArgs e )
+        private void plDebuffEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            if ( plDebuffEnabled.Checked )
+            if (plDebuffEnabled.Checked)
             {
                 plAgiDown.Checked = true;
                 plAgiDown.Enabled = true;
@@ -2960,7 +1850,7 @@
                 plAmnesia.Checked = true;
                 plAmnesia.Enabled = true;
             }
-            else if ( plDebuffEnabled.Checked == false )
+            else if (plDebuffEnabled.Checked == false)
             {
                 plAgiDown.Checked = false;
                 plAgiDown.Enabled = false;
@@ -3057,9 +1947,9 @@
 
         #region "== Na spell check boxes"
 
-        private void naSpellsenable_CheckedChanged ( object sender, EventArgs e )
+        private void naSpellsenable_CheckedChanged(object sender, EventArgs e)
         {
-            if ( naSpellsenable.Checked )
+            if (naSpellsenable.Checked)
             {
                 naBlindness.Checked = true;
                 naBlindness.Enabled = true;
@@ -3082,7 +1972,7 @@
                 naErase.Enabled = true;
                 Esuna.Enabled = true;
             }
-            else if ( naSpellsenable.Checked == false )
+            else if (naSpellsenable.Checked == false)
             {
                 naBlindness.Checked = false;
                 naBlindness.Enabled = false;
@@ -3113,9 +2003,9 @@
 
         #region "== Monitored Player Debuff Check Boxes"
 
-        private void monitoredDebuffEnabled_CheckedChanged ( object sender, EventArgs e )
+        private void monitoredDebuffEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            if ( monitoredDebuffEnabled.Checked )
+            if (monitoredDebuffEnabled.Checked)
             {
                 monitoredAgiDown.Checked = true;
                 monitoredAgiDown.Enabled = true;
@@ -3212,7 +2102,7 @@
                 monitoredAmnesia.Checked = true;
                 monitoredAmnesia.Enabled = true;
             }
-            else if ( monitoredDebuffEnabled.Checked == false )
+            else if (monitoredDebuffEnabled.Checked == false)
             {
                 monitoredAgiDown.Checked = false;
                 monitoredAgiDown.Enabled = false;
@@ -3313,59 +2203,28 @@
 
         #endregion "== Monitored Player Debuff Check Boxes"
 
-        #region "== Geomancy Check Boxes"
-
-        private void EnableGeoSpells_CheckedChanged ( object sender, EventArgs e )
+        private void saveAsButton_Click(object sender, EventArgs e)
         {
-            if ( EnableGeoSpells.Checked )
-            {
-                INDISpell.Enabled = true;
-                entrustINDISpell.Enabled = true;
-                entrustSpell_target.Enabled = true;
-            }
-            else if ( EnableGeoSpells.Checked == false )
-            {
-                INDISpell.Enabled = false;
-                entrustINDISpell.Enabled = false;
-                entrustSpell_target.Enabled = false;
-            }
-        }
+            button4_Click(sender, e);
 
-        private void EnableLuopanSpells_CheckedChanged ( object sender, EventArgs e )
-        {
-            if ( EnableLuopanSpells.Checked )
+            var savefile = new SaveFileDialog();
+
+            if (CurePleaseForm._ELITEAPIPL != null)
             {
-                GEOSpell.Enabled = true;
-                GEOSpell_target.Enabled = true;
-            }
-            else if ( EnableLuopanSpells.Checked == false )
-            {
-                GEOSpell.Enabled = false;
-                GEOSpell_target.Enabled = false;
-            }
-        }
-
-        #endregion "== Geomancy Check Boxes"
-
-        private void saveAsButton_Click ( object sender, EventArgs e )
-        {
-            button4_Click ( sender, e );
-
-            SaveFileDialog savefile = new SaveFileDialog();
-
-            if ( CurePleaseForm._ELITEAPIPL != null )
-            {
-                if ( CurePleaseForm._ELITEAPIPL.Player.MainJob != 0 )
+                if (CurePleaseForm._ELITEAPIPL.Player.MainJob != 0)
                 {
-                    if ( CurePleaseForm._ELITEAPIPL.Player.SubJob != 0 )
+                    if (CurePleaseForm._ELITEAPIPL.Player.SubJob != 0)
                     {
-                        JobTitles mainJob = JobNames.Where(c => c.job_number == CurePleaseForm._ELITEAPIPL.Player.MainJob).FirstOrDefault();
-                        JobTitles subJob = JobNames.Where(c => c.job_number == CurePleaseForm._ELITEAPIPL.Player.SubJob).FirstOrDefault();
+                        var mainJob = JobNames.Where(c => c.job_number == CurePleaseForm._ELITEAPIPL.Player.MainJob)
+                            .FirstOrDefault();
+                        var subJob = JobNames.Where(c => c.job_number == CurePleaseForm._ELITEAPIPL.Player.SubJob)
+                            .FirstOrDefault();
                         savefile.FileName = mainJob.job_name + "_" + subJob.job_name + ".xml";
                     }
                     else
                     {
-                        JobTitles mainJob = JobNames.Where(c => c.job_number == CurePleaseForm._ELITEAPIPL.Player.MainJob).FirstOrDefault();
+                        var mainJob = JobNames.Where(c => c.job_number == CurePleaseForm._ELITEAPIPL.Player.MainJob)
+                            .FirstOrDefault();
                         savefile.FileName = mainJob + ".xml";
                     }
                 }
@@ -3374,44 +2233,45 @@
             {
                 savefile.FileName = "Settings.xml";
             }
+
             savefile.Filter = " Extensible Markup Language (*.xml)|*.xml";
             savefile.FilterIndex = 2;
-            savefile.InitialDirectory = System.IO.Path.Combine ( System.AppDomain.CurrentDomain.BaseDirectory, "Settings" );
+            savefile.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings");
 
-            if ( savefile.ShowDialog ( ) == DialogResult.OK )
+            if (savefile.ShowDialog() == DialogResult.OK)
             {
-                XmlSerializer mySerializer = new XmlSerializer(typeof(MySettings));
-                StreamWriter myWriter = new StreamWriter(savefile.FileName);
-                mySerializer.Serialize ( myWriter, config );
-                myWriter.Close ( );
-                myWriter.Dispose ( );
+                var mySerializer = new XmlSerializer(typeof(MySettings));
+                var myWriter = new StreamWriter(savefile.FileName);
+                mySerializer.Serialize(myWriter, config);
+                myWriter.Close();
+                myWriter.Dispose();
             }
         }
 
-        private void loadButton_Click ( object sender, EventArgs e )
+        private void loadButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog
+            var openFileDialog1 = new OpenFileDialog
             {
                 Filter = " Extensible Markup Language (*.xml)|*.xml",
                 FilterIndex = 2,
-                InitialDirectory = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Settings")
+                InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings")
             };
 
-            if ( openFileDialog1.ShowDialog ( ) == DialogResult.OK )
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                XmlSerializer mySerializer = new XmlSerializer(typeof(MySettings));
+                var mySerializer = new XmlSerializer(typeof(MySettings));
 
-                StreamReader reader = new StreamReader(openFileDialog1.FileName);
-                config = ( MySettings ) mySerializer.Deserialize ( reader );
+                var reader = new StreamReader(openFileDialog1.FileName);
+                config = (MySettings) mySerializer.Deserialize(reader);
 
-                reader.Close ( );
-                reader.Dispose ( );
-                updateForm ( config );
-                button4_Click ( sender, e );
+                reader.Close();
+                reader.Dispose();
+                updateForm(config);
+                button4_Click(sender, e);
             }
         }
 
-        public void updateForm ( MySettings config )
+        public void updateForm(MySettings config)
         {
             // HEALING MAGIC
             cure1enabled.Checked = config.cure1enabled;
@@ -3427,11 +2287,13 @@
             cure5amount.Value = config.cure5amount;
             cure6amount.Value = config.cure6amount;
             curePercentage.Value = config.curePercentage;
-            curePercentageValueLabel.Text = config.curePercentage.ToString ( CultureInfo.InvariantCulture );
+            curePercentageValueLabel.Text = config.curePercentage.ToString(CultureInfo.InvariantCulture);
             priorityCurePercentage.Value = config.priorityCurePercentage;
-            priorityCurePercentageValueLabel.Text = config.priorityCurePercentage.ToString ( CultureInfo.InvariantCulture );
+            priorityCurePercentageValueLabel.Text =
+                config.priorityCurePercentage.ToString(CultureInfo.InvariantCulture);
             monitoredCurePercentage.Value = config.monitoredCurePercentage;
-            monitoredCurePercentageValueLabel.Text = config.monitoredCurePercentage.ToString ( CultureInfo.InvariantCulture );
+            monitoredCurePercentageValueLabel.Text =
+                config.monitoredCurePercentage.ToString(CultureInfo.InvariantCulture);
 
             curagaEnabled.Checked = config.curagaEnabled;
             curaga2Enabled.Checked = config.curaga2enabled;
@@ -3446,7 +2308,7 @@
             curaga5Amount.Value = config.curaga5Amount;
 
             curagaCurePercentage.Value = config.curagaCurePercentage;
-            curagaPercentageValueLabel.Text = config.curagaCurePercentage.ToString ( CultureInfo.InvariantCulture );
+            curagaPercentageValueLabel.Text = config.curagaCurePercentage.ToString(CultureInfo.InvariantCulture);
             curagaTargetType.SelectedIndex = config.curagaTargetType;
             curagaTargetName.Text = config.curagaTargetName;
             requiredCuragaNumbers.Value = config.curagaRequiredMembers;
@@ -3455,7 +2317,7 @@
 
             // BASIC ENHANCING
             autoHasteMinutes.Value = config.autoHasteMinutes;
-            if ( config.autoAdloquiumMinutes != 0 )
+            if (config.autoAdloquiumMinutes != 0)
             {
                 autoAdloquium_Minutes.Value = config.autoAdloquiumMinutes;
             }
@@ -3464,17 +2326,14 @@
                 config.autoAdloquiumMinutes = 2;
                 autoAdloquium_Minutes.Value = 2;
             }
+
             autoProtect_Minutes.Value = config.autoProtect_Minutes;
             autoShell_Minutes.Value = config.autoShellMinutes;
             autoPhalanxIIMinutes.Value = config.autoPhalanxIIMinutes;
-            if ( config.autoStormspellMinutes == 0 )
-            {
+            if (config.autoStormspellMinutes == 0)
                 autoStormspellMinutes.Value = 3;
-            }
             else
-            {
                 autoStormspellMinutes.Value = config.autoStormspellMinutes;
-            }
             autoRefresh_Minutes.Value = config.autoRefresh_Minutes;
             autoRegen_Minutes.Value = config.autoRegen_Minutes;
             autoRefresh_Minutes.Value = config.autoRefresh_Minutes;
@@ -3489,81 +2348,42 @@
             plShell.Checked = config.plProtect;
 
 
-
-
             plRegen.Checked = config.plRegen;
-            if ( config.plRegen_Level == 1 && plRegen.Checked == true )
-            {
+            if (config.plRegen_Level == 1 && plRegen.Checked)
                 plRegenLevel1.Checked = true;
-            }
-            else if ( config.plRegen_Level == 2 && plRegen.Checked == true )
-            {
+            else if (config.plRegen_Level == 2 && plRegen.Checked)
                 plRegenLevel2.Checked = true;
-            }
-            else if ( config.plRegen_Level == 3 && plRegen.Checked == true )
-            {
+            else if (config.plRegen_Level == 3 && plRegen.Checked)
                 plRegenLevel3.Checked = true;
-            }
-            else if ( config.plRegen_Level == 4 && plRegen.Checked == true )
-            {
+            else if (config.plRegen_Level == 4 && plRegen.Checked)
                 plRegenLevel4.Checked = true;
-            }
-            else if ( config.plRegen_Level == 5 && plRegen.Checked == true )
-            {
-                plRegenLevel5.Checked = true;
-            }
+            else if (config.plRegen_Level == 5 && plRegen.Checked) plRegenLevel5.Checked = true;
 
             plReraise.Checked = config.plReraise;
-            if ( config.plReraise_Level == 1 && plReraise.Checked == true )
-            {
+            if (config.plReraise_Level == 1 && plReraise.Checked)
                 plReraiseLevel1.Checked = true;
-            }
-            else if ( config.plReraise_Level == 2 && plReraise.Checked == true )
-            {
+            else if (config.plReraise_Level == 2 && plReraise.Checked)
                 plReraiseLevel2.Checked = true;
-            }
-            else if ( config.plReraise_Level == 3 && plReraise.Checked == true )
-            {
+            else if (config.plReraise_Level == 3 && plReraise.Checked)
                 plReraiseLevel3.Checked = true;
-            }
-            else if ( config.plReraise_Level == 4 && plReraise.Checked == true )
-            {
-                plReraiseLevel4.Checked = true;
-            }
+            else if (config.plReraise_Level == 4 && plReraise.Checked) plReraiseLevel4.Checked = true;
             plRefresh.Checked = config.plRefresh;
-            if ( config.plRefresh_Level == 1 && plRefresh.Checked == true )
-            {
+            if (config.plRefresh_Level == 1 && plRefresh.Checked)
                 plRefreshLevel1.Checked = true;
-            }
-            else if ( config.plRefresh_Level == 2 && plRefresh.Checked == true )
-            {
+            else if (config.plRefresh_Level == 2 && plRefresh.Checked)
                 plRefreshLevel2.Checked = true;
-            }
-            else if ( config.plRefresh_Level == 3 && plRefresh.Checked == true )
-            {
-                plRefreshLevel3.Checked = true;
-            }
+            else if (config.plRefresh_Level == 3 && plRefresh.Checked) plRefreshLevel3.Checked = true;
             plStoneskin.Checked = config.plStoneskin;
             plPhalanx.Checked = config.plPhalanx;
             plTemper.Checked = config.plTemper;
-            if ( config.plTemper_Level == 1 && plTemper.Checked == true )
-            {
+            if (config.plTemper_Level == 1 && plTemper.Checked)
                 plTemperLevel1.Checked = true;
-            }
-            else if ( config.plTemper_Level == 2 && plTemper.Checked == true )
-            {
-                plTemperLevel2.Checked = true;
-            }
+            else if (config.plTemper_Level == 2 && plTemper.Checked) plTemperLevel2.Checked = true;
 
             plHaste.Checked = config.plHaste;
-            if ( config.plHaste_Level == 1 && plHaste.Checked == true )
-            {
+            if (config.plHaste_Level == 1 && plHaste.Checked)
                 plHasteLevel1.Checked = true;
-            }
-            else if ( config.plHaste_Level == 2 && plHaste.Checked == true )
-            {
-                plHasteLevel2.Checked = true;
-            }
+            else if (config.plHaste_Level == 2 && plHaste.Checked) plHasteLevel2.Checked = true;
 
             plSpikes.Checked = config.plSpikes;
             plSpikes_Spell.SelectedIndex = config.plSpikes_Spell;
@@ -3576,26 +2396,30 @@
             EntrustBox.Checked = config.Entrust;
             DematerializeBox.Checked = config.Dematerialize;
             plBarElement.Checked = config.plBarElement;
-            if ( config.plBarElement_Spell > 5 )
+            if (config.plBarElement_Spell > 5)
             {
                 plBarElement_Spell.SelectedIndex = 0;
-                config.plBarElement_Spell = 0; ;
+                config.plBarElement_Spell = 0;
+                ;
             }
             else
             {
                 plBarElement_Spell.SelectedIndex = config.plBarElement_Spell;
             }
+
             AOE_Barelemental.Checked = config.AOE_Barelemental;
             plBarStatus.Checked = config.plBarStatus;
-            if ( config.plBarStatus_Spell > 8 )
+            if (config.plBarStatus_Spell > 8)
             {
                 plBarStatus_Spell.SelectedIndex = 0;
-                config.plBarStatus_Spell = 0; ;
+                config.plBarStatus_Spell = 0;
+                ;
             }
             else
             {
                 plBarStatus_Spell.SelectedIndex = config.plBarStatus_Spell;
             }
+
             AOE_Barstatus.Checked = config.AOE_Barstatus;
             plStormSpell.Checked = config.plStormSpell;
             plKlimaform.Checked = config.plKlimaform;
@@ -3866,7 +2690,6 @@
             RadialArcanaBox.Checked = config.RadialArcana;
 
 
-
             Fullcircle_DisableEnemy.Checked = config.Fullcircle_DisableEnemy;
             Fullcircle_GEOTarget.Checked = config.Fullcircle_GEOTarget;
 
@@ -3916,318 +2739,311 @@
             trackCastingPackets.Checked = config.trackCastingPackets;
         }
 
-        private void autoAdjust_Cure_Click ( object sender, EventArgs e )
+        private void autoAdjust_Cure_Click(object sender, EventArgs e)
         {
             //decimal level = this.cureLevel.Value;
-            double potency = System.Convert.ToDouble(curePotency.Value);
+            var potency = Convert.ToDouble(curePotency.Value);
 
-            if ( CurePleaseForm._ELITEAPIPL != null )
+            if (CurePleaseForm._ELITEAPIPL != null)
             {
                 // First calculate default potency
 
                 double MND = CurePleaseForm._ELITEAPIPL.Player.Stats.Mind;
                 double VIT = CurePleaseForm._ELITEAPIPL.Player.Stats.Vitality;
 
-                ushort Healing = CurePleaseForm._ELITEAPIPL.Player.CombatSkills.Healing.Skill;
+                var Healing = CurePleaseForm._ELITEAPIPL.Player.CombatSkills.Healing.Skill;
 
                 // Now grab calculations for each tier
 
-                double MND_B = Math.Floor(MND / 2);
-                double VIT_B = Math.Floor(VIT / 4);
+                var MND_B = Math.Floor(MND / 2);
+                var VIT_B = Math.Floor(VIT / 4);
 
-                double Power = MND_B + VIT_B + Healing;
+                var Power = MND_B + VIT_B + Healing;
 
                 double Cure = 0;
 
-                if ( Power >= 0 && Power < 20 )
+                if (Power >= 0 && Power < 20)
                 {
-                    Cure = ( 0 + Power ) - 0;
+                    Cure = 0 + Power - 0;
                     Cure /= 1;
-                    Cure = Math.Floor ( Cure + 10 );
+                    Cure = Math.Floor(Cure + 10);
                 }
-                else if ( Power >= 20 && Power < 40 )
+                else if (Power >= 20 && Power < 40)
                 {
-                    Cure = ( 0 + Power ) - 20;
+                    Cure = 0 + Power - 20;
                     Cure /= 1.33;
-                    Cure = Math.Floor ( Cure + 15 );
+                    Cure = Math.Floor(Cure + 15);
                 }
-                else if ( Power >= 40 && Power < 125 )
+                else if (Power >= 40 && Power < 125)
                 {
-                    Cure = ( 0 + Power ) - 40;
+                    Cure = 0 + Power - 40;
                     Cure /= 8.5;
-                    Cure = Math.Floor ( Cure + 30 );
+                    Cure = Math.Floor(Cure + 30);
                 }
-                else if ( Power >= 125 && Power < 200 )
+                else if (Power >= 125 && Power < 200)
                 {
-                    Cure = ( 0 + Power ) - 125;
+                    Cure = 0 + Power - 125;
                     Cure /= 8.5;
-                    Cure = Math.Floor ( Cure + 40 );
+                    Cure = Math.Floor(Cure + 40);
                 }
-                else if ( Power >= 200 && Power < 600 )
+                else if (Power >= 200 && Power < 600)
                 {
-                    Cure = ( 0 + Power ) - 200;
+                    Cure = 0 + Power - 200;
                     Cure /= 20;
-                    Cure = Math.Floor ( Cure + 45 );
+                    Cure = Math.Floor(Cure + 45);
                 }
-                else if ( Power >= 600 )
+                else if (Power >= 600)
                 {
                     Cure = 65;
                 }
 
-                double Cure_pot = Cure * 00.01;
+                var Cure_pot = Cure * 00.01;
                 Cure_pot *= potency;
 
-                double Cure_mathed = Math.Round(Cure + Cure_pot);
-                Cure_mathed -= ( Cure_mathed * 0.10 );
+                var Cure_mathed = Math.Round(Cure + Cure_pot);
+                Cure_mathed -= Cure_mathed * 0.10;
 
                 double Cure2 = 0;
 
-                if ( Power >= 40 && Power < 70 )
+                if (Power >= 40 && Power < 70)
                 {
-                    Cure2 = ( 0 + Power ) - 40;
+                    Cure2 = 0 + Power - 40;
                     Cure2 /= 1;
-                    Cure2 = Math.Floor ( Cure2 + 60 );
+                    Cure2 = Math.Floor(Cure2 + 60);
                 }
-                else if ( Power >= 70 && Power < 125 )
+                else if (Power >= 70 && Power < 125)
                 {
-                    Cure2 = ( 0 + Power ) - 70;
+                    Cure2 = 0 + Power - 70;
                     Cure2 /= 5.5;
-                    Cure2 = Math.Floor ( Cure2 + 90 );
+                    Cure2 = Math.Floor(Cure2 + 90);
                 }
-                else if ( Power >= 125 && Power < 200 )
+                else if (Power >= 125 && Power < 200)
                 {
-                    Cure2 = ( 0 + Power ) - 125;
+                    Cure2 = 0 + Power - 125;
                     Cure2 /= 7.5;
-                    Cure2 = Math.Floor ( Cure2 + 100 );
+                    Cure2 = Math.Floor(Cure2 + 100);
                 }
-                else if ( Power >= 200 && Power < 400 )
+                else if (Power >= 200 && Power < 400)
                 {
-                    Cure2 = ( 0 + Power ) - 200;
+                    Cure2 = 0 + Power - 200;
                     Cure2 /= 10;
-                    Cure2 = Math.Floor ( Cure2 + 110 );
+                    Cure2 = Math.Floor(Cure2 + 110);
                 }
-                else if ( Power >= 400 && Power < 700 )
+                else if (Power >= 400 && Power < 700)
                 {
-                    Cure2 = ( 0 + Power ) - 400;
+                    Cure2 = 0 + Power - 400;
                     Cure2 /= 20;
-                    Cure2 = Math.Floor ( Cure2 + 130 );
+                    Cure2 = Math.Floor(Cure2 + 130);
                 }
-                else if ( Power >= 700 )
+                else if (Power >= 700)
                 {
                     Cure2 = 145;
                 }
 
-                double Cure2_pot = Cure2 * 00.01;
+                var Cure2_pot = Cure2 * 00.01;
                 Cure2_pot *= potency;
 
-                double Cure2_mathed = Math.Round(Cure2 + Cure2_pot);
-                Cure2_mathed -= ( Cure2_mathed * 0.10 );
+                var Cure2_mathed = Math.Round(Cure2 + Cure2_pot);
+                Cure2_mathed -= Cure2_mathed * 0.10;
 
                 double Cure3 = 0;
 
-                if ( Power >= 70 && Power < 125 )
+                if (Power >= 70 && Power < 125)
                 {
-                    Cure3 = ( 0 + Power ) - 70;
+                    Cure3 = 0 + Power - 70;
                     Cure3 /= 2.2;
-                    Cure3 = Math.Floor ( Cure3 + 130 );
+                    Cure3 = Math.Floor(Cure3 + 130);
                 }
-                else if ( Power >= 125 && Power < 200 )
+                else if (Power >= 125 && Power < 200)
                 {
-                    Cure3 = ( 0 + Power ) - 125;
+                    Cure3 = 0 + Power - 125;
                     Cure3 /= 1.15;
-                    Cure3 = Math.Floor ( Cure3 + 155 );
+                    Cure3 = Math.Floor(Cure3 + 155);
                 }
-                else if ( Power >= 200 && Power < 300 )
+                else if (Power >= 200 && Power < 300)
                 {
-                    Cure3 = ( 0 + Power ) - 200;
+                    Cure3 = 0 + Power - 200;
                     Cure3 /= 2.5;
-                    Cure3 = Math.Floor ( Cure3 + 220 );
+                    Cure3 = Math.Floor(Cure3 + 220);
                 }
-                else if ( Power >= 300 && Power < 700 )
+                else if (Power >= 300 && Power < 700)
                 {
-                    Cure3 = ( 0 + Power ) - 300;
+                    Cure3 = 0 + Power - 300;
                     Cure3 /= 5;
-                    Cure3 = Math.Floor ( Cure3 + 260 );
+                    Cure3 = Math.Floor(Cure3 + 260);
                 }
-                else if ( Power >= 700 )
+                else if (Power >= 700)
                 {
                     Cure3 = 340;
                 }
 
-                double Cure3_pot = Cure3 * 00.01;
+                var Cure3_pot = Cure3 * 00.01;
                 Cure3_pot *= potency;
 
-                double Cure3_mathed = Math.Round(Cure3 + Cure3_pot);
-                Cure3_mathed -= ( Cure3_mathed * 0.10 );
+                var Cure3_mathed = Math.Round(Cure3 + Cure3_pot);
+                Cure3_mathed -= Cure3_mathed * 0.10;
 
                 double Cure4 = 0;
 
-                if ( Power >= 70 && Power < 200 )
+                if (Power >= 70 && Power < 200)
                 {
-                    Cure4 = ( 0 + Power ) - 70;
+                    Cure4 = 0 + Power - 70;
                     Cure4 /= 1;
-                    Cure4 = Math.Floor ( Cure4 + 270 );
+                    Cure4 = Math.Floor(Cure4 + 270);
                 }
-                else if ( Power >= 200 && Power < 300 )
+                else if (Power >= 200 && Power < 300)
                 {
-                    Cure4 = ( 0 + Power ) - 200;
+                    Cure4 = 0 + Power - 200;
                     Cure4 /= 2;
-                    Cure4 = Math.Floor ( Cure4 + 400 );
+                    Cure4 = Math.Floor(Cure4 + 400);
                 }
-                else if ( Power >= 300 && Power < 400 )
+                else if (Power >= 300 && Power < 400)
                 {
-                    Cure4 = ( 0 + Power ) - 300;
+                    Cure4 = 0 + Power - 300;
                     Cure4 /= 1.43;
-                    Cure4 = Math.Floor ( Cure4 + 450 );
+                    Cure4 = Math.Floor(Cure4 + 450);
                 }
-                else if ( Power >= 400 && Power < 700 )
+                else if (Power >= 400 && Power < 700)
                 {
-                    Cure4 = ( 0 + Power ) - 400;
+                    Cure4 = 0 + Power - 400;
                     Cure4 /= 2.5;
-                    Cure4 = Math.Floor ( Cure4 + 520 );
+                    Cure4 = Math.Floor(Cure4 + 520);
                 }
-                else if ( Power >= 700 )
+                else if (Power >= 700)
                 {
                     Cure4 = 640;
                 }
 
-                double Cure4_pot = Cure4 * 00.01;
+                var Cure4_pot = Cure4 * 00.01;
                 Cure4_pot *= potency;
 
-                double Cure4_mathed = Math.Round(Cure4 + Cure4_pot);
-                Cure4_mathed -= ( Cure4_mathed * 0.10 );
+                var Cure4_mathed = Math.Round(Cure4 + Cure4_pot);
+                Cure4_mathed -= Cure4_mathed * 0.10;
 
                 double Cure5 = 0;
 
-                if ( Power >= 80 && Power < 150 )
+                if (Power >= 80 && Power < 150)
                 {
-                    Cure5 = ( 0 + Power ) - 80;
+                    Cure5 = 0 + Power - 80;
                     Cure5 /= 0.7;
-                    Cure5 = Math.Floor ( Cure5 + 450 );
+                    Cure5 = Math.Floor(Cure5 + 450);
                 }
-                else if ( Power >= 150 && Power < 190 )
+                else if (Power >= 150 && Power < 190)
                 {
-                    Cure5 = ( 0 + Power ) - 150;
+                    Cure5 = 0 + Power - 150;
                     Cure5 /= 1.25;
-                    Cure5 = Math.Floor ( Cure5 + 550 );
+                    Cure5 = Math.Floor(Cure5 + 550);
                 }
-                else if ( Power >= 190 && Power < 260 )
+                else if (Power >= 190 && Power < 260)
                 {
-                    Cure5 = ( 0 + Power ) - 190;
+                    Cure5 = 0 + Power - 190;
                     Cure5 /= 1.84;
-                    Cure5 = Math.Floor ( Cure5 + 582 );
+                    Cure5 = Math.Floor(Cure5 + 582);
                 }
-                else if ( Power >= 260 && Power < 300 )
+                else if (Power >= 260 && Power < 300)
                 {
-                    Cure5 = ( 0 + Power ) - 260;
+                    Cure5 = 0 + Power - 260;
                     Cure5 /= 2;
-                    Cure5 = Math.Floor ( Cure5 + 620 );
+                    Cure5 = Math.Floor(Cure5 + 620);
                 }
-                else if ( Power >= 300 && Power < 500 )
+                else if (Power >= 300 && Power < 500)
                 {
-                    Cure5 = ( 0 + Power ) - 300;
+                    Cure5 = 0 + Power - 300;
                     Cure5 /= 2.5;
-                    Cure5 = Math.Floor ( Cure5 + 640 );
+                    Cure5 = Math.Floor(Cure5 + 640);
                 }
-                else if ( Power >= 500 && Power < 700 )
+                else if (Power >= 500 && Power < 700)
                 {
-                    Cure5 = ( 0 + Power ) - 500;
+                    Cure5 = 0 + Power - 500;
                     Cure5 /= 3.33;
-                    Cure5 = Math.Floor ( Cure5 + 720 );
+                    Cure5 = Math.Floor(Cure5 + 720);
                 }
-                else if ( Power >= 700 )
+                else if (Power >= 700)
                 {
                     Cure5 = 780;
                 }
 
-                double Cure5_pot = Cure5 * 00.01;
+                var Cure5_pot = Cure5 * 00.01;
                 Cure5_pot *= potency;
 
-                double Cure5_mathed = Math.Round(Cure5 + Cure5_pot);
-                Cure5_mathed -= ( Cure5_mathed * 0.10 );
+                var Cure5_mathed = Math.Round(Cure5 + Cure5_pot);
+                Cure5_mathed -= Cure5_mathed * 0.10;
 
                 double Cure6 = 0;
 
-                if ( Power >= 90 && Power < 210 )
+                if (Power >= 90 && Power < 210)
                 {
-                    Cure6 = ( 0 + Power ) - 90;
+                    Cure6 = 0 + Power - 90;
                     Cure6 /= 1.5;
-                    Cure6 = Math.Floor ( Cure6 + 600 );
+                    Cure6 = Math.Floor(Cure6 + 600);
                 }
-                else if ( Power >= 210 && Power < 300 )
+                else if (Power >= 210 && Power < 300)
                 {
-                    Cure6 = ( 0 + Power ) - 210;
+                    Cure6 = 0 + Power - 210;
                     Cure6 /= 0.9;
-                    Cure6 = Math.Floor ( Cure6 + 680 );
+                    Cure6 = Math.Floor(Cure6 + 680);
                 }
-                else if ( Power >= 300 && Power < 400 )
+                else if (Power >= 300 && Power < 400)
                 {
-                    Cure6 = ( 0 + Power ) - 300;
+                    Cure6 = 0 + Power - 300;
                     Cure6 /= 1.43;
-                    Cure6 = Math.Floor ( Cure6 + 780 );
+                    Cure6 = Math.Floor(Cure6 + 780);
                 }
-                else if ( Power >= 400 && Power < 500 )
+                else if (Power >= 400 && Power < 500)
                 {
-                    Cure6 = ( 0 + Power ) - 400;
+                    Cure6 = 0 + Power - 400;
                     Cure6 /= 2.5;
-                    Cure6 = Math.Floor ( Cure6 + 850 );
+                    Cure6 = Math.Floor(Cure6 + 850);
                 }
-                else if ( Power >= 500 && Power < 700 )
+                else if (Power >= 500 && Power < 700)
                 {
-                    Cure6 = ( 0 + Power ) - 500;
+                    Cure6 = 0 + Power - 500;
                     Cure6 /= 1.67;
-                    Cure6 = Math.Floor ( Cure6 + 890 );
+                    Cure6 = Math.Floor(Cure6 + 890);
                 }
-                else if ( Power >= 700 )
+                else if (Power >= 700)
                 {
                     Cure6 = 1010;
                 }
 
-                double Cure6_pot = Cure6 * 00.01;
+                var Cure6_pot = Cure6 * 00.01;
                 Cure6_pot *= potency;
 
-                double Cure6_mathed = Math.Round(Cure6 + Cure6_pot);
-                Cure6_mathed -= ( Cure6_mathed * 0.10 );
+                var Cure6_mathed = Math.Round(Cure6 + Cure6_pot);
+                Cure6_mathed -= Cure6_mathed * 0.10;
 
-                cure1amount.Value = Convert.ToDecimal ( Cure_mathed );
-                cure2amount.Value = Convert.ToDecimal ( Cure2_mathed );
-                cure3amount.Value = Convert.ToDecimal ( Cure3_mathed );
-                cure4amount.Value = Convert.ToDecimal ( Cure4_mathed );
-                cure5amount.Value = Convert.ToDecimal ( Cure5_mathed );
-                cure6amount.Value = Convert.ToDecimal ( Cure6_mathed );
+                cure1amount.Value = Convert.ToDecimal(Cure_mathed);
+                cure2amount.Value = Convert.ToDecimal(Cure2_mathed);
+                cure3amount.Value = Convert.ToDecimal(Cure3_mathed);
+                cure4amount.Value = Convert.ToDecimal(Cure4_mathed);
+                cure5amount.Value = Convert.ToDecimal(Cure5_mathed);
+                cure6amount.Value = Convert.ToDecimal(Cure6_mathed);
 
-                curagaAmount.Value = Convert.ToDecimal ( Cure2_mathed );
-                curaga2Amount.Value = Convert.ToDecimal ( Cure3_mathed );
-                curaga3Amount.Value = Convert.ToDecimal ( Cure4_mathed );
-                curaga4Amount.Value = Convert.ToDecimal ( Cure5_mathed );
-                curaga5Amount.Value = Convert.ToDecimal ( Cure6_mathed );
+                curagaAmount.Value = Convert.ToDecimal(Cure2_mathed);
+                curaga2Amount.Value = Convert.ToDecimal(Cure3_mathed);
+                curaga3Amount.Value = Convert.ToDecimal(Cure4_mathed);
+                curaga4Amount.Value = Convert.ToDecimal(Cure5_mathed);
+                curaga5Amount.Value = Convert.ToDecimal(Cure6_mathed);
             }
             else
             {
-                MessageBox.Show ( "Select a PL from the main screen before running this." );
+                MessageBox.Show("Select a PL from the main screen before running this.");
             }
         }
 
-        protected override bool ProcessCmdKey ( ref Message msg, Keys keyData )
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if ( keyData == ( Keys.Control | Keys.S ) )
-            {
-                loadButton.PerformClick ( );
-            }
-            else if ( keyData == ( Keys.Control | Keys.O ) )
-            {
-                saveAsButton.PerformClick ( );
-            }
-            else if ( keyData == ( Keys.Escape ) )
-            {
-                button4.PerformClick ( );
-            }
-            return base.ProcessCmdKey ( ref msg, keyData );
+            if (keyData == (Keys.Control | Keys.S))
+                loadButton.PerformClick();
+            else if (keyData == (Keys.Control | Keys.O))
+                saveAsButton.PerformClick();
+            else if (keyData == Keys.Escape) button4.PerformClick();
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void naErase_CheckedChanged ( object sender, EventArgs e )
+        private void naErase_CheckedChanged(object sender, EventArgs e)
         {
-            if ( naErase.Checked == true )
+            if (naErase.Checked)
             {
                 na_Weight.Enabled = true;
                 na_VitDown.Enabled = true;
@@ -4368,5 +3184,63 @@
                 na_AgiDown.Enabled = false;
             }
         }
+
+        #region "== Cure Percentage's Changed"
+
+        private void curePercentage_ValueChanged(object sender, EventArgs e)
+        {
+            curePercentageValueLabel.Text = curePercentage.Value.ToString();
+        }
+
+        private void priorityCurePercentage_ValueChanged(object sender, EventArgs e)
+        {
+            priorityCurePercentageValueLabel.Text = priorityCurePercentage.Value.ToString();
+        }
+
+        private void curagaPercentage_ValueChanged(object sender, EventArgs e)
+        {
+            curagaPercentageValueLabel.Text = curagaCurePercentage.Value.ToString();
+        }
+
+        private void monitoredPercentage_ValueChanged(object sender, EventArgs e)
+        {
+            monitoredCurePercentageValueLabel.Text = monitoredCurePercentage.Value.ToString();
+        }
+
+        #endregion "== Cure Percentage's Changed"
+
+        #region "== Geomancy Check Boxes"
+
+        private void EnableGeoSpells_CheckedChanged(object sender, EventArgs e)
+        {
+            if (EnableGeoSpells.Checked)
+            {
+                INDISpell.Enabled = true;
+                entrustINDISpell.Enabled = true;
+                entrustSpell_target.Enabled = true;
+            }
+            else if (EnableGeoSpells.Checked == false)
+            {
+                INDISpell.Enabled = false;
+                entrustINDISpell.Enabled = false;
+                entrustSpell_target.Enabled = false;
+            }
+        }
+
+        private void EnableLuopanSpells_CheckedChanged(object sender, EventArgs e)
+        {
+            if (EnableLuopanSpells.Checked)
+            {
+                GEOSpell.Enabled = true;
+                GEOSpell_target.Enabled = true;
+            }
+            else if (EnableLuopanSpells.Checked == false)
+            {
+                GEOSpell.Enabled = false;
+                GEOSpell_target.Enabled = false;
+            }
+        }
+
+        #endregion "== Geomancy Check Boxes"
     }
 }

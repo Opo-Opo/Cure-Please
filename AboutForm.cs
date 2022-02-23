@@ -1,33 +1,34 @@
-﻿namespace CurePlease
-{
-    using System.Windows.Forms;
+﻿using System.Diagnostics;
+using System.Windows.Forms;
 
+namespace CurePlease
+{
     public partial class AboutForm : Form
     {
         public AboutForm()
         {
-            this.StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterScreen;
 
-            this.InitializeComponent();
+            InitializeComponent();
 
-            this.label2.Text = Application.ProductVersion;
+            label2.Text = Application.ProductVersion;
         }
 
         #region "== Form About"
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/atom0s/Cure-Please");
+            Process.Start("https://github.com/atom0s/Cure-Please");
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://ext.elitemmonetwork.com/downloads/eliteapi/");
+            Process.Start("http://ext.elitemmonetwork.com/downloads/eliteapi/");
         }
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://ext.elitemmonetwork.com/downloads/elitemmo_api/");
+            Process.Start("http://ext.elitemmonetwork.com/downloads/elitemmo_api/");
         }
     }
 
