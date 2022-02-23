@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace CurePlease
+namespace CurePlease.App
 {
     public partial class PartyBuffsForm : Form
     {

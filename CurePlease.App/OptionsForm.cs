@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-namespace CurePlease
+namespace CurePlease.App
 {
     #region "== Form2"
 

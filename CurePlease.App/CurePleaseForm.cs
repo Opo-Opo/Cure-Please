@@ -13,11 +13,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using CurePlease.Properties;
+using CurePlease.App.Properties;
 using EliteMMO.API;
 using Keys = EliteMMO.API.Keys;
 
-namespace CurePlease
+namespace CurePlease.App
 {
     public partial class CurePleaseForm : Form
     {

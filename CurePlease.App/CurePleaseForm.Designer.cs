@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace CurePlease
+namespace CurePlease.App
 {
     partial class CurePleaseForm
     {
@@ -34,12 +34,12 @@ namespace CurePlease
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CurePleaseForm));
             this.player0optionsButton = new System.Windows.Forms.Button();
             this.party0 = new System.Windows.Forms.GroupBox();
-            this.player5HP = new CurePlease.NewProgressBar();
-            this.player4HP = new CurePlease.NewProgressBar();
-            this.player3HP = new CurePlease.NewProgressBar();
-            this.player1HP = new CurePlease.NewProgressBar();
-            this.player2HP = new CurePlease.NewProgressBar();
-            this.player0HP = new CurePlease.NewProgressBar();
+            this.player5HP = new NewProgressBar();
+            this.player4HP = new NewProgressBar();
+            this.player3HP = new NewProgressBar();
+            this.player1HP = new NewProgressBar();
+            this.player2HP = new NewProgressBar();
+            this.player0HP = new NewProgressBar();
             this.player5buffsButton = new System.Windows.Forms.Button();
             this.player4buffsButton = new System.Windows.Forms.Button();
             this.player3buffsButton = new System.Windows.Forms.Button();
@@ -127,17 +127,17 @@ namespace CurePlease
             this.POLID = new System.Windows.Forms.ComboBox();
             this.plLabel = new System.Windows.Forms.Label();
             this.party2 = new System.Windows.Forms.GroupBox();
-            this.player17HP = new CurePlease.NewProgressBar();
+            this.player17HP = new NewProgressBar();
             this.player17optionsButton = new System.Windows.Forms.Button();
-            this.player16HP = new CurePlease.NewProgressBar();
+            this.player16HP = new NewProgressBar();
             this.player17priority = new System.Windows.Forms.CheckBox();
-            this.player15HP = new CurePlease.NewProgressBar();
+            this.player15HP = new NewProgressBar();
             this.player17enabled = new System.Windows.Forms.CheckBox();
-            this.player13HP = new CurePlease.NewProgressBar();
+            this.player13HP = new NewProgressBar();
             this.player16optionsButton = new System.Windows.Forms.Button();
-            this.player14HP = new CurePlease.NewProgressBar();
+            this.player14HP = new NewProgressBar();
             this.player16priority = new System.Windows.Forms.CheckBox();
-            this.player12HP = new CurePlease.NewProgressBar();
+            this.player12HP = new NewProgressBar();
             this.player16enabled = new System.Windows.Forms.CheckBox();
             this.player15optionsButton = new System.Windows.Forms.Button();
             this.player15priority = new System.Windows.Forms.CheckBox();
@@ -172,16 +172,16 @@ namespace CurePlease
             this.player10enabled = new System.Windows.Forms.CheckBox();
             this.player11enabled = new System.Windows.Forms.CheckBox();
             this.party1 = new System.Windows.Forms.GroupBox();
-            this.player11HP = new CurePlease.NewProgressBar();
+            this.player11HP = new NewProgressBar();
             this.player11optionsButton = new System.Windows.Forms.Button();
-            this.player10HP = new CurePlease.NewProgressBar();
+            this.player10HP = new NewProgressBar();
             this.player11priority = new System.Windows.Forms.CheckBox();
-            this.player9HP = new CurePlease.NewProgressBar();
+            this.player9HP = new NewProgressBar();
             this.player10optionsButton = new System.Windows.Forms.Button();
-            this.player7HP = new CurePlease.NewProgressBar();
-            this.player8HP = new CurePlease.NewProgressBar();
+            this.player7HP = new NewProgressBar();
+            this.player8HP = new NewProgressBar();
             this.player9optionsButton = new System.Windows.Forms.Button();
-            this.player6HP = new CurePlease.NewProgressBar();
+            this.player6HP = new NewProgressBar();
             this.player10priority = new System.Windows.Forms.CheckBox();
             this.player8optionsButton = new System.Windows.Forms.Button();
             this.player7optionsButton = new System.Windows.Forms.Button();

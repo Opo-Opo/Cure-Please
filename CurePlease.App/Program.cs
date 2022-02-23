@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace CurePlease
+namespace CurePlease.App
 {
     internal static class Program
     {

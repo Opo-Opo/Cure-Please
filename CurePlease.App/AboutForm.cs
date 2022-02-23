@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace CurePlease
+namespace CurePlease.App
 {
     public partial class AboutForm : Form
     {

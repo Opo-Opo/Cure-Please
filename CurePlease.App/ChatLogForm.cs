@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using EliteMMO.API;
 
-namespace CurePlease
+namespace CurePlease.App
 {
     using static CurePleaseForm;
 

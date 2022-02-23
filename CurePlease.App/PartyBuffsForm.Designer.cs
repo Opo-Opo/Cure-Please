@@ -1,4 +1,4 @@
-﻿namespace CurePlease
+﻿namespace CurePlease.App
 {
     partial class PartyBuffsForm
     {
