@@ -282,9 +282,6 @@ using System.Diagnostics.CodeAnalysis;
         Target = "~M:CurePlease.CurePleaseForm.removeDebuff(System.String,System.Int32)")]
 [assembly:
     SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "member",
-        Target = "~M:CurePlease.CurePleaseForm.resetSongTimer_Tick(System.Object,System.EventArgs)")]
-[assembly:
-    SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "member",
         Target = "~M:CurePlease.CurePleaseForm.sacrificeToolStripMenuItem_Click(System.Object,System.EventArgs)")]
 [assembly:
     SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "member",

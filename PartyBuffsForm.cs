@@ -10,7 +10,7 @@ namespace CurePlease
     {
         private readonly CurePleaseForm f1;
 
-        public List<BuffList> XMLBuffList = new List<BuffList>();
+        public List<BuffList> XMLBuffList = new();
 
         public PartyBuffsForm(CurePleaseForm f)
         {

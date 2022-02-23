@@ -268,27 +268,6 @@ namespace CurePlease
 
             public string EntrustedSpell_Target { get; set; }
 
-            // SINGING MAGIC TAB
-            public bool enableSinging { get; set; }
-
-            public bool recastSongs_Monitored { get; set; }
-
-            public bool SongsOnlyWhenNear { get; set; }
-
-            public int song1 { get; set; }
-
-            public int song2 { get; set; }
-
-            public int song3 { get; set; }
-
-            public int song4 { get; set; }
-
-            public int dummy1 { get; set; }
-
-            public int dummy2 { get; set; }
-
-            public decimal recastSongTime { get; set; }
-
             // JOB ABILITIES
 
             // SCH
@@ -342,15 +321,6 @@ namespace CurePlease
             public bool EclipticAttrition { get; set; }
 
             public bool LifeCycle { get; set; }
-
-            // BRD
-            public bool Pianissimo { get; set; }
-
-            public bool Nightingale { get; set; }
-
-            public bool Troubadour { get; set; }
-
-            public bool Marcato { get; set; }
 
             // DEBUFF REMOVAL
             public bool plDebuffEnabled { get; set; }
@@ -761,8 +731,8 @@ namespace CurePlease
 
         #endregion "== Settings Class"
 
-        public static MySettings config = new MySettings();
-        public List<JobTitles> JobNames = new List<JobTitles>();
+        public static MySettings config = new();
+        public List<JobTitles> JobNames = new();
         public int runOnce = 0;
 
         public OptionsForm()
@@ -1019,19 +989,6 @@ namespace CurePlease
 
                 config.specifiedEngageTarget = false;
 
-                // SINGING
-                config.enableSinging = false;
-                config.song1 = 0;
-                config.song2 = 0;
-                config.song3 = 0;
-                config.song4 = 0;
-                config.dummy1 = 0;
-                config.dummy2 = 0;
-                config.recastSongTime = 2;
-                config.enableSinging = false;
-                config.recastSongs_Monitored = false;
-                config.SongsOnlyWhenNear = false;
-
                 // JOB ABILITIES
                 config.AfflatusSolace = false;
                 config.AfflatusMisery = false;
@@ -1053,9 +1010,6 @@ namespace CurePlease
                 config.FullCircle = false;
                 config.BlazeOfGlory = false;
                 config.RadialArcana = false;
-                config.Troubadour = false;
-                config.Nightingale = false;
-                config.Marcato = false;
                 config.Devotion = false;
                 config.DivineCaress = false;
                 config.DarkArts = false;
@@ -1457,22 +1411,6 @@ namespace CurePlease
 
             config.specifiedEngageTarget = false;
 
-            // SINGING
-            config.enableSinging = enableSinging.Checked;
-
-            config.song1 = song1.SelectedIndex;
-            config.song2 = song2.SelectedIndex;
-            config.song3 = song3.SelectedIndex;
-            config.song4 = song4.SelectedIndex;
-
-            config.dummy1 = dummy1.SelectedIndex;
-            config.dummy2 = dummy2.SelectedIndex;
-
-            config.recastSongTime = recastSong.Value;
-
-            config.recastSongs_Monitored = recastSongs_monitored.Checked;
-            config.SongsOnlyWhenNear = SongsOnlyWhenNearEngaged.Checked;
-
             // JOB ABILITIES
 
             config.AfflatusSolace = afflatusSolace.Checked;
@@ -1504,10 +1442,6 @@ namespace CurePlease
             config.FullCircle = FullCircleBox.Checked;
             config.EclipticAttrition = EclipticAttritionBox.Checked;
             config.LifeCycle = LifeCycleBox.Checked;
-
-            config.Troubadour = troubadour.Checked;
-            config.Nightingale = nightingale.Checked;
-            config.Marcato = marcato.Checked;
 
             // DEBUFF REMOVAL
             config.plSilenceItemEnabled = plSilenceItemEnabled.Checked;
@@ -2472,18 +2406,6 @@ namespace CurePlease
             specifiedEngageTarget.Checked = config.specifiedEngageTarget;
             GeoAOE_Engaged.Checked = config.GeoWhenEngaged;
 
-            // SINGING
-            song1.SelectedIndex = config.song1;
-            song2.SelectedIndex = config.song2;
-            song3.SelectedIndex = config.song3;
-            song4.SelectedIndex = config.song4;
-            dummy1.SelectedIndex = config.dummy1;
-            dummy2.SelectedIndex = config.dummy2;
-            recastSong.Value = config.recastSongTime;
-            enableSinging.Checked = config.enableSinging;
-            recastSongs_monitored.Checked = config.recastSongs_Monitored;
-            SongsOnlyWhenNearEngaged.Checked = config.SongsOnlyWhenNear;
-
             //JOB ABILITIES
             afflatusSolace.Checked = config.AfflatusSolace;
             afflatusMisery.Checked = config.AfflatusMisery;
@@ -2509,10 +2431,6 @@ namespace CurePlease
             FullCircleBox.Checked = config.FullCircle;
             EclipticAttritionBox.Checked = config.EclipticAttrition;
             LifeCycleBox.Checked = config.LifeCycle;
-
-            troubadour.Checked = config.Troubadour;
-            nightingale.Checked = config.Nightingale;
-            marcato.Checked = config.Marcato;
 
             //DEBUFF REMOVAL
             plSilenceItemEnabled.Checked = config.plSilenceItemEnabled;
@@ -3037,7 +2955,7 @@ namespace CurePlease
                 loadButton.PerformClick();
             else if (keyData == (Keys.Control | Keys.O))
                 saveAsButton.PerformClick();
-            else if (keyData == Keys.Escape) button4.PerformClick();
+            else if (keyData == Keys.Escape) SaveAllButton.PerformClick();
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
