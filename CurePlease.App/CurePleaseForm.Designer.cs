@@ -228,7 +228,6 @@ namespace CurePlease.App
             this.castingLockLabel = new System.Windows.Forms.Label();
             this.Follow_BGW = new System.ComponentModel.BackgroundWorker();
             this.OptionsButton = new System.Windows.Forms.Button();
-            this.ChatLogButton = new System.Windows.Forms.Button();
             this.PartyBuffsButton = new System.Windows.Forms.Button();
             this.AboutButton = new System.Windows.Forms.Button();
             this.AddonReader = new System.ComponentModel.BackgroundWorker();
@@ -2280,29 +2279,13 @@ namespace CurePlease.App
             this.OptionsButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.OptionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.OptionsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OptionsButton.Location = new System.Drawing.Point(376, 8);
+            this.OptionsButton.Location = new System.Drawing.Point(450, 8);
             this.OptionsButton.Name = "OptionsButton";
             this.OptionsButton.Size = new System.Drawing.Size(61, 27);
             this.OptionsButton.TabIndex = 29;
             this.OptionsButton.Text = "Options";
             this.OptionsButton.UseVisualStyleBackColor = false;
             this.OptionsButton.Click += new System.EventHandler(this.OptionsButton_Click);
-            // 
-            // ChatLogButton
-            // 
-            this.ChatLogButton.AutoSize = true;
-            this.ChatLogButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ChatLogButton.BackColor = System.Drawing.Color.White;
-            this.ChatLogButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.ChatLogButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ChatLogButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChatLogButton.Location = new System.Drawing.Point(443, 8);
-            this.ChatLogButton.Name = "ChatLogButton";
-            this.ChatLogButton.Size = new System.Drawing.Size(68, 27);
-            this.ChatLogButton.TabIndex = 30;
-            this.ChatLogButton.Text = "Chat Log";
-            this.ChatLogButton.UseVisualStyleBackColor = false;
-            this.ChatLogButton.Click += new System.EventHandler(this.ChatLogButton_Click);
             // 
             // PartyBuffsButton
             // 
@@ -2353,7 +2336,7 @@ namespace CurePlease.App
             this.AddOnStatus.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.AddOnStatus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddOnStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddOnStatus.Location = new System.Drawing.Point(302, 8);
+            this.AddOnStatus.Location = new System.Drawing.Point(376, 8);
             this.AddOnStatus.Name = "AddOnStatus";
             this.AddOnStatus.Size = new System.Drawing.Size(68, 27);
             this.AddOnStatus.TabIndex = 33;
@@ -2390,7 +2373,6 @@ namespace CurePlease.App
             this.Controls.Add(this.AddOnStatus);
             this.Controls.Add(this.AboutButton);
             this.Controls.Add(this.PartyBuffsButton);
-            this.Controls.Add(this.ChatLogButton);
             this.Controls.Add(this.OptionsButton);
             this.Controls.Add(this.castingLockLabel);
             this.Controls.Add(this.groupBox2);
@@ -2627,7 +2609,6 @@ namespace CurePlease.App
         private Label castingLockLabel;
         private System.ComponentModel.BackgroundWorker Follow_BGW;
         private Button OptionsButton;
-        private Button ChatLogButton;
         private Button PartyBuffsButton;
         private Button AboutButton;
         private System.ComponentModel.BackgroundWorker AddonReader;

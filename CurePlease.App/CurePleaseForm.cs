@@ -6914,12 +6914,6 @@ namespace CurePlease.App
             }
         }
 
-        private void chatLogToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var form4 = new ChatLogForm(this);
-            form4.Show();
-        }
-
         private void partyBuffsdebugToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var PartyBuffs = new PartyBuffsForm(this);
@@ -7669,13 +7663,6 @@ namespace CurePlease.App
         {
             if (settings == null || settings.IsDisposed) settings = new OptionsForm();
             settings.Show();
-        }
-
-        private void ChatLogButton_Click(object sender, EventArgs e)
-        {
-            var form4 = new ChatLogForm(this);
-
-            if (_ELITEAPIPL != null) form4.Show();
         }
 
         private void PartyBuffsButton_Click(object sender, EventArgs e)

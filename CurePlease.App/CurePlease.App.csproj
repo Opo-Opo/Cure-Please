@@ -56,8 +56,6 @@
     <ItemGroup>
         <Compile Include="AboutForm.cs" />
         <Compile Include="AboutForm.Designer.cs" />
-        <Compile Include="ChatLogForm.cs" />
-        <Compile Include="ChatLogForm.Designer.cs" />
         <Compile Include="CurePleaseForm.cs" />
         <Compile Include="CurePleaseForm.Designer.cs" />
         <Compile Include="CustomClasses.cs" />
@@ -69,7 +67,6 @@
         <Compile Include="ProgressBar.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <EmbeddedResource Include="AboutForm.resx" />
-        <EmbeddedResource Include="ChatLogForm.resx" />
         <EmbeddedResource Include="CurePleaseForm.resx" />
         <EmbeddedResource Include="OptionsForm.resx" />
         <EmbeddedResource Include="PartyBuffsForm.resx" />
