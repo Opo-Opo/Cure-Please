@@ -1632,8 +1632,6 @@ namespace CurePlease.App
         {
             checked_recastspellName = checked_recastspellName.Trim().ToLower();
 
-            if (checked_recastspellName == "honor march") return 0;
-
             if (checked_recastspellName != "blank")
             {
                 var magic = _ELITEAPIPL.Resources.GetSpell(checked_recastspellName, 0);
@@ -1666,93 +1664,69 @@ namespace CurePlease.App
 
         public static bool HasSpell(string checked_spellName)
         {
-            checked_spellName = checked_spellName.Trim().ToLower();
-
-            if (checked_spellName == "honor march") return true;
-
-            var magic = _ELITEAPIPL.Resources.GetSpell(checked_spellName, 0);
-
-            if (_ELITEAPIPL.Player.GetPlayerInfo().Buffs
-                .Any(b => b == 262)) // IF YOU HAVE OMERTA THEN BLOCK MAGIC CASTING
-                return false;
-            if (_ELITEAPIPL.Player.HasSpell(magic.Index) && JobChecker(checked_spellName))
-                return true;
-            return false;
+            return true;
         }
 
-        public static bool JobChecker(string SpellName)
+        public static bool JobCanCastSpell(string spellName)
         {
-            var checked_spellName = SpellName.Trim().ToLower();
+            spellName = spellName.Trim().ToLower();
+            var magic = _ELITEAPIPL.Resources.GetSpell(spellName, 0);
 
-            var magic = _ELITEAPIPL.Resources.GetSpell(checked_spellName, 0); // GRAB THE REQUESTED SPELL DATA
-
-            int mainjobLevelRequired =
-                magic.LevelRequired[_ELITEAPIPL.Player.MainJob]; // GRAB SPELL LEVEL FOR THE MAIN JOB
-            int subjobLevelRequired =
-                magic.LevelRequired[_ELITEAPIPL.Player.SubJob]; // GRAB SPELL LEVEL FOR THE SUB JOB
-
-            if (checked_spellName == "honor march") return true;
-
-            if (mainjobLevelRequired <= _ELITEAPIPL.Player.MainJobLevel && mainjobLevelRequired != -1)
-                // IF THE MAIN JOB DOES NOT EQUAl -1 (Meaning the JOB can't use the spell) AND YOUR LEVEL IS EQUAL TO OR LOVER THAN THE REQUIRED LEVEL RETURN true
-                return true;
-
-            if (subjobLevelRequired <= _ELITEAPIPL.Player.SubJobLevel && subjobLevelRequired != -1)
-                // IF THE SUB JOB DOES NOT EQUAl -1 (Meaning the JOB can't use the spell) AND YOUR LEVEL IS EQUAL TO OR LOVER THAN THE REQUIRED LEVEL RETURN true
-                return true;
-
-            if (mainjobLevelRequired > 99 && mainjobLevelRequired != -1)
+            if (!_ELITEAPIPL.Player.HasSpell(magic.Index))
             {
-                // IF THE MAIN JOB LEVEL IS GREATER THAN 99 BUT DOES NOT EQUAL -1 THEN IT IS A JOB POINT REQUIRED SPELL AND SO FURTHER CHECKS MUST BE MADE SO GRAB CURRENT JOB POINT TABLE
-                var JobPoints = _ELITEAPIPL.Player.GetJobPoints(_ELITEAPIPL.Player.MainJob);
-
-                // Spell is a JP spell so check this works correctly and that you possess the spell
-                if (checked_spellName == "refresh iii" || checked_spellName == "temper ii")
-                {
-                    if (_ELITEAPIPL.Player.MainJob == 5 && _ELITEAPIPL.Player.MainJobLevel == 99 &&
-                        JobPoints.SpentJobPoints >=
-                        1200) // IF MAIN JOB IS RDM, AND JOB LEVEL IS AT MAX WITH REQUIRED JOB POINTS
-                        return true;
-                    return false;
-                }
-
-                if (checked_spellName == "distract iii" || checked_spellName == "frazzle iii")
-                {
-                    if (_ELITEAPIPL.Player.MainJob == 5 && _ELITEAPIPL.Player.MainJobLevel == 99 &&
-                        JobPoints.SpentJobPoints >=
-                        550) // IF MAIN JOB IS RDM, AND JOB LEVEL IS AT MAX WITH REQUIRED JOB POINTS
-                        return true;
-                    return false;
-                }
-
-                if (checked_spellName.Contains("storm ii"))
-                {
-                    if (_ELITEAPIPL.Player.MainJob == 20 && _ELITEAPIPL.Player.MainJobLevel == 99 &&
-                        JobPoints.SpentJobPoints >=
-                        100) // IF MAIN JOB IS SCH, AND JOB LEVEL IS AT MAX WITH REQUIRED JOB POINTS
-                        return true;
-                    return false;
-                }
-
-                if (checked_spellName == "reraise iv")
-                {
-                    if (_ELITEAPIPL.Player.MainJob == 3 && _ELITEAPIPL.Player.MainJobLevel == 99 &&
-                        JobPoints.SpentJobPoints >=
-                        100) // IF MAIN JOB IS WHM, AND JOB LEVEL IS AT MAX WITH REQUIRED JOB POINTS
-                        return true;
-                    return false;
-                }
-
-                if (checked_spellName == "full cure")
-                {
-                    if (_ELITEAPIPL.Player.MainJob == 3 && _ELITEAPIPL.Player.MainJobLevel == 99 &&
-                        JobPoints.SpentJobPoints >=
-                        1200) // IF MAIN JOB IS WHM, AND JOB LEVEL IS AT MAX WITH REQUIRED JOB POINTS
-                        return true;
-                    return false;
-                }
-
                 return false;
+            }
+
+            int mainjobLevelRequired = magic.LevelRequired[_ELITEAPIPL.Player.MainJob];
+            int subjobLevelRequired = magic.LevelRequired[_ELITEAPIPL.Player.SubJob];
+
+            if (mainjobLevelRequired == -1 && subjobLevelRequired == -1)
+            {// -1 means the job doesn't have access to the spell
+                return false;
+            }
+
+            if (mainjobLevelRequired <= _ELITEAPIPL.Player.MainJobLevel || subjobLevelRequired <= _ELITEAPIPL.Player.SubJobLevel)
+            {// Main and sub job are high enough to cast the spell
+                return true;
+            }
+
+            if (mainjobLevelRequired <= 99)
+            {// Not a job point spell
+                return false;
+            }
+
+            var spentJobPoints  = _ELITEAPIPL.Player
+                .GetJobPoints(_ELITEAPIPL.Player.MainJob)
+                .SpentJobPoints;
+
+            switch (_ELITEAPIPL.Player.MainJob)
+            {
+                case 3: // WHM
+                    if (spellName == "reraise iv")
+                    {
+                        return spentJobPoints >= 100;
+                    }
+
+                    if (spellName == "full cure")
+                    {
+                        return spentJobPoints >= 1200;
+                    }
+                    break;
+
+                case 5: // RDM
+                    if (spellName == "refresh iii" || spellName == "temper ii")
+                    {
+                        return spentJobPoints >= 1200;
+                    }
+
+                    if (spellName == "distract iii" || spellName == "frazzle iii")
+                    {
+                        return spentJobPoints >= 550;
+                    }
+                    break;
+
+                case 20: // SCH
+                    return spellName.Contains("storm ii") && spentJobPoints >= 100;
             }
 
             return false;
@@ -2024,12 +1998,12 @@ namespace CurePlease.App
         {
             if (cureSpell.ToLower() == "cure vi")
             {
-                if (HasSpell("Cure VI") && JobChecker("Cure VI") && CheckSpellRecast("Cure VI") == 0)
+                if (HasSpell("Cure VI") && JobCanCastSpell("Cure VI") && CheckSpellRecast("Cure VI") == 0)
                     return "Cure VI";
-                if (HasSpell("Cure V") && JobChecker("Cure V") && CheckSpellRecast("Cure V") == 0 &&
+                if (HasSpell("Cure V") && JobCanCastSpell("Cure V") && CheckSpellRecast("Cure V") == 0 &&
                     OptionsForm.config.Undercure)
                     return "Cure V";
-                if (HasSpell("Cure IV") && JobChecker("Cure IV") && CheckSpellRecast("Cure IV") == 0 &&
+                if (HasSpell("Cure IV") && JobCanCastSpell("Cure IV") && CheckSpellRecast("Cure IV") == 0 &&
                     OptionsForm.config.Undercure)
                     return "Cure IV";
                 return "false";
@@ -2037,12 +2011,12 @@ namespace CurePlease.App
 
             if (cureSpell.ToLower() == "cure v")
             {
-                if (HasSpell("Cure V") && JobChecker("Cure V") && CheckSpellRecast("Cure V") == 0)
+                if (HasSpell("Cure V") && JobCanCastSpell("Cure V") && CheckSpellRecast("Cure V") == 0)
                     return "Cure V";
-                if (HasSpell("Cure IV") && JobChecker("Cure IV") && CheckSpellRecast("Cure IV") == 0 &&
+                if (HasSpell("Cure IV") && JobCanCastSpell("Cure IV") && CheckSpellRecast("Cure IV") == 0 &&
                     OptionsForm.config.Undercure)
                     return "Cure IV";
-                if (HasSpell("Cure VI") && JobChecker("Cure VI") && CheckSpellRecast("Cure VI") == 0 &&
+                if (HasSpell("Cure VI") && JobCanCastSpell("Cure VI") && CheckSpellRecast("Cure VI") == 0 &&
                     (OptionsForm.config.Overcure && OptionsForm.config.OvercureOnHighPriority != true ||
                      OptionsForm.config.OvercureOnHighPriority && HP))
                     return "Cure VI";
@@ -2051,12 +2025,12 @@ namespace CurePlease.App
 
             if (cureSpell.ToLower() == "cure iv")
             {
-                if (HasSpell("Cure IV") && JobChecker("Cure IV") && CheckSpellRecast("Cure IV") == 0)
+                if (HasSpell("Cure IV") && JobCanCastSpell("Cure IV") && CheckSpellRecast("Cure IV") == 0)
                     return "Cure IV";
-                if (HasSpell("Cure III") && JobChecker("Cure III") && CheckSpellRecast("Cure III") == 0 &&
+                if (HasSpell("Cure III") && JobCanCastSpell("Cure III") && CheckSpellRecast("Cure III") == 0 &&
                     OptionsForm.config.Undercure)
                     return "Cure III";
-                if (HasSpell("Cure V") && JobChecker("Cure V") && CheckSpellRecast("Cure V") == 0 &&
+                if (HasSpell("Cure V") && JobCanCastSpell("Cure V") && CheckSpellRecast("Cure V") == 0 &&
                     (OptionsForm.config.Overcure && OptionsForm.config.OvercureOnHighPriority != true ||
                      OptionsForm.config.OvercureOnHighPriority && HP))
                     return "Cure V";
@@ -2065,13 +2039,13 @@ namespace CurePlease.App
 
             if (cureSpell.ToLower() == "cure iii")
             {
-                if (HasSpell("Cure III") && JobChecker("Cure III") && CheckSpellRecast("Cure III") == 0)
+                if (HasSpell("Cure III") && JobCanCastSpell("Cure III") && CheckSpellRecast("Cure III") == 0)
                     return "Cure III";
-                if (HasSpell("Cure IV") && JobChecker("Cure IV") && CheckSpellRecast("Cure IV") == 0 &&
+                if (HasSpell("Cure IV") && JobCanCastSpell("Cure IV") && CheckSpellRecast("Cure IV") == 0 &&
                     (OptionsForm.config.Overcure && OptionsForm.config.OvercureOnHighPriority != true ||
                      OptionsForm.config.OvercureOnHighPriority && HP))
                     return "Cure IV";
-                if (HasSpell("Cure II") && JobChecker("Cure II") && CheckSpellRecast("Cure II") == 0 &&
+                if (HasSpell("Cure II") && JobCanCastSpell("Cure II") && CheckSpellRecast("Cure II") == 0 &&
                     OptionsForm.config.Undercure)
                     return "Cure II";
                 return "false";
@@ -2079,12 +2053,12 @@ namespace CurePlease.App
 
             if (cureSpell.ToLower() == "cure ii")
             {
-                if (HasSpell("Cure II") && JobChecker("Cure II") && CheckSpellRecast("Cure II") == 0)
+                if (HasSpell("Cure II") && JobCanCastSpell("Cure II") && CheckSpellRecast("Cure II") == 0)
                     return "Cure II";
-                if (HasSpell("Cure") && JobChecker("Cure") && CheckSpellRecast("Cure") == 0 &&
+                if (HasSpell("Cure") && JobCanCastSpell("Cure") && CheckSpellRecast("Cure") == 0 &&
                     OptionsForm.config.Undercure)
                     return "Cure";
-                if (HasSpell("Cure III") && JobChecker("Cure III") && CheckSpellRecast("Cure III") == 0 &&
+                if (HasSpell("Cure III") && JobCanCastSpell("Cure III") && CheckSpellRecast("Cure III") == 0 &&
                     (OptionsForm.config.Overcure && OptionsForm.config.OvercureOnHighPriority != true ||
                      OptionsForm.config.OvercureOnHighPriority && HP))
                     return "Cure III";
@@ -2093,9 +2067,9 @@ namespace CurePlease.App
 
             if (cureSpell.ToLower() == "cure")
             {
-                if (HasSpell("Cure") && JobChecker("Cure") && CheckSpellRecast("Cure") == 0)
+                if (HasSpell("Cure") && JobCanCastSpell("Cure") && CheckSpellRecast("Cure") == 0)
                     return "Cure";
-                if (HasSpell("Cure II") && JobChecker("Cure II") && CheckSpellRecast("Cure II") == 0 &&
+                if (HasSpell("Cure II") && JobCanCastSpell("Cure II") && CheckSpellRecast("Cure II") == 0 &&
                     (OptionsForm.config.Overcure && OptionsForm.config.OvercureOnHighPriority != true ||
                      OptionsForm.config.OvercureOnHighPriority && HP))
                     return "Cure II";
@@ -2104,9 +2078,9 @@ namespace CurePlease.App
 
             if (cureSpell.ToLower() == "curaga v")
             {
-                if (HasSpell("Curaga V") && JobChecker("Curaga V") && CheckSpellRecast("Curaga V") == 0)
+                if (HasSpell("Curaga V") && JobCanCastSpell("Curaga V") && CheckSpellRecast("Curaga V") == 0)
                     return "Curaga V";
-                if (HasSpell("Curaga IV") && JobChecker("Curaga IV") && CheckSpellRecast("Curaga IV") == 0 &&
+                if (HasSpell("Curaga IV") && JobCanCastSpell("Curaga IV") && CheckSpellRecast("Curaga IV") == 0 &&
                     OptionsForm.config.Undercure)
                     return "Curaga IV";
                 return "false";
@@ -2114,12 +2088,12 @@ namespace CurePlease.App
 
             if (cureSpell.ToLower() == "curaga iv")
             {
-                if (HasSpell("Curaga IV") && JobChecker("Curaga IV") && CheckSpellRecast("Curaga IV") == 0)
+                if (HasSpell("Curaga IV") && JobCanCastSpell("Curaga IV") && CheckSpellRecast("Curaga IV") == 0)
                     return "Curaga IV";
-                if (HasSpell("Curaga V") && JobChecker("Curaga V") && CheckSpellRecast("Curaga V") == 0 &&
+                if (HasSpell("Curaga V") && JobCanCastSpell("Curaga V") && CheckSpellRecast("Curaga V") == 0 &&
                     OptionsForm.config.Overcure)
                     return "Curaga V";
-                if (HasSpell("Curaga III") && JobChecker("Curaga III") && CheckSpellRecast("Curaga III") == 0 &&
+                if (HasSpell("Curaga III") && JobCanCastSpell("Curaga III") && CheckSpellRecast("Curaga III") == 0 &&
                     OptionsForm.config.Undercure)
                     return "Curaga III";
                 return "false";
@@ -2127,12 +2101,12 @@ namespace CurePlease.App
 
             if (cureSpell.ToLower() == "curaga iii")
             {
-                if (HasSpell("Curaga III") && JobChecker("Curaga III") && CheckSpellRecast("Curaga III") == 0)
+                if (HasSpell("Curaga III") && JobCanCastSpell("Curaga III") && CheckSpellRecast("Curaga III") == 0)
                     return "Curaga III";
-                if (HasSpell("Curaga IV") && JobChecker("Curaga IV") && CheckSpellRecast("Curaga IV") == 0 &&
+                if (HasSpell("Curaga IV") && JobCanCastSpell("Curaga IV") && CheckSpellRecast("Curaga IV") == 0 &&
                     OptionsForm.config.Overcure)
                     return "Curaga IV";
-                if (HasSpell("Curaga II") && JobChecker("Curaga II") && CheckSpellRecast("Curaga II") == 0 &&
+                if (HasSpell("Curaga II") && JobCanCastSpell("Curaga II") && CheckSpellRecast("Curaga II") == 0 &&
                     OptionsForm.config.Undercure)
                     return "Curaga II";
                 return "false";
@@ -2140,12 +2114,12 @@ namespace CurePlease.App
 
             if (cureSpell.ToLower() == "curaga ii")
             {
-                if (HasSpell("Curaga II") && JobChecker("Curaga II") && CheckSpellRecast("Curaga II") == 0)
+                if (HasSpell("Curaga II") && JobCanCastSpell("Curaga II") && CheckSpellRecast("Curaga II") == 0)
                     return "Curaga II";
-                if (HasSpell("Curaga") && JobChecker("Curaga") && CheckSpellRecast("Curaga") == 0 &&
+                if (HasSpell("Curaga") && JobCanCastSpell("Curaga") && CheckSpellRecast("Curaga") == 0 &&
                     OptionsForm.config.Undercure)
                     return "Curaga";
-                if (HasSpell("Curaga III") && JobChecker("Curaga III") && CheckSpellRecast("Curaga III") == 0 &&
+                if (HasSpell("Curaga III") && JobCanCastSpell("Curaga III") && CheckSpellRecast("Curaga III") == 0 &&
                     OptionsForm.config.Overcure)
                     return "Curaga III";
                 return "false";
@@ -2153,9 +2127,9 @@ namespace CurePlease.App
 
             if (cureSpell.ToLower() == "curaga")
             {
-                if (HasSpell("Curaga") && JobChecker("Curaga") && CheckSpellRecast("Curaga") == 0)
+                if (HasSpell("Curaga") && JobCanCastSpell("Curaga") && CheckSpellRecast("Curaga") == 0)
                     return "Curaga";
-                if (HasSpell("Curaga II") && JobChecker("Curaga II") && CheckSpellRecast("Curaga II") == 0 &&
+                if (HasSpell("Curaga II") && JobCanCastSpell("Curaga II") && CheckSpellRecast("Curaga II") == 0 &&
                     OptionsForm.config.Overcure)
                     return "Curaga II";
                 return "false";
@@ -2585,39 +2559,39 @@ namespace CurePlease.App
                 var HP_Loss = _ELITEAPIPL.Player.HP * 100 / _ELITEAPIPL.Player.HPP - _ELITEAPIPL.Player.HP;
 
                 if (OptionsForm.config.cure6enabled && HP_Loss >= OptionsForm.config.cure6amount &&
-                    _ELITEAPIPL.Player.MP > 227 && HasSpell("Cure VI") && JobChecker("Cure VI"))
+                    _ELITEAPIPL.Player.MP > 227 && HasSpell("Cure VI") && JobCanCastSpell("Cure VI"))
                 {
                     var cureSpell = CureTiers("Cure VI", HP);
                     if (cureSpell != "false") CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
                 }
                 else if (OptionsForm.config.cure5enabled && HP_Loss >= OptionsForm.config.cure5amount &&
-                         _ELITEAPIPL.Player.MP > 125 && HasSpell("Cure V") && JobChecker("Cure V"))
+                         _ELITEAPIPL.Player.MP > 125 && HasSpell("Cure V") && JobCanCastSpell("Cure V"))
                 {
                     var cureSpell = CureTiers("Cure V", HP);
                     if (cureSpell != "false") CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
                 }
                 else if (OptionsForm.config.cure4enabled && HP_Loss >= OptionsForm.config.cure4amount &&
-                         _ELITEAPIPL.Player.MP > 88 && HasSpell("Cure IV") && JobChecker("Cure IV"))
+                         _ELITEAPIPL.Player.MP > 88 && HasSpell("Cure IV") && JobCanCastSpell("Cure IV"))
                 {
                     var cureSpell = CureTiers("Cure IV", HP);
                     if (cureSpell != "false") CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
                 }
                 else if (OptionsForm.config.cure3enabled && HP_Loss >= OptionsForm.config.cure3amount &&
-                         _ELITEAPIPL.Player.MP > 46 && HasSpell("Cure III") && JobChecker("Cure III"))
+                         _ELITEAPIPL.Player.MP > 46 && HasSpell("Cure III") && JobCanCastSpell("Cure III"))
                 {
                     if (OptionsForm.config.PrioritiseOverLowerTier) RunDebuffChecker();
                     var cureSpell = CureTiers("Cure III", HP);
                     if (cureSpell != "false") CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
                 }
                 else if (OptionsForm.config.cure2enabled && HP_Loss >= OptionsForm.config.cure2amount &&
-                         _ELITEAPIPL.Player.MP > 24 && HasSpell("Cure II") && JobChecker("Cure II"))
+                         _ELITEAPIPL.Player.MP > 24 && HasSpell("Cure II") && JobCanCastSpell("Cure II"))
                 {
                     if (OptionsForm.config.PrioritiseOverLowerTier) RunDebuffChecker();
                     var cureSpell = CureTiers("Cure II", HP);
                     if (cureSpell != "false") CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
                 }
                 else if (OptionsForm.config.cure1enabled && HP_Loss >= OptionsForm.config.cure1amount &&
-                         _ELITEAPIPL.Player.MP > 8 && HasSpell("Cure") && JobChecker("Cure"))
+                         _ELITEAPIPL.Player.MP > 8 && HasSpell("Cure") && JobCanCastSpell("Cure"))
                 {
                     if (OptionsForm.config.PrioritiseOverLowerTier) RunDebuffChecker();
                     var cureSpell = CureTiers("Cure", HP);
@@ -2628,59 +2602,62 @@ namespace CurePlease.App
 
         private void CureCalculator(byte partyMemberId, bool HP)
         {
-            // FIRST GET HOW MUCH HP IS MISSING FROM THE CURRENT PARTY MEMBER
-            if (_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP > 0)
-            {
-                var HP_Loss =
-                    _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP * 100 /
-                    _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHPP -
-                    _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP;
+            var partyMember = _ELITEAPIMonitored.Party.GetPartyMember(partyMemberId);
 
-                if (OptionsForm.config.cure6enabled && HP_Loss >= OptionsForm.config.cure6amount &&
-                    _ELITEAPIPL.Player.MP > 227 && HasSpell("Cure VI") && JobChecker("Cure VI"))
-                {
-                    var cureSpell = CureTiers("Cure VI", HP);
-                    if (cureSpell != "false")
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                }
-                else if (OptionsForm.config.cure5enabled && HP_Loss >= OptionsForm.config.cure5amount &&
-                         _ELITEAPIPL.Player.MP > 125 && HasSpell("Cure V") && JobChecker("Cure V"))
-                {
-                    var cureSpell = CureTiers("Cure V", HP);
-                    if (cureSpell != "false")
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                }
-                else if (OptionsForm.config.cure4enabled && HP_Loss >= OptionsForm.config.cure4amount &&
-                         _ELITEAPIPL.Player.MP > 88 && HasSpell("Cure IV") && JobChecker("Cure IV"))
-                {
-                    var cureSpell = CureTiers("Cure IV", HP);
-                    if (cureSpell != "false")
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                }
-                else if (OptionsForm.config.cure3enabled && HP_Loss >= OptionsForm.config.cure3amount &&
-                         _ELITEAPIPL.Player.MP > 46 && HasSpell("Cure III") && JobChecker("Cure III"))
-                {
-                    if (OptionsForm.config.PrioritiseOverLowerTier) RunDebuffChecker();
-                    var cureSpell = CureTiers("Cure III", HP);
-                    if (cureSpell != "false")
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                }
-                else if (OptionsForm.config.cure2enabled && HP_Loss >= OptionsForm.config.cure2amount &&
-                         _ELITEAPIPL.Player.MP > 24 && HasSpell("Cure II") && JobChecker("Cure II"))
-                {
-                    if (OptionsForm.config.PrioritiseOverLowerTier) RunDebuffChecker();
-                    var cureSpell = CureTiers("Cure II", HP);
-                    if (cureSpell != "false")
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                }
-                else if (OptionsForm.config.cure1enabled && HP_Loss >= OptionsForm.config.cure1amount &&
-                         _ELITEAPIPL.Player.MP > 8 && HasSpell("Cure") && JobChecker("Cure"))
-                {
-                    if (OptionsForm.config.PrioritiseOverLowerTier) RunDebuffChecker();
-                    var cureSpell = CureTiers("Cure", HP);
-                    if (cureSpell != "false")
-                        CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                }
+            if (partyMember.CurrentHP == 0)
+            {
+                return;
+            }
+
+            var lostHealth =
+                partyMember.CurrentHP * 100 /
+                partyMember.CurrentHPP -
+                partyMember.CurrentHP;
+
+            if (OptionsForm.config.cure6enabled && lostHealth >= OptionsForm.config.cure6amount &&
+                _ELITEAPIPL.Player.MP > 227 && HasSpell("Cure VI") && JobCanCastSpell("Cure VI"))
+            {
+                var cureSpell = CureTiers("Cure VI", HP);
+                if (cureSpell != "false")
+                    CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
+            }
+            else if (OptionsForm.config.cure5enabled && lostHealth >= OptionsForm.config.cure5amount &&
+                     _ELITEAPIPL.Player.MP > 125 && HasSpell("Cure V") && JobCanCastSpell("Cure V"))
+            {
+                var cureSpell = CureTiers("Cure V", HP);
+                if (cureSpell != "false")
+                    CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
+            }
+            else if (OptionsForm.config.cure4enabled && lostHealth >= OptionsForm.config.cure4amount &&
+                     _ELITEAPIPL.Player.MP > 88 && HasSpell("Cure IV") && JobCanCastSpell("Cure IV"))
+            {
+                var cureSpell = CureTiers("Cure IV", HP);
+                if (cureSpell != "false")
+                    CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
+            }
+            else if (OptionsForm.config.cure3enabled && lostHealth >= OptionsForm.config.cure3amount &&
+                     _ELITEAPIPL.Player.MP > 46 && HasSpell("Cure III") && JobCanCastSpell("Cure III"))
+            {
+                if (OptionsForm.config.PrioritiseOverLowerTier) RunDebuffChecker();
+                var cureSpell = CureTiers("Cure III", HP);
+                if (cureSpell != "false")
+                    CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
+            }
+            else if (OptionsForm.config.cure2enabled && lostHealth >= OptionsForm.config.cure2amount &&
+                     _ELITEAPIPL.Player.MP > 24 && HasSpell("Cure II") && JobCanCastSpell("Cure II"))
+            {
+                if (OptionsForm.config.PrioritiseOverLowerTier) RunDebuffChecker();
+                var cureSpell = CureTiers("Cure II", HP);
+                if (cureSpell != "false")
+                    CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
+            }
+            else if (OptionsForm.config.cure1enabled && lostHealth >= OptionsForm.config.cure1amount &&
+                     _ELITEAPIPL.Player.MP > 8 && HasSpell("Cure") && JobCanCastSpell("Cure"))
+            {
+                if (OptionsForm.config.PrioritiseOverLowerTier) RunDebuffChecker();
+                var cureSpell = CureTiers("Cure", HP);
+                if (cureSpell != "false")
+                    CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
             }
         }
 
@@ -2711,164 +2688,164 @@ namespace CurePlease.App
 
                 foreach (StatusEffect plEffect in _ELITEAPIPL.Player.Buffs)
                     if (plEffect == StatusEffect.Doom && OptionsForm.config.plDoom && CheckSpellRecast("Cursna") == 0 &&
-                        HasSpell("Cursna") && JobChecker("Cursna"))
+                        HasSpell("Cursna") && JobCanCastSpell("Cursna"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Cursna");
                     else if (plEffect == StatusEffect.Paralysis && OptionsForm.config.plParalysis &&
-                             CheckSpellRecast("Paralyna") == 0 && HasSpell("Paralyna") && JobChecker("Paralyna"))
+                             CheckSpellRecast("Paralyna") == 0 && HasSpell("Paralyna") && JobCanCastSpell("Paralyna"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Paralyna");
                     else if (plEffect == StatusEffect.Amnesia && OptionsForm.config.plAmnesia &&
-                             CheckSpellRecast("Esuna") == 0 && HasSpell("Esuna") && JobChecker("Esuna") &&
+                             CheckSpellRecast("Esuna") == 0 && HasSpell("Esuna") && JobCanCastSpell("Esuna") &&
                              BuffChecker(0, 418))
                         CastSpell(_ELITEAPIPL.Player.Name, "Esuna");
                     else if (plEffect == StatusEffect.Poison && OptionsForm.config.plPoison &&
-                             CheckSpellRecast("Poisona") == 0 && HasSpell("Poisona") && JobChecker("Poisona"))
+                             CheckSpellRecast("Poisona") == 0 && HasSpell("Poisona") && JobCanCastSpell("Poisona"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Poisona");
                     else if (plEffect == StatusEffect.Attack_Down && OptionsForm.config.plAttackDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase"))
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Blindness && OptionsForm.config.plBlindness &&
-                             CheckSpellRecast("Blindna") == 0 && HasSpell("Blindna") && JobChecker("Blindna"))
+                             CheckSpellRecast("Blindna") == 0 && HasSpell("Blindna") && JobCanCastSpell("Blindna"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Blindna");
                     else if (plEffect == StatusEffect.Bind && OptionsForm.config.plBind &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Weight && OptionsForm.config.plWeight &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase"))
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Slow && OptionsForm.config.plSlow &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase"))
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Curse && OptionsForm.config.plCurse &&
-                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobChecker("Cursna"))
+                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Cursna");
                     else if (plEffect == StatusEffect.Curse2 && OptionsForm.config.plCurse2 &&
-                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobChecker("Cursna"))
+                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Cursna");
                     else if (plEffect == StatusEffect.Addle && OptionsForm.config.plAddle &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Bane && OptionsForm.config.plBane &&
-                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobChecker("Cursna"))
+                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Cursna");
                     else if (plEffect == StatusEffect.Plague && OptionsForm.config.plPlague &&
-                             CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") && JobChecker("Viruna"))
+                             CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") && JobCanCastSpell("Viruna"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Viruna");
                     else if (plEffect == StatusEffect.Disease && OptionsForm.config.plDisease &&
-                             CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") && JobChecker("Viruna"))
+                             CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") && JobCanCastSpell("Viruna"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Viruna");
                     else if (plEffect == StatusEffect.Burn && OptionsForm.config.plBurn &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Frost && OptionsForm.config.plFrost &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Choke && OptionsForm.config.plChoke &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Rasp && OptionsForm.config.plRasp &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Shock && OptionsForm.config.plShock &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Drown && OptionsForm.config.plDrown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Dia && OptionsForm.config.plDia &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Bio && OptionsForm.config.plBio &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.STR_Down && OptionsForm.config.plStrDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.DEX_Down && OptionsForm.config.plDexDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.VIT_Down && OptionsForm.config.plVitDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.AGI_Down && OptionsForm.config.plAgiDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.INT_Down && OptionsForm.config.plIntDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.MND_Down && OptionsForm.config.plMndDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.CHR_Down && OptionsForm.config.plChrDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Max_HP_Down && OptionsForm.config.plMaxHpDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Max_MP_Down && OptionsForm.config.plMaxMpDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Accuracy_Down && OptionsForm.config.plAccuracyDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Evasion_Down && OptionsForm.config.plEvasionDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Defense_Down && OptionsForm.config.plDefenseDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Flash && OptionsForm.config.plFlash &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Magic_Acc_Down && OptionsForm.config.plMagicAccDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Magic_Atk_Down && OptionsForm.config.plMagicAtkDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Helix && OptionsForm.config.plHelix &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Max_TP_Down && OptionsForm.config.plMaxTpDown &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Requiem && OptionsForm.config.plRequiem &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Elegy && OptionsForm.config.plElegy &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase"))
+                             JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIPL.Player.Name, "Erase");
                     else if (plEffect == StatusEffect.Threnody && OptionsForm.config.plThrenody &&
                              OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobChecker("Erase")) CastSpell(_ELITEAPIPL.Player.Name, "Erase");
+                             JobCanCastSpell("Erase")) CastSpell(_ELITEAPIPL.Player.Name, "Erase");
             }
 
             // Next, we check monitored player
@@ -2877,7 +2854,7 @@ namespace CurePlease.App
                     .Distance > 0 && _ELITEAPIMonitored.Player.HP > 0 && _ELITEAPIPL.Player.Status != 33)
                 foreach (StatusEffect monitoredEffect in _ELITEAPIMonitored.Player.Buffs)
                     if (monitoredEffect == StatusEffect.Doom && OptionsForm.config.monitoredDoom &&
-                        CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobChecker("Cursna"))
+                        CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Cursna");
                     else if (monitoredEffect == StatusEffect.Sleep && OptionsForm.config.monitoredSleep &&
                              OptionsForm.config.wakeSleepEnabled)
@@ -2886,170 +2863,170 @@ namespace CurePlease.App
                              OptionsForm.config.wakeSleepEnabled)
                         CastSpell(_ELITEAPIMonitored.Player.Name, wakeSleepSpellName);
                     else if (monitoredEffect == StatusEffect.Silence && OptionsForm.config.monitoredSilence &&
-                             CheckSpellRecast("Silena") == 0 && HasSpell("Silena") && JobChecker("Silena"))
+                             CheckSpellRecast("Silena") == 0 && HasSpell("Silena") && JobCanCastSpell("Silena"))
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Silena");
                     else if (monitoredEffect == StatusEffect.Petrification &&
                              OptionsForm.config.monitoredPetrification && CheckSpellRecast("Stona") == 0 &&
-                             HasSpell("Stona") && JobChecker("Stona"))
+                             HasSpell("Stona") && JobCanCastSpell("Stona"))
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Stona");
                     else if (monitoredEffect == StatusEffect.Paralysis && OptionsForm.config.monitoredParalysis &&
-                             CheckSpellRecast("Paralyna") == 0 && HasSpell("Paralyna") && JobChecker("Paralyna"))
+                             CheckSpellRecast("Paralyna") == 0 && HasSpell("Paralyna") && JobCanCastSpell("Paralyna"))
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Paralyna");
                     else if (monitoredEffect == StatusEffect.Amnesia && OptionsForm.config.monitoredAmnesia &&
-                             CheckSpellRecast("Esuna") == 0 && HasSpell("Esuna") && JobChecker("Esuna") &&
+                             CheckSpellRecast("Esuna") == 0 && HasSpell("Esuna") && JobCanCastSpell("Esuna") &&
                              BuffChecker(0, 418))
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Esuna");
                     else if (monitoredEffect == StatusEffect.Poison && OptionsForm.config.monitoredPoison &&
-                             CheckSpellRecast("Poisona") == 0 && HasSpell("Poisona") && JobChecker("Erase"))
+                             CheckSpellRecast("Poisona") == 0 && HasSpell("Poisona") && JobCanCastSpell("Erase"))
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Poisona");
                     else if (monitoredEffect == StatusEffect.Attack_Down && OptionsForm.config.monitoredAttackDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Blindness && OptionsForm.config.monitoredBlindness &&
-                             CheckSpellRecast("Blindna") == 0 && HasSpell("Blindna") && JobChecker("Blindna"))
+                             CheckSpellRecast("Blindna") == 0 && HasSpell("Blindna") && JobCanCastSpell("Blindna"))
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Blindna");
                     else if (monitoredEffect == StatusEffect.Bind && OptionsForm.config.monitoredBind &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Weight && OptionsForm.config.monitoredWeight &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Slow && OptionsForm.config.monitoredSlow &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Curse && OptionsForm.config.monitoredCurse &&
-                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobChecker("Cursna"))
+                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Cursna");
                     else if (monitoredEffect == StatusEffect.Curse2 && OptionsForm.config.monitoredCurse2 &&
-                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobChecker("Cursna"))
+                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Cursna");
                     else if (monitoredEffect == StatusEffect.Addle && OptionsForm.config.monitoredAddle &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Bane && OptionsForm.config.monitoredBane &&
-                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobChecker("Cursna"))
+                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Cursna");
                     else if (monitoredEffect == StatusEffect.Plague && OptionsForm.config.monitoredPlague &&
-                             CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") && JobChecker("Viruna"))
+                             CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") && JobCanCastSpell("Viruna"))
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Viruna");
                     else if (monitoredEffect == StatusEffect.Disease && OptionsForm.config.monitoredDisease &&
-                             CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") && JobChecker("Viruna"))
+                             CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") && JobCanCastSpell("Viruna"))
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Viruna");
                     else if (monitoredEffect == StatusEffect.Burn && OptionsForm.config.monitoredBurn &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Frost && OptionsForm.config.monitoredFrost &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Choke && OptionsForm.config.monitoredChoke &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Rasp && OptionsForm.config.monitoredRasp &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Shock && OptionsForm.config.monitoredShock &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Drown && OptionsForm.config.monitoredDrown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Dia && OptionsForm.config.monitoredDia &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Bio && OptionsForm.config.monitoredBio &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.STR_Down && OptionsForm.config.monitoredStrDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.DEX_Down && OptionsForm.config.monitoredDexDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.VIT_Down && OptionsForm.config.monitoredVitDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.AGI_Down && OptionsForm.config.monitoredAgiDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.INT_Down && OptionsForm.config.monitoredIntDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.MND_Down && OptionsForm.config.monitoredMndDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.CHR_Down && OptionsForm.config.monitoredChrDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Max_HP_Down && OptionsForm.config.monitoredMaxHpDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Max_MP_Down && OptionsForm.config.monitoredMaxMpDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Accuracy_Down &&
                              OptionsForm.config.monitoredAccuracyDown && CheckSpellRecast("Erase") == 0 &&
-                             HasSpell("Erase") && JobChecker("Erase") && plMonitoredSameParty())
+                             HasSpell("Erase") && JobCanCastSpell("Erase") && plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Evasion_Down && OptionsForm.config.monitoredEvasionDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Defense_Down && OptionsForm.config.monitoredDefenseDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Flash && OptionsForm.config.monitoredFlash &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Magic_Acc_Down &&
                              OptionsForm.config.monitoredMagicAccDown && CheckSpellRecast("Erase") == 0 &&
-                             HasSpell("Erase") && JobChecker("Erase") && plMonitoredSameParty())
+                             HasSpell("Erase") && JobCanCastSpell("Erase") && plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Magic_Atk_Down &&
                              OptionsForm.config.monitoredMagicAtkDown && CheckSpellRecast("Erase") == 0 &&
-                             HasSpell("Erase") && JobChecker("Erase") && plMonitoredSameParty())
+                             HasSpell("Erase") && JobCanCastSpell("Erase") && plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Helix && OptionsForm.config.monitoredHelix &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Max_TP_Down && OptionsForm.config.monitoredMaxTpDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Requiem && OptionsForm.config.monitoredRequiem &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Elegy && OptionsForm.config.monitoredElegy &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty())
                         CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
                     else if (monitoredEffect == StatusEffect.Threnody && OptionsForm.config.monitoredThrenody &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobChecker("Erase") &&
+                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
                              plMonitoredSameParty()) CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
             // End MONITORED Debuff Removal
 
@@ -3163,7 +3140,7 @@ namespace CurePlease.App
                                             //DOOM
                                             if (OptionsForm.config.naCurse && DebuffContains(named_Debuffs, "15") &&
                                                 CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") &&
-                                                JobChecker("Cursna"))
+                                                JobCanCastSpell("Cursna"))
                                             {
                                                 CastSpell(ptMember.Name, "Cursna");
                                                 BreakOut = 1;
@@ -3190,7 +3167,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naPetrification &&
                                                      DebuffContains(named_Debuffs, "7") &&
                                                      CheckSpellRecast("Stona") == 0 && HasSpell("Stona") &&
-                                                     JobChecker("Stona"))
+                                                     JobCanCastSpell("Stona"))
                                             {
                                                 CastSpell(ptMember.Name, "Stona");
                                                 removeDebuff(ptMember.Name, 7);
@@ -3200,7 +3177,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naSilence &&
                                                      DebuffContains(named_Debuffs, "6") &&
                                                      CheckSpellRecast("Silena") == 0 && HasSpell("Silena") &&
-                                                     JobChecker("Silena"))
+                                                     JobCanCastSpell("Silena"))
                                             {
                                                 CastSpell(ptMember.Name, "Silena");
                                                 removeDebuff(ptMember.Name, 6);
@@ -3210,7 +3187,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naParalysis &&
                                                      DebuffContains(named_Debuffs, "4") &&
                                                      CheckSpellRecast("Paralyna") == 0 && HasSpell("Paralyna") &&
-                                                     JobChecker("Paralyna"))
+                                                     JobCanCastSpell("Paralyna"))
                                             {
                                                 CastSpell(ptMember.Name, "Paralyna");
                                                 removeDebuff(ptMember.Name, 4);
@@ -3220,7 +3197,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naDisease &&
                                                      DebuffContains(named_Debuffs, "31") &&
                                                      CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") &&
-                                                     JobChecker("Viruna"))
+                                                     JobCanCastSpell("Viruna"))
                                             {
                                                 CastSpell(ptMember.Name, "Viruna");
                                                 removeDebuff(ptMember.Name, 31);
@@ -3230,7 +3207,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naDisease &&
                                                      DebuffContains(named_Debuffs, "8") &&
                                                      CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") &&
-                                                     JobChecker("Viruna"))
+                                                     JobCanCastSpell("Viruna"))
                                             {
                                                 CastSpell(ptMember.Name, "Viruna");
                                                 removeDebuff(ptMember.Name, 8);
@@ -3239,7 +3216,7 @@ namespace CurePlease.App
                                             // AMNESIA
                                             else if (OptionsForm.config.Esuna && DebuffContains(named_Debuffs, "16") &&
                                                      CheckSpellRecast("Esuna") == 0 && HasSpell("Esuna") &&
-                                                     JobChecker("Esuna") && BuffChecker(1, 418))
+                                                     JobCanCastSpell("Esuna") && BuffChecker(1, 418))
                                             {
                                                 CastSpell(ptMember.Name, "Esuna");
                                                 removeDebuff(ptMember.Name, 16);
@@ -3248,7 +3225,7 @@ namespace CurePlease.App
                                             //CURSE
                                             else if (OptionsForm.config.naCurse && DebuffContains(named_Debuffs, "9") &&
                                                      CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") &&
-                                                     JobChecker("Cursna"))
+                                                     JobCanCastSpell("Cursna"))
                                             {
                                                 CastSpell(ptMember.Name, "Cursna");
                                                 removeDebuff(ptMember.Name, 9);
@@ -3258,7 +3235,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naBlindness &&
                                                      DebuffContains(named_Debuffs, "5") &&
                                                      CheckSpellRecast("Blindna") == 0 && HasSpell("Blindna") &&
-                                                     JobChecker("Blindna"))
+                                                     JobCanCastSpell("Blindna"))
                                             {
                                                 CastSpell(ptMember.Name, "Blindna");
                                                 removeDebuff(ptMember.Name, 5);
@@ -3268,7 +3245,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naPoison &&
                                                      DebuffContains(named_Debuffs, "3") &&
                                                      CheckSpellRecast("Poisona") == 0 && HasSpell("Poisona") &&
-                                                     JobChecker("Poisona"))
+                                                     JobCanCastSpell("Poisona"))
                                             {
                                                 CastSpell(ptMember.Name, "Poisona");
                                                 removeDebuff(ptMember.Name, 3);
@@ -3278,7 +3255,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Slow &&
                                                      DebuffContains(named_Debuffs, "13") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Slow → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 13);
@@ -3288,7 +3265,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Bio &&
                                                      DebuffContains(named_Debuffs, "135") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Bio → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 135);
@@ -3298,7 +3275,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Bind &&
                                                      DebuffContains(named_Debuffs, "11") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Bind → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 11);
@@ -3308,7 +3285,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Weight &&
                                                      DebuffContains(named_Debuffs, "12") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Gravity → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 12);
@@ -3318,7 +3295,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_AccuracyDown &&
                                                      DebuffContains(named_Debuffs, "146") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Acc. Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 146);
@@ -3328,7 +3305,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_DefenseDown &&
                                                      DebuffContains(named_Debuffs, "149") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Def. Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 149);
@@ -3339,7 +3316,7 @@ namespace CurePlease.App
                                                      OptionsForm.config.na_MagicDefenseDown &&
                                                      DebuffContains(named_Debuffs, "167") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Mag. Def. Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 167);
@@ -3349,7 +3326,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_AttackDown &&
                                                      DebuffContains(named_Debuffs, "147") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Attk. Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 147);
@@ -3359,7 +3336,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_MaxHpDown &&
                                                      DebuffContains(named_Debuffs, "144") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "HP Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 144);
@@ -3369,7 +3346,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_VitDown &&
                                                      DebuffContains(named_Debuffs, "138") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "VIT Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 138);
@@ -3379,7 +3356,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Threnody &&
                                                      DebuffContains(named_Debuffs, "217") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Threnody → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 217);
@@ -3389,7 +3366,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Shock &&
                                                      DebuffContains(named_Debuffs, "132") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Shock → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 132);
@@ -3399,7 +3376,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_StrDown &&
                                                      DebuffContains(named_Debuffs, "136") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "STR Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 136);
@@ -3409,7 +3386,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Requiem &&
                                                      DebuffContains(named_Debuffs, "192") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Requiem → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 192);
@@ -3419,7 +3396,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Rasp &&
                                                      DebuffContains(named_Debuffs, "131") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Rasp → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 131);
@@ -3429,7 +3406,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_MaxTpDown &&
                                                      DebuffContains(named_Debuffs, "189") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Max TP Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 189);
@@ -3439,7 +3416,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_MaxMpDown &&
                                                      DebuffContains(named_Debuffs, "145") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Max MP Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 145);
@@ -3450,7 +3427,7 @@ namespace CurePlease.App
                                                      OptionsForm.config.na_MagicAttackDown &&
                                                      DebuffContains(named_Debuffs, "175") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Mag. Atk. Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 175);
@@ -3460,7 +3437,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_MagicAccDown &&
                                                      DebuffContains(named_Debuffs, "174") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Mag. Acc. Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 174);
@@ -3470,7 +3447,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_MndDown &&
                                                      DebuffContains(named_Debuffs, "141") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "MND Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 141);
@@ -3480,7 +3457,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_IntDown &&
                                                      DebuffContains(named_Debuffs, "140") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "INT Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 140);
@@ -3490,7 +3467,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Helix &&
                                                      DebuffContains(named_Debuffs, "186") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Helix → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 186);
@@ -3500,7 +3477,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Frost &&
                                                      DebuffContains(named_Debuffs, "129") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Frost → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 129);
@@ -3510,7 +3487,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_EvasionDown &&
                                                      DebuffContains(named_Debuffs, "148") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Evasion Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 148);
@@ -3520,7 +3497,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Elegy &&
                                                      DebuffContains(named_Debuffs, "194") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Elegy → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 194);
@@ -3530,7 +3507,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Drown &&
                                                      DebuffContains(named_Debuffs, "133") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Drown → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 133);
@@ -3540,7 +3517,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Dia &&
                                                      DebuffContains(named_Debuffs, "134") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Dia → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 134);
@@ -3550,7 +3527,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_DexDown &&
                                                      DebuffContains(named_Debuffs, "137") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "DEX Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 137);
@@ -3560,7 +3537,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Choke &&
                                                      DebuffContains(named_Debuffs, "130") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Choke → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 130);
@@ -3570,7 +3547,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_ChrDown &&
                                                      DebuffContains(named_Debuffs, "142") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "CHR Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 142);
@@ -3580,7 +3557,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Burn &&
                                                      DebuffContains(named_Debuffs, "128") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Burn → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 128);
@@ -3590,7 +3567,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_Addle &&
                                                      DebuffContains(named_Debuffs, "21") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "Addle → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 21);
@@ -3600,7 +3577,7 @@ namespace CurePlease.App
                                             else if (OptionsForm.config.naErase && OptionsForm.config.na_AgiDown &&
                                                      DebuffContains(named_Debuffs, "139") &&
                                                      CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                                                     JobChecker("Erase"))
+                                                     JobCanCastSpell("Erase"))
                                             {
                                                 CastSpell(ptMember.Name, "Erase", "AGI Down → " + ptMember.Name);
                                                 removeDebuff(ptMember.Name, 139);
@@ -3639,7 +3616,7 @@ namespace CurePlease.App
                     _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHPP -
                     _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP >=
                     OptionsForm.config.curaga5Amount && _ELITEAPIPL.Player.MP > 380 && HasSpell("Curaga V") &&
-                    JobChecker("Curaga V"))
+                    JobCanCastSpell("Curaga V"))
                 {
                     var cureSpell = CureTiers("Curaga V", false);
                     if (cureSpell != "false")
@@ -3650,9 +3627,9 @@ namespace CurePlease.App
                             CastSpell(OptionsForm.config.curagaTargetName, cureSpell);
                     }
                 }
-                else if ((OptionsForm.config.curaga4enabled && HasSpell("Curaga IV") && JobChecker("Curaga IV") ||
+                else if ((OptionsForm.config.curaga4enabled && HasSpell("Curaga IV") && JobCanCastSpell("Curaga IV") ||
                           OptionsForm.config.Accession && OptionsForm.config.accessionCure && HasSpell("Cure IV") &&
-                          JobChecker("Cure IV")) &&
+                          JobCanCastSpell("Cure IV")) &&
                          _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP * 100 /
                          _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHPP -
                          _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP >=
@@ -3682,9 +3659,9 @@ namespace CurePlease.App
                             CastSpell(OptionsForm.config.curagaTargetName, cureSpell);
                     }
                 }
-                else if ((OptionsForm.config.curaga3enabled && HasSpell("Curaga III") && JobChecker("Curaga III") ||
+                else if ((OptionsForm.config.curaga3enabled && HasSpell("Curaga III") && JobCanCastSpell("Curaga III") ||
                           OptionsForm.config.Accession && OptionsForm.config.accessionCure && HasSpell("Cure III") &&
-                          JobChecker("Cure III")) &&
+                          JobCanCastSpell("Cure III")) &&
                          _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP * 100 /
                          _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHPP -
                          _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP >=
@@ -3714,9 +3691,9 @@ namespace CurePlease.App
                             CastSpell(OptionsForm.config.curagaTargetName, cureSpell);
                     }
                 }
-                else if ((OptionsForm.config.curaga2enabled && HasSpell("Curaga II") && JobChecker("Curaga II") ||
+                else if ((OptionsForm.config.curaga2enabled && HasSpell("Curaga II") && JobCanCastSpell("Curaga II") ||
                           OptionsForm.config.Accession && OptionsForm.config.accessionCure && HasSpell("Cure II") &&
-                          JobChecker("Cure II")) &&
+                          JobCanCastSpell("Cure II")) &&
                          _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP * 100 /
                          _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHPP -
                          _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP >=
@@ -3745,9 +3722,9 @@ namespace CurePlease.App
                             CastSpell(OptionsForm.config.curagaTargetName, cureSpell);
                     }
                 }
-                else if ((OptionsForm.config.curagaEnabled && HasSpell("Curaga") && JobChecker("Curaga") ||
+                else if ((OptionsForm.config.curagaEnabled && HasSpell("Curaga") && JobCanCastSpell("Curaga") ||
                           OptionsForm.config.Accession && OptionsForm.config.accessionCure && HasSpell("Cure") &&
-                          JobChecker("Cure")) &&
+                          JobCanCastSpell("Cure")) &&
                          _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP * 100 /
                          _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHPP -
                          _ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].CurrentHP >=
@@ -4671,11 +4648,11 @@ namespace CurePlease.App
                              BuffChecker(445, 0) != true && BuffChecker(446, 0) != true)
                     {
                         if (CheckSpellRecast("Utsusemi: Ni") == 0 && HasSpell("Utsusemi: Ni") &&
-                            JobChecker("Utsusemi: Ni") &&
+                            JobCanCastSpell("Utsusemi: Ni") &&
                             GetInventoryItemCount(_ELITEAPIPL, GetItemId("Shihei")) > 0)
                             CastSpell("<me>", "Utsusemi: Ni");
                         else if (CheckSpellRecast("Utsusemi: Ichi") == 0 && HasSpell("Utsusemi: Ichi") &&
-                                 JobChecker("Utsusemi: Ichi") && BuffChecker(62, 0) != true &&
+                                 JobCanCastSpell("Utsusemi: Ichi") && BuffChecker(62, 0) != true &&
                                  BuffChecker(444, 0) != true && BuffChecker(445, 0) != true &&
                                  BuffChecker(446, 0) != true &&
                                  GetInventoryItemCount(_ELITEAPIPL, GetItemId("Shihei")) > 0)
@@ -4695,7 +4672,7 @@ namespace CurePlease.App
                         else if (OptionsForm.config.autoProtect_Spell == 4) protectSpell = "Protect V";
 
                         if (protectSpell != string.Empty && CheckSpellRecast(protectSpell) == 0 &&
-                            HasSpell(protectSpell) && JobChecker(protectSpell))
+                            HasSpell(protectSpell) && JobCanCastSpell(protectSpell))
                         {
                             if (OptionsForm.config.Accession && OptionsForm.config.accessionProShell &&
                                 _ELITEAPIPL.Party.GetPartyMembers().Count() > 2 &&
@@ -4725,7 +4702,7 @@ namespace CurePlease.App
                         else if (OptionsForm.config.autoShell_Spell == 4) shellSpell = "Shell V";
 
                         if (shellSpell != string.Empty && CheckSpellRecast(shellSpell) == 0 &&
-                            HasSpell(shellSpell) && JobChecker(shellSpell))
+                            HasSpell(shellSpell) && JobCanCastSpell(shellSpell))
                         {
                             if (OptionsForm.config.Accession && OptionsForm.config.accessionProShell &&
                                 _ELITEAPIPL.Party.GetPartyMembers().Count() > 2 &&
@@ -4763,7 +4740,7 @@ namespace CurePlease.App
                         CastSpell("<me>", "Blink");
                     }
                     else if (OptionsForm.config.plPhalanx && !plStatusCheck(StatusEffect.Phalanx) &&
-                             CheckSpellRecast("Phalanx") == 0 && HasSpell("Phalanx") && JobChecker("Phalanx"))
+                             CheckSpellRecast("Phalanx") == 0 && HasSpell("Phalanx") && JobCanCastSpell("Phalanx"))
                     {
                         if (OptionsForm.config.Accession && OptionsForm.config.phalanxAccession &&
                             currentSCHCharges > 0 && HasAbility("Accession") &&
@@ -4787,7 +4764,7 @@ namespace CurePlease.App
                              CheckRefreshLevelPossession())
                     {
                         if (OptionsForm.config.plRefresh_Level == 1 && CheckSpellRecast("Refresh") == 0 &&
-                            HasSpell("Refresh") && JobChecker("Refresh"))
+                            HasSpell("Refresh") && JobCanCastSpell("Refresh"))
                         {
                             if (OptionsForm.config.Accession && OptionsForm.config.refreshAccession &&
                                 currentSCHCharges > 0 && HasAbility("Accession") &&
@@ -4808,12 +4785,12 @@ namespace CurePlease.App
                             CastSpell("<me>", "Refresh");
                         }
                         else if (OptionsForm.config.plRefresh_Level == 2 && CheckSpellRecast("Refresh II") == 0 &&
-                                 HasSpell("Refresh II") && JobChecker("Refresh II"))
+                                 HasSpell("Refresh II") && JobCanCastSpell("Refresh II"))
                         {
                             CastSpell("<me>", "Refresh II");
                         }
                         else if (OptionsForm.config.plRefresh_Level == 3 && CheckSpellRecast("Refresh III") == 0 &&
-                                 HasSpell("Refresh III") && JobChecker("Refresh III"))
+                                 HasSpell("Refresh III") && JobCanCastSpell("Refresh III"))
                         {
                             CastSpell("<me>", "Refresh III");
                         }
@@ -4849,7 +4826,7 @@ namespace CurePlease.App
                             CastSpell("<me>", "Regen V");
                     }
                     else if (OptionsForm.config.plAdloquium && !plStatusCheck(StatusEffect.Regain) &&
-                             CheckSpellRecast("Adloquium") == 0 && HasSpell("Adloquium") && JobChecker("Adloquium"))
+                             CheckSpellRecast("Adloquium") == 0 && HasSpell("Adloquium") && JobCanCastSpell("Adloquium"))
                     {
                         if (OptionsForm.config.Accession && OptionsForm.config.adloquiumAccession &&
                             currentSCHCharges > 0 && HasAbility("Accession") &&
@@ -4870,7 +4847,7 @@ namespace CurePlease.App
                         CastSpell("<me>", "Adloquium");
                     }
                     else if (OptionsForm.config.plStoneskin && !plStatusCheck(StatusEffect.Stoneskin) &&
-                             CheckSpellRecast("Stoneskin") == 0 && HasSpell("Stoneskin") && JobChecker("Stoneskin"))
+                             CheckSpellRecast("Stoneskin") == 0 && HasSpell("Stoneskin") && JobCanCastSpell("Stoneskin"))
                     {
                         if (OptionsForm.config.Accession && OptionsForm.config.stoneskinAccession &&
                             currentSCHCharges > 0 && HasAbility("Accession") &&
@@ -4891,7 +4868,7 @@ namespace CurePlease.App
                         CastSpell("<me>", "Stoneskin");
                     }
                     else if (OptionsForm.config.plAquaveil && !plStatusCheck(StatusEffect.Aquaveil) &&
-                             CheckSpellRecast("Aquaveil") == 0 && HasSpell("Aquaveil") && JobChecker("Aquaveil"))
+                             CheckSpellRecast("Aquaveil") == 0 && HasSpell("Aquaveil") && JobCanCastSpell("Aquaveil"))
                     {
                         if (OptionsForm.config.Accession && OptionsForm.config.aquaveilAccession &&
                             currentSCHCharges > 0 && HasAbility("Accession") &&
@@ -4923,7 +4900,7 @@ namespace CurePlease.App
                     }
                     else if (OptionsForm.config.plBarElement && !BuffChecker(BarspellBuffID, 0) &&
                              CheckSpellRecast(BarspellName) == 0 && HasSpell(BarspellName) &&
-                             JobChecker(BarspellName))
+                             JobCanCastSpell(BarspellName))
                     {
                         if (OptionsForm.config.Accession && OptionsForm.config.barspellAccession &&
                             currentSCHCharges > 0 && HasAbility("Accession") && BarSpell_AOE == false &&
@@ -4945,7 +4922,7 @@ namespace CurePlease.App
                     }
                     else if (OptionsForm.config.plBarStatus && !BuffChecker(BarstatusBuffID, 0) &&
                              CheckSpellRecast(BarstatusName) == 0 && HasSpell(BarstatusName) &&
-                             JobChecker(BarstatusName))
+                             JobCanCastSpell(BarstatusName))
                     {
                         if (OptionsForm.config.Accession && OptionsForm.config.barstatusAccession &&
                             currentSCHCharges > 0 && HasAbility("Accession") && BarStatus_AOE == false &&
@@ -5051,7 +5028,7 @@ namespace CurePlease.App
                     }
                     else if (OptionsForm.config.plStormSpell && !BuffChecker(stormspell.buffID, 0) &&
                              CheckSpellRecast(stormspell.Spell_Name) == 0 && HasSpell(stormspell.Spell_Name) &&
-                             JobChecker(stormspell.Spell_Name))
+                             JobCanCastSpell(stormspell.Spell_Name))
                     {
                         if (OptionsForm.config.Accession && OptionsForm.config.stormspellAccession &&
                             currentSCHCharges > 0 && HasAbility("Accession") &&
@@ -5105,7 +5082,7 @@ namespace CurePlease.App
                     }
                     else if (OptionsForm.config.plEnspell && !BuffChecker(enspell.buffID, 0) &&
                              CheckSpellRecast(enspell.Spell_Name) == 0 && HasSpell(enspell.Spell_Name) &&
-                             JobChecker(enspell.Spell_Name))
+                             JobCanCastSpell(enspell.Spell_Name))
                     {
                         if (OptionsForm.config.Accession && OptionsForm.config.enspellAccession &&
                             currentSCHCharges > 0 && HasAbility("Accession") && enspell.spell_position < 6 &&
@@ -5176,7 +5153,7 @@ namespace CurePlease.App
                         }
                     }
 
-                    // GEO SPELL CASTING 
+                    // GEO SPELL CASTING
                     else if (OptionsForm.config.EnableLuopanSpells && _ELITEAPIPL.Player.Pet.HealthPercent < 1 &&
                              CheckEngagedStatus())
                     {
@@ -5513,28 +5490,28 @@ namespace CurePlease.App
                         if (_ELITEAPIPL.Player.Name == charDATA.Name)
                         {
                             if (autoHasteEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste") == 0 &&
-                                HasSpell("Haste") && JobChecker("Haste") &&
+                                HasSpell("Haste") && JobCanCastSpell("Haste") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && !plStatusCheck(StatusEffect.Haste) &&
                                 !plStatusCheck(StatusEffect.Slow)) hastePlayer(charDATA.MemberNumber);
                             if (autoHaste_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste II") == 0 &&
-                                HasSpell("Haste II") && JobChecker("Haste II") &&
+                                HasSpell("Haste II") && JobCanCastSpell("Haste II") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && !plStatusCheck(StatusEffect.Haste) &&
                                 !plStatusCheck(StatusEffect.Slow)) haste_IIPlayer(charDATA.MemberNumber);
                             if (autoAdloquium_Enabled[charDATA.MemberNumber] &&
                                 CheckSpellRecast("Adloquium") == 0 && HasSpell("Adloquium") &&
-                                JobChecker("Adloquium") &&
+                                JobCanCastSpell("Adloquium") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) &&
                                 !BuffChecker(170, 0)) AdloquiumPlayer(charDATA.MemberNumber);
                             if (autoFlurryEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry") == 0 &&
-                                HasSpell("Flurry") && JobChecker("Flurry") &&
+                                HasSpell("Flurry") && JobCanCastSpell("Flurry") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && !BuffChecker(581, 0) &&
                                 !plStatusCheck(StatusEffect.Slow)) FlurryPlayer(charDATA.MemberNumber);
                             if (autoFlurry_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry II") == 0 &&
-                                HasSpell("Flurry II") && JobChecker("Flurry II") &&
+                                HasSpell("Flurry II") && JobCanCastSpell("Flurry II") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && !BuffChecker(581, 0) &&
                                 !plStatusCheck(StatusEffect.Slow)) Flurry_IIPlayer(charDATA.MemberNumber);
@@ -5558,14 +5535,14 @@ namespace CurePlease.App
                             if (autoRegen_Enabled[charDATA.MemberNumber] &&
                                 CheckSpellRecast(regen_spells[OptionsForm.config.autoRegen_Spell]) == 0 &&
                                 HasSpell(regen_spells[OptionsForm.config.autoRegen_Spell]) &&
-                                JobChecker(regen_spells[OptionsForm.config.autoRegen_Spell]) &&
+                                JobCanCastSpell(regen_spells[OptionsForm.config.autoRegen_Spell]) &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 &&
                                 !plStatusCheck(StatusEffect.Regen)) Regen_Player(charDATA.MemberNumber);
                             if (autoRefreshEnabled[charDATA.MemberNumber] &&
                                 CheckSpellRecast(refresh_spells[OptionsForm.config.autoRefresh_Spell]) == 0 &&
                                 HasSpell(refresh_spells[OptionsForm.config.autoRefresh_Spell]) &&
-                                JobChecker(refresh_spells[OptionsForm.config.autoRefresh_Spell]) &&
+                                JobCanCastSpell(refresh_spells[OptionsForm.config.autoRefresh_Spell]) &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 &&
                                 !plStatusCheck(StatusEffect.Refresh)) Refresh_Player(charDATA.MemberNumber);
@@ -5575,37 +5552,37 @@ namespace CurePlease.App
                                 !BuffChecker(PTstormspell.buffID, 0) &&
                                 CheckSpellRecast(PTstormspell.Spell_Name) == 0 &&
                                 HasSpell(PTstormspell.Spell_Name) &&
-                                JobChecker(PTstormspell.Spell_Name))
+                                JobCanCastSpell(PTstormspell.Spell_Name))
                                 StormSpellPlayer(charDATA.MemberNumber, PTstormspell.Spell_Name);
                         }
                         // MONITORED PLAYER BASED BUFFS
                         else if (_ELITEAPIMonitored.Player.Name == charDATA.Name)
                         {
                             if (autoHasteEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste") == 0 &&
-                                HasSpell("Haste") && JobChecker("Haste") &&
+                                HasSpell("Haste") && JobCanCastSpell("Haste") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) &&
                                 !monitoredStatusCheck(StatusEffect.Haste) &&
                                 !monitoredStatusCheck(StatusEffect.Slow)) hastePlayer(charDATA.MemberNumber);
                             if (autoHaste_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste II") == 0 &&
-                                HasSpell("Haste II") && JobChecker("Haste II") &&
+                                HasSpell("Haste II") && JobCanCastSpell("Haste II") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) &&
                                 !monitoredStatusCheck(StatusEffect.Haste) &&
                                 !monitoredStatusCheck(StatusEffect.Slow)) haste_IIPlayer(charDATA.MemberNumber);
                             if (autoAdloquium_Enabled[charDATA.MemberNumber] &&
                                 CheckSpellRecast("Adloquium") == 0 && HasSpell("Adloquium") &&
-                                JobChecker("Adloquium") &&
+                                JobCanCastSpell("Adloquium") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) &&
                                 !BuffChecker(170, 1)) AdloquiumPlayer(charDATA.MemberNumber);
                             if (autoFlurryEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry") == 0 &&
-                                HasSpell("Flurry") && JobChecker("Flurry") &&
+                                HasSpell("Flurry") && JobCanCastSpell("Flurry") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && !BuffChecker(581, 1) &&
                                 !monitoredStatusCheck(StatusEffect.Slow)) FlurryPlayer(charDATA.MemberNumber);
                             if (autoFlurry_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry II") == 0 &&
-                                HasSpell("Flurry II") && JobChecker("Flurry II") &&
+                                HasSpell("Flurry II") && JobCanCastSpell("Flurry II") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && !BuffChecker(581, 1) &&
                                 !monitoredStatusCheck(StatusEffect.Slow)) Flurry_IIPlayer(charDATA.MemberNumber);
@@ -5630,14 +5607,14 @@ namespace CurePlease.App
                             if (autoRegen_Enabled[charDATA.MemberNumber] &&
                                 CheckSpellRecast(regen_spells[OptionsForm.config.autoRegen_Spell]) == 0 &&
                                 HasSpell(regen_spells[OptionsForm.config.autoRegen_Spell]) &&
-                                JobChecker(regen_spells[OptionsForm.config.autoRegen_Spell]) &&
+                                JobCanCastSpell(regen_spells[OptionsForm.config.autoRegen_Spell]) &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 &&
                                 !monitoredStatusCheck(StatusEffect.Regen)) Regen_Player(charDATA.MemberNumber);
                             if (autoRefreshEnabled[charDATA.MemberNumber] &&
                                 CheckSpellRecast(refresh_spells[OptionsForm.config.autoRefresh_Spell]) == 0 &&
                                 HasSpell(refresh_spells[OptionsForm.config.autoRefresh_Spell]) &&
-                                JobChecker(refresh_spells[OptionsForm.config.autoRefresh_Spell]) &&
+                                JobCanCastSpell(refresh_spells[OptionsForm.config.autoRefresh_Spell]) &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 &&
                                 !monitoredStatusCheck(StatusEffect.Refresh)) Refresh_Player(charDATA.MemberNumber);
@@ -5647,38 +5624,38 @@ namespace CurePlease.App
                                 !BuffChecker(PTstormspell.buffID, 1) &&
                                 CheckSpellRecast(PTstormspell.Spell_Name) == 0 &&
                                 HasSpell(PTstormspell.Spell_Name) &&
-                                JobChecker(PTstormspell.Spell_Name))
+                                JobCanCastSpell(PTstormspell.Spell_Name))
                                 StormSpellPlayer(charDATA.MemberNumber, PTstormspell.Spell_Name);
                         }
                         else
                         {
                             if (autoHasteEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste") == 0 &&
-                                HasSpell("Haste") && JobChecker("Haste") &&
+                                HasSpell("Haste") && JobCanCastSpell("Haste") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) &&
                                 playerHasteSpan[charDATA.MemberNumber].Minutes >=
                                 OptionsForm.config.autoHasteMinutes) hastePlayer(charDATA.MemberNumber);
                             if (autoHaste_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Haste II") == 0 &&
-                                HasSpell("Haste II") && JobChecker("Haste II") &&
+                                HasSpell("Haste II") && JobCanCastSpell("Haste II") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) &&
                                 playerHaste_IISpan[charDATA.MemberNumber].Minutes >=
                                 OptionsForm.config.autoHasteMinutes) haste_IIPlayer(charDATA.MemberNumber);
                             if (autoAdloquium_Enabled[charDATA.MemberNumber] &&
                                 CheckSpellRecast("Adloquium") == 0 && HasSpell("Adloquium") &&
-                                JobChecker("Adloquium") &&
+                                JobCanCastSpell("Adloquium") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) &&
                                 playerAdloquium_Span[charDATA.MemberNumber].Minutes >=
                                 OptionsForm.config.autoAdloquiumMinutes) AdloquiumPlayer(charDATA.MemberNumber);
                             if (autoFlurryEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry") == 0 &&
-                                HasSpell("Flurry") && JobChecker("Flurry") &&
+                                HasSpell("Flurry") && JobCanCastSpell("Flurry") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) &&
                                 playerFlurrySpan[charDATA.MemberNumber].Minutes >=
                                 OptionsForm.config.autoHasteMinutes) FlurryPlayer(charDATA.MemberNumber);
                             if (autoFlurry_IIEnabled[charDATA.MemberNumber] && CheckSpellRecast("Flurry II") == 0 &&
-                                HasSpell("Flurry II") && JobChecker("Flurry II") &&
+                                HasSpell("Flurry II") && JobCanCastSpell("Flurry II") &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) &&
                                 playerHasteSpan[charDATA.MemberNumber].Minutes >=
@@ -5706,7 +5683,7 @@ namespace CurePlease.App
                             if (autoRegen_Enabled[charDATA.MemberNumber] &&
                                 CheckSpellRecast(regen_spells[OptionsForm.config.autoRegen_Spell]) == 0 &&
                                 HasSpell(regen_spells[OptionsForm.config.autoRegen_Spell]) &&
-                                JobChecker(regen_spells[OptionsForm.config.autoRegen_Spell]) &&
+                                JobCanCastSpell(regen_spells[OptionsForm.config.autoRegen_Spell]) &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 &&
                                 playerRegen_Span[charDATA.MemberNumber].Minutes >=
@@ -5714,7 +5691,7 @@ namespace CurePlease.App
                             if (autoRefreshEnabled[charDATA.MemberNumber] &&
                                 CheckSpellRecast(refresh_spells[OptionsForm.config.autoRefresh_Spell]) == 0 &&
                                 HasSpell(refresh_spells[OptionsForm.config.autoRefresh_Spell]) &&
-                                JobChecker(refresh_spells[OptionsForm.config.autoRefresh_Spell]) &&
+                                JobCanCastSpell(refresh_spells[OptionsForm.config.autoRefresh_Spell]) &&
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 &&
                                 playerRefresh_Span[charDATA.MemberNumber].Minutes >=
@@ -5723,7 +5700,7 @@ namespace CurePlease.App
                                 _ELITEAPIPL.Player.MP > OptionsForm.config.mpMinCastValue &&
                                 castingPossible(charDATA.MemberNumber) && _ELITEAPIPL.Player.Status != 33 &&
                                 CheckSpellRecast(PTstormspell.Spell_Name) == 0 &&
-                                HasSpell(PTstormspell.Spell_Name) && JobChecker(PTstormspell.Spell_Name) &&
+                                HasSpell(PTstormspell.Spell_Name) && JobCanCastSpell(PTstormspell.Spell_Name) &&
                                 playerStormspellSpan[charDATA.MemberNumber].Minutes >=
                                 OptionsForm.config.autoStormspellMinutes)
                                 StormSpellPlayer(charDATA.MemberNumber, PTstormspell.Spell_Name);
@@ -5885,7 +5862,7 @@ namespace CurePlease.App
 
             if (GeoSpell_Type == 1)
             {
-                if (HasSpell(GeoSpell.indi_spell) && JobChecker(GeoSpell.indi_spell))
+                if (HasSpell(GeoSpell.indi_spell) && JobCanCastSpell(GeoSpell.indi_spell))
                 {
                     if (CheckSpellRecast(GeoSpell.indi_spell) == 0)
                         return GeoSpell.indi_spell;
@@ -5897,7 +5874,7 @@ namespace CurePlease.App
 
             if (GeoSpell_Type == 2)
             {
-                if (HasSpell(GeoSpell.geo_spell) && JobChecker(GeoSpell.geo_spell))
+                if (HasSpell(GeoSpell.geo_spell) && JobCanCastSpell(GeoSpell.geo_spell))
                 {
                     if (CheckSpellRecast(GeoSpell.geo_spell) == 0)
                         return GeoSpell.geo_spell;
@@ -6738,31 +6715,31 @@ namespace CurePlease.App
             switch ((int) OptionsForm.config.plShellra_Level)
             {
                 case 1:
-                    if (JobChecker("Shellra") && CheckSpellRecast("Shellra") == 0)
+                    if (JobCanCastSpell("Shellra") && CheckSpellRecast("Shellra") == 0)
                         return true;
                     else
                         return false;
 
                 case 2:
-                    if (JobChecker("Shellra II") && CheckSpellRecast("Shellra II") == 0)
+                    if (JobCanCastSpell("Shellra II") && CheckSpellRecast("Shellra II") == 0)
                         return true;
                     else
                         return false;
 
                 case 3:
-                    if (JobChecker("Shellra III") && CheckSpellRecast("Shellra III") == 0)
+                    if (JobCanCastSpell("Shellra III") && CheckSpellRecast("Shellra III") == 0)
                         return true;
                     else
                         return false;
 
                 case 4:
-                    if (JobChecker("Shellra IV") && CheckSpellRecast("Shellra IV") == 0)
+                    if (JobCanCastSpell("Shellra IV") && CheckSpellRecast("Shellra IV") == 0)
                         return true;
                     else
                         return false;
 
                 case 5:
-                    if (JobChecker("Shellra V") && CheckSpellRecast("Shellra V") == 0)
+                    if (JobCanCastSpell("Shellra V") && CheckSpellRecast("Shellra V") == 0)
                         return true;
                     else
                         return false;
@@ -6777,31 +6754,31 @@ namespace CurePlease.App
             switch ((int) OptionsForm.config.plProtectra_Level)
             {
                 case 1:
-                    if (JobChecker("Protectra") && CheckSpellRecast("Protectra") == 0)
+                    if (JobCanCastSpell("Protectra") && CheckSpellRecast("Protectra") == 0)
                         return true;
                     else
                         return false;
 
                 case 2:
-                    if (JobChecker("Protectra II") && CheckSpellRecast("Protectra II") == 0)
+                    if (JobCanCastSpell("Protectra II") && CheckSpellRecast("Protectra II") == 0)
                         return true;
                     else
                         return false;
 
                 case 3:
-                    if (JobChecker("Protectra III") && CheckSpellRecast("Protectra III") == 0)
+                    if (JobCanCastSpell("Protectra III") && CheckSpellRecast("Protectra III") == 0)
                         return true;
                     else
                         return false;
 
                 case 4:
-                    if (JobChecker("Protectra IV") && CheckSpellRecast("Protectra IV") == 0)
+                    if (JobCanCastSpell("Protectra IV") && CheckSpellRecast("Protectra IV") == 0)
                         return true;
                     else
                         return false;
 
                 case 5:
-                    if (JobChecker("Protectra V") && CheckSpellRecast("Protectra V") == 0)
+                    if (JobCanCastSpell("Protectra V") && CheckSpellRecast("Protectra V") == 0)
                         return true;
                     else
                         return false;
@@ -6816,7 +6793,7 @@ namespace CurePlease.App
             switch (OptionsForm.config.plReraise_Level)
             {
                 case 1:
-                    if (JobChecker("Reraise") && CheckSpellRecast("Reraise") == 0)
+                    if (JobCanCastSpell("Reraise") && CheckSpellRecast("Reraise") == 0)
                     {
                         // Check SCH possiblity
                         if (_ELITEAPIPL.Player.MainJob == 20 && _ELITEAPIPL.Player.SubJob != 3 && !BuffChecker(401, 0))
@@ -6830,7 +6807,7 @@ namespace CurePlease.App
 
                 case 2:
 
-                    if (JobChecker("Reraise II") && CheckSpellRecast("Reraise II") == 0)
+                    if (JobCanCastSpell("Reraise II") && CheckSpellRecast("Reraise II") == 0)
                     {
                         if (_ELITEAPIPL.Player.MainJob == 20 && !BuffChecker(401, 0))
                             return false;
@@ -6843,7 +6820,7 @@ namespace CurePlease.App
 
                 case 3:
 
-                    if (JobChecker("Reraise III") && CheckSpellRecast("Reraise III") == 0)
+                    if (JobCanCastSpell("Reraise III") && CheckSpellRecast("Reraise III") == 0)
                     {
                         if (_ELITEAPIPL.Player.MainJob == 20 && !BuffChecker(401, 0))
                             return false;
@@ -6855,7 +6832,7 @@ namespace CurePlease.App
                     }
 
                 case 4:
-                    if (JobChecker("Reraise IV") && CheckSpellRecast("Reraise IV") == 0)
+                    if (JobCanCastSpell("Reraise IV") && CheckSpellRecast("Reraise IV") == 0)
                     {
                         if (_ELITEAPIPL.Player.MainJob == 20 && !BuffChecker(401, 0))
                             return false;
