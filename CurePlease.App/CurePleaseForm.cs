@@ -2663,371 +2663,76 @@ namespace CurePlease.App
 
         private void RunDebuffChecker()
         {
-            // PL and Monitored Player Debuff Removal Starting with PL
-            if (_ELITEAPIPL.Player.Status != 33)
+            if (_ELITEAPIPL.Player.Status == 33) // Resting
+                return;
+
+            var debuffList = DebuffRemovalSpell.DebuffList();
+
+            plSilenceitemName = OptionsForm.config.plSilenceItem switch
             {
-                if (OptionsForm.config.plSilenceItem == 0)
-                    plSilenceitemName = "Catholicon";
-                else if (OptionsForm.config.plSilenceItem == 1)
-                    plSilenceitemName = "Echo Drops";
-                else if (OptionsForm.config.plSilenceItem == 2)
-                    plSilenceitemName = "Remedy";
-                else if (OptionsForm.config.plSilenceItem == 3)
-                    plSilenceitemName = "Remedy Ointment";
-                else if (OptionsForm.config.plSilenceItem == 4) plSilenceitemName = "Vicar's Drink";
+                0 => "Catholicon",
+                1 => "Echo Drops",
+                2 => "Remedy",
+                3 => "Remedy Ointment",
+                4 => "Vicar's Drink",
+                _ => null,
+            };
 
-                if (OptionsForm.config.plDoomitem == 0)
-                    plDoomItemName = "Holy Water";
-                else if (OptionsForm.config.plDoomitem == 1) plDoomItemName = "Hallowed Water";
+            plDoomItemName = OptionsForm.config.plDoomitem switch
+            {
+                0 => "Holy Water",
+                1 => "Hallowed Water",
+                _ => null,
+            };
 
-                if (OptionsForm.config.wakeSleepSpell == 0)
-                    wakeSleepSpellName = "Cure";
-                else if (OptionsForm.config.wakeSleepSpell == 1)
-                    wakeSleepSpellName = "Cura";
-                else if (OptionsForm.config.wakeSleepSpell == 2) wakeSleepSpellName = "Curaga";
+            wakeSleepSpellName = OptionsForm.config.wakeSleepSpell switch
+            {
+                0 => "Cure",
+                1 => "Cura",
+                2 => "Curaga",
+                _ => null,
+            };
 
-                foreach (StatusEffect plEffect in _ELITEAPIPL.Player.Buffs)
-                    if (plEffect == StatusEffect.Doom && OptionsForm.config.plDoom && CheckSpellRecast("Cursna") == 0 &&
-                        HasSpell("Cursna") && JobCanCastSpell("Cursna"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Cursna");
-                    else if (plEffect == StatusEffect.Paralysis && OptionsForm.config.plParalysis &&
-                             CheckSpellRecast("Paralyna") == 0 && HasSpell("Paralyna") && JobCanCastSpell("Paralyna"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Paralyna");
-                    else if (plEffect == StatusEffect.Amnesia && OptionsForm.config.plAmnesia &&
-                             CheckSpellRecast("Esuna") == 0 && HasSpell("Esuna") && JobCanCastSpell("Esuna") &&
-                             BuffChecker(0, 418))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Esuna");
-                    else if (plEffect == StatusEffect.Poison && OptionsForm.config.plPoison &&
-                             CheckSpellRecast("Poisona") == 0 && HasSpell("Poisona") && JobCanCastSpell("Poisona"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Poisona");
-                    else if (plEffect == StatusEffect.Attack_Down && OptionsForm.config.plAttackDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Blindness && OptionsForm.config.plBlindness &&
-                             CheckSpellRecast("Blindna") == 0 && HasSpell("Blindna") && JobCanCastSpell("Blindna"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Blindna");
-                    else if (plEffect == StatusEffect.Bind && OptionsForm.config.plBind &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Weight && OptionsForm.config.plWeight &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Slow && OptionsForm.config.plSlow &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Curse && OptionsForm.config.plCurse &&
-                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Cursna");
-                    else if (plEffect == StatusEffect.Curse2 && OptionsForm.config.plCurse2 &&
-                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Cursna");
-                    else if (plEffect == StatusEffect.Addle && OptionsForm.config.plAddle &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Bane && OptionsForm.config.plBane &&
-                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Cursna");
-                    else if (plEffect == StatusEffect.Plague && OptionsForm.config.plPlague &&
-                             CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") && JobCanCastSpell("Viruna"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Viruna");
-                    else if (plEffect == StatusEffect.Disease && OptionsForm.config.plDisease &&
-                             CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") && JobCanCastSpell("Viruna"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Viruna");
-                    else if (plEffect == StatusEffect.Burn && OptionsForm.config.plBurn &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Frost && OptionsForm.config.plFrost &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Choke && OptionsForm.config.plChoke &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Rasp && OptionsForm.config.plRasp &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Shock && OptionsForm.config.plShock &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Drown && OptionsForm.config.plDrown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Dia && OptionsForm.config.plDia &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Bio && OptionsForm.config.plBio &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.STR_Down && OptionsForm.config.plStrDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.DEX_Down && OptionsForm.config.plDexDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.VIT_Down && OptionsForm.config.plVitDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.AGI_Down && OptionsForm.config.plAgiDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.INT_Down && OptionsForm.config.plIntDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.MND_Down && OptionsForm.config.plMndDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.CHR_Down && OptionsForm.config.plChrDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Max_HP_Down && OptionsForm.config.plMaxHpDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Max_MP_Down && OptionsForm.config.plMaxMpDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Accuracy_Down && OptionsForm.config.plAccuracyDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Evasion_Down && OptionsForm.config.plEvasionDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Defense_Down && OptionsForm.config.plDefenseDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Flash && OptionsForm.config.plFlash &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Magic_Acc_Down && OptionsForm.config.plMagicAccDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Magic_Atk_Down && OptionsForm.config.plMagicAtkDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Helix && OptionsForm.config.plHelix &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Max_TP_Down && OptionsForm.config.plMaxTpDown &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Requiem && OptionsForm.config.plRequiem &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Elegy && OptionsForm.config.plElegy &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIPL.Player.Name, "Erase");
-                    else if (plEffect == StatusEffect.Threnody && OptionsForm.config.plThrenody &&
-                             OptionsForm.config.plAttackDown && CheckSpellRecast("Erase") == 0 && HasSpell("Erase") &&
-                             JobCanCastSpell("Erase")) CastSpell(_ELITEAPIPL.Player.Name, "Erase");
+            foreach (StatusEffect plEffect in _ELITEAPIPL.Player.Buffs)
+            {
+                if (!debuffList.TryGetValue(plEffect, out var debuffRemoval))
+                    continue;
+
+                if (!debuffRemoval.PlEnabled)
+                    continue;
+
+                if (!JobCanCastSpell(debuffRemoval.Name))
+                    continue;
+
+                if (CheckSpellRecast(debuffRemoval.Name) > 0)
+                    continue;
+
+                CastSpell(_ELITEAPIPL.Player.Name, debuffRemoval.Name);
+                return;
             }
 
+            var monitoredEntity =
+                _ELITEAPIPL.Entity.GetEntity((int) _ELITEAPIMonitored.Party.GetPartyMember(0).TargetIndex);
+
             // Next, we check monitored player
-            if (_ELITEAPIPL.Entity.GetEntity((int) _ELITEAPIMonitored.Party.GetPartyMember(0).TargetIndex).Distance <
-                21 && _ELITEAPIPL.Entity.GetEntity((int) _ELITEAPIMonitored.Party.GetPartyMember(0).TargetIndex)
-                    .Distance > 0 && _ELITEAPIMonitored.Player.HP > 0 && _ELITEAPIPL.Player.Status != 33)
+            if (monitoredEntity.IsInSpellCastingRange() && monitoredEntity.HealthPercent > 0)
                 foreach (StatusEffect monitoredEffect in _ELITEAPIMonitored.Player.Buffs)
-                    if (monitoredEffect == StatusEffect.Doom && OptionsForm.config.monitoredDoom &&
-                        CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Cursna");
-                    else if (monitoredEffect == StatusEffect.Sleep && OptionsForm.config.monitoredSleep &&
-                             OptionsForm.config.wakeSleepEnabled)
-                        CastSpell(_ELITEAPIMonitored.Player.Name, wakeSleepSpellName);
-                    else if (monitoredEffect == StatusEffect.Sleep2 && OptionsForm.config.monitoredSleep2 &&
-                             OptionsForm.config.wakeSleepEnabled)
-                        CastSpell(_ELITEAPIMonitored.Player.Name, wakeSleepSpellName);
-                    else if (monitoredEffect == StatusEffect.Silence && OptionsForm.config.monitoredSilence &&
-                             CheckSpellRecast("Silena") == 0 && HasSpell("Silena") && JobCanCastSpell("Silena"))
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Silena");
-                    else if (monitoredEffect == StatusEffect.Petrification &&
-                             OptionsForm.config.monitoredPetrification && CheckSpellRecast("Stona") == 0 &&
-                             HasSpell("Stona") && JobCanCastSpell("Stona"))
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Stona");
-                    else if (monitoredEffect == StatusEffect.Paralysis && OptionsForm.config.monitoredParalysis &&
-                             CheckSpellRecast("Paralyna") == 0 && HasSpell("Paralyna") && JobCanCastSpell("Paralyna"))
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Paralyna");
-                    else if (monitoredEffect == StatusEffect.Amnesia && OptionsForm.config.monitoredAmnesia &&
-                             CheckSpellRecast("Esuna") == 0 && HasSpell("Esuna") && JobCanCastSpell("Esuna") &&
-                             BuffChecker(0, 418))
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Esuna");
-                    else if (monitoredEffect == StatusEffect.Poison && OptionsForm.config.monitoredPoison &&
-                             CheckSpellRecast("Poisona") == 0 && HasSpell("Poisona") && JobCanCastSpell("Erase"))
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Poisona");
-                    else if (monitoredEffect == StatusEffect.Attack_Down && OptionsForm.config.monitoredAttackDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Blindness && OptionsForm.config.monitoredBlindness &&
-                             CheckSpellRecast("Blindna") == 0 && HasSpell("Blindna") && JobCanCastSpell("Blindna"))
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Blindna");
-                    else if (monitoredEffect == StatusEffect.Bind && OptionsForm.config.monitoredBind &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Weight && OptionsForm.config.monitoredWeight &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Slow && OptionsForm.config.monitoredSlow &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Curse && OptionsForm.config.monitoredCurse &&
-                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Cursna");
-                    else if (monitoredEffect == StatusEffect.Curse2 && OptionsForm.config.monitoredCurse2 &&
-                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Cursna");
-                    else if (monitoredEffect == StatusEffect.Addle && OptionsForm.config.monitoredAddle &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Bane && OptionsForm.config.monitoredBane &&
-                             CheckSpellRecast("Cursna") == 0 && HasSpell("Cursna") && JobCanCastSpell("Cursna"))
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Cursna");
-                    else if (monitoredEffect == StatusEffect.Plague && OptionsForm.config.monitoredPlague &&
-                             CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") && JobCanCastSpell("Viruna"))
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Viruna");
-                    else if (monitoredEffect == StatusEffect.Disease && OptionsForm.config.monitoredDisease &&
-                             CheckSpellRecast("Viruna") == 0 && HasSpell("Viruna") && JobCanCastSpell("Viruna"))
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Viruna");
-                    else if (monitoredEffect == StatusEffect.Burn && OptionsForm.config.monitoredBurn &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Frost && OptionsForm.config.monitoredFrost &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Choke && OptionsForm.config.monitoredChoke &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Rasp && OptionsForm.config.monitoredRasp &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Shock && OptionsForm.config.monitoredShock &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Drown && OptionsForm.config.monitoredDrown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Dia && OptionsForm.config.monitoredDia &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Bio && OptionsForm.config.monitoredBio &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.STR_Down && OptionsForm.config.monitoredStrDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.DEX_Down && OptionsForm.config.monitoredDexDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.VIT_Down && OptionsForm.config.monitoredVitDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.AGI_Down && OptionsForm.config.monitoredAgiDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.INT_Down && OptionsForm.config.monitoredIntDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.MND_Down && OptionsForm.config.monitoredMndDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.CHR_Down && OptionsForm.config.monitoredChrDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Max_HP_Down && OptionsForm.config.monitoredMaxHpDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Max_MP_Down && OptionsForm.config.monitoredMaxMpDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Accuracy_Down &&
-                             OptionsForm.config.monitoredAccuracyDown && CheckSpellRecast("Erase") == 0 &&
-                             HasSpell("Erase") && JobCanCastSpell("Erase") && plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Evasion_Down && OptionsForm.config.monitoredEvasionDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Defense_Down && OptionsForm.config.monitoredDefenseDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Flash && OptionsForm.config.monitoredFlash &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Magic_Acc_Down &&
-                             OptionsForm.config.monitoredMagicAccDown && CheckSpellRecast("Erase") == 0 &&
-                             HasSpell("Erase") && JobCanCastSpell("Erase") && plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Magic_Atk_Down &&
-                             OptionsForm.config.monitoredMagicAtkDown && CheckSpellRecast("Erase") == 0 &&
-                             HasSpell("Erase") && JobCanCastSpell("Erase") && plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Helix && OptionsForm.config.monitoredHelix &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Max_TP_Down && OptionsForm.config.monitoredMaxTpDown &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Requiem && OptionsForm.config.monitoredRequiem &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Elegy && OptionsForm.config.monitoredElegy &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty())
-                        CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
-                    else if (monitoredEffect == StatusEffect.Threnody && OptionsForm.config.monitoredThrenody &&
-                             CheckSpellRecast("Erase") == 0 && HasSpell("Erase") && JobCanCastSpell("Erase") &&
-                             plMonitoredSameParty()) CastSpell(_ELITEAPIMonitored.Player.Name, "Erase");
+                {
+                    if (!debuffList.TryGetValue(monitoredEffect, out var debuffRemoval))
+                        continue;
+
+                    if (!debuffRemoval.PlEnabled)
+                        continue;
+
+                    if (!JobCanCastSpell(debuffRemoval.Name))
+                        continue;
+
+                    if (CheckSpellRecast(debuffRemoval.Name) > 0)
+                        continue;
+
+                    CastSpell(_ELITEAPIPL.Player.Name, debuffRemoval.Name);
+                    return;
+                }
             // End MONITORED Debuff Removal
 
 

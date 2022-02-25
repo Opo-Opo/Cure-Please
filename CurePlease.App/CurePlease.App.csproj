@@ -59,6 +59,8 @@
         <Compile Include="CurePleaseForm.cs" />
         <Compile Include="CurePleaseForm.Designer.cs" />
         <Compile Include="CustomClasses.cs" />
+        <Compile Include="DebuffRemovalSpell.cs" />
+        <Compile Include="Extensions.cs" />
         <Compile Include="OptionsForm.cs" />
         <Compile Include="OptionsForm.Designer.cs" />
         <Compile Include="PartyBuffsForm.cs" />
