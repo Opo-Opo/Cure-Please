@@ -6,11 +6,12 @@ namespace CurePlease.App
     public record DebuffRemovalSpell(string Name, bool PlEnabled, bool MonitoredEnabled, bool PartyEnabled)
     {
         public static Dictionary<StatusEffect, DebuffRemovalSpell> DebuffList()
-            => new()
+        {
+            return new Dictionary<StatusEffect, DebuffRemovalSpell>
             {
                 {
                     StatusEffect.Doom,
-                    new(
+                    new DebuffRemovalSpell(
                         "Cursna",
                         OptionsForm.config.plDoom,
                         OptionsForm.config.monitoredDoom,
@@ -19,7 +20,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Paralysis,
-                    new(
+                    new DebuffRemovalSpell(
                         "Paralyna",
                         OptionsForm.config.plParalysis,
                         OptionsForm.config.monitoredParalysis,
@@ -29,7 +30,7 @@ namespace CurePlease.App
                 //{StatusEffect.Amnesia, "Esuna", OptionsForm.config.plAmnesia, OptionsForm.config.monitoredAmnesia}, //BuffChecker(0, 418)
                 {
                     StatusEffect.Poison,
-                    new(
+                    new DebuffRemovalSpell(
                         "Poisona",
                         OptionsForm.config.plPoison,
                         OptionsForm.config.monitoredPoison,
@@ -38,7 +39,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Attack_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plAttackDown,
                         OptionsForm.config.monitoredAttackDown,
@@ -47,7 +48,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Blindness,
-                    new(
+                    new DebuffRemovalSpell(
                         "Blindna",
                         OptionsForm.config.plBlindness,
                         OptionsForm.config.monitoredBlindness,
@@ -56,7 +57,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Bind,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plAttackDown,
                         OptionsForm.config.monitoredAttackDown,
@@ -65,7 +66,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Weight,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plWeight,
                         OptionsForm.config.monitoredWeight,
@@ -74,7 +75,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Slow,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plSlow,
                         OptionsForm.config.monitoredSlow,
@@ -83,7 +84,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Curse,
-                    new(
+                    new DebuffRemovalSpell(
                         "Cursna",
                         OptionsForm.config.plCurse,
                         OptionsForm.config.monitoredCurse,
@@ -92,7 +93,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Curse2,
-                    new(
+                    new DebuffRemovalSpell(
                         "Cursna",
                         OptionsForm.config.plCurse,
                         OptionsForm.config.monitoredCurse,
@@ -101,7 +102,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Addle,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plAddle,
                         OptionsForm.config.monitoredAddle,
@@ -110,7 +111,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Bane,
-                    new(
+                    new DebuffRemovalSpell(
                         "Cursna",
                         OptionsForm.config.plBane,
                         OptionsForm.config.monitoredBane,
@@ -119,7 +120,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Plague,
-                    new(
+                    new DebuffRemovalSpell(
                         "Viruna",
                         OptionsForm.config.plPlague,
                         OptionsForm.config.monitoredPlague,
@@ -128,7 +129,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Disease,
-                    new(
+                    new DebuffRemovalSpell(
                         "Viruna",
                         OptionsForm.config.plDisease,
                         OptionsForm.config.monitoredDisease,
@@ -137,7 +138,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Burn,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plBurn,
                         OptionsForm.config.monitoredBurn,
@@ -146,7 +147,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Frost,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plFrost,
                         OptionsForm.config.monitoredFrost,
@@ -155,7 +156,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Choke,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plChoke,
                         OptionsForm.config.monitoredChoke,
@@ -164,7 +165,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Rasp,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plRasp,
                         OptionsForm.config.monitoredRasp,
@@ -173,7 +174,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Shock,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plShock,
                         OptionsForm.config.monitoredShock,
@@ -182,7 +183,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Drown,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plAttackDown,
                         OptionsForm.config.monitoredAttackDown,
@@ -191,7 +192,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Dia,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plDia,
                         OptionsForm.config.monitoredDia,
@@ -200,7 +201,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Bio,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plBio,
                         OptionsForm.config.monitoredBio,
@@ -209,7 +210,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.STR_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plStrDown,
                         OptionsForm.config.monitoredStrDown,
@@ -218,7 +219,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.DEX_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plDexDown,
                         OptionsForm.config.monitoredDexDown,
@@ -227,7 +228,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.VIT_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plVitDown,
                         OptionsForm.config.monitoredVitDown,
@@ -236,7 +237,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.AGI_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plAgiDown,
                         OptionsForm.config.monitoredAgiDown,
@@ -245,7 +246,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.INT_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plIntDown,
                         OptionsForm.config.monitoredIntDown,
@@ -254,7 +255,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.MND_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plMndDown,
                         OptionsForm.config.monitoredMndDown,
@@ -263,7 +264,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.CHR_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plChrDown,
                         OptionsForm.config.monitoredChrDown,
@@ -272,7 +273,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Max_HP_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plMaxHpDown,
                         OptionsForm.config.monitoredMaxHpDown,
@@ -281,7 +282,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Max_MP_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plMaxMpDown,
                         OptionsForm.config.monitoredMaxMpDown,
@@ -290,7 +291,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Accuracy_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plAccuracyDown,
                         OptionsForm.config.monitoredAccuracyDown,
@@ -299,7 +300,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Evasion_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plEvasionDown,
                         OptionsForm.config.monitoredEvasionDown,
@@ -308,7 +309,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Defense_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plDefenseDown,
                         OptionsForm.config.monitoredDefenseDown,
@@ -317,7 +318,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Flash,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plFlash,
                         OptionsForm.config.monitoredFlash,
@@ -326,7 +327,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Magic_Acc_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plMagicAccDown,
                         OptionsForm.config.monitoredMagicAccDown,
@@ -335,7 +336,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Magic_Atk_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plMagicAtkDown,
                         OptionsForm.config.monitoredMagicAtkDown,
@@ -344,7 +345,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Helix,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plHelix,
                         OptionsForm.config.monitoredHelix,
@@ -353,7 +354,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Max_TP_Down,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plMaxTpDown,
                         OptionsForm.config.monitoredMaxTpDown,
@@ -362,7 +363,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Requiem,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plRequiem,
                         OptionsForm.config.monitoredRequiem,
@@ -371,7 +372,7 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Elegy,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plElegy,
                         OptionsForm.config.monitoredElegy,
@@ -380,13 +381,14 @@ namespace CurePlease.App
                 },
                 {
                     StatusEffect.Threnody,
-                    new(
+                    new DebuffRemovalSpell(
                         "Erase",
                         OptionsForm.config.plThrenody,
                         OptionsForm.config.monitoredThrenody,
                         OptionsForm.config.naErase && OptionsForm.config.na_Threnody
                     )
-                },
+                }
             };
+        }
     }
 }

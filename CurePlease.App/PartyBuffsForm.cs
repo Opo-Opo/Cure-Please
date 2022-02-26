@@ -24,11 +24,17 @@ namespace CurePlease.App
                 // Create the required List
 
                 // Read the Buffs file a generate a List to call.
+            {
                 foreach (var BuffElement in XElement.Load("Resources/Buffs.xml").Elements("o"))
+                {
                     XMLBuffList.Add(new BuffList
                         {ID = BuffElement.Attribute("id").Value, Name = BuffElement.Attribute("en").Value});
+                }
+            }
             else
+            {
                 MessageBox.Show("No character was selected as the power leveler, this can not be opened yet.");
+            }
         }
 
         private void update_effects_Tick(object sender, EventArgs e)
@@ -56,9 +62,13 @@ namespace CurePlease.App
                     if (found_Buff != null)
                     {
                         if (i == count)
+                        {
                             ailment_list.AppendText(found_Buff.Name + " (" + acBuff + ") ");
+                        }
                         else
+                        {
                             ailment_list.AppendText(found_Buff.Name + " (" + acBuff + "), ");
+                        }
                     }
                 }
 

@@ -39,11 +39,20 @@ namespace CurePlease.App
                         TextFormatFlags.PreserveGraphicsClipping | TextFormatFlags.TextBoxControl |
                         TextFormatFlags.WordBreak;
             var titleColor = TextColor;
-            if (!ShowKeyboardCues) flags |= TextFormatFlags.HidePrefix;
+            if (!ShowKeyboardCues)
+            {
+                flags |= TextFormatFlags.HidePrefix;
+            }
 
-            if (RightToLeft == RightToLeft.Yes) flags |= TextFormatFlags.RightToLeft | TextFormatFlags.Right;
+            if (RightToLeft == RightToLeft.Yes)
+            {
+                flags |= TextFormatFlags.RightToLeft | TextFormatFlags.Right;
+            }
 
-            if (!Enabled) titleColor = SystemColors.GrayText;
+            if (!Enabled)
+            {
+                titleColor = SystemColors.GrayText;
+            }
 
             DrawUnthemedGroupBoxWithText(e.Graphics, new Rectangle(0, 0, Width,
                 Height), Text, Font, titleColor, flags, state);
@@ -61,9 +70,13 @@ namespace CurePlease.App
             rectangle.Width = size.Width;
             rectangle.Height = size.Height;
             if ((flags & TextFormatFlags.Right) == TextFormatFlags.Right)
+            {
                 rectangle.X = bounds.Right - rectangle.Width - 8;
+            }
             else
+            {
                 rectangle.X += 8;
+            }
 
             TextRenderer.DrawText(
                 g,
@@ -72,7 +85,10 @@ namespace CurePlease.App
                 rectangle,
                 titleColor,
                 flags);
-            if (rectangle.Width > 0) rectangle.Inflate(2, 2);
+            if (rectangle.Width > 0)
+            {
+                rectangle.Inflate(2, 2);
+            }
 
             using (var pen = new Pen(BorderColor))
             {

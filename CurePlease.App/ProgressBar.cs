@@ -29,7 +29,9 @@ namespace CurePlease.App
                     var rect = new Rectangle(0, 0, Width, Height);
 
                     if (ProgressBarRenderer.IsSupported)
+                    {
                         ProgressBarRenderer.DrawHorizontalBar(offscreen, rect);
+                    }
 
                     rect.Inflate(new Size(-inset, -inset)); // Deflate inner rect.
                     rect.Width = (int) (rect.Width * ((double) Value / Maximum));

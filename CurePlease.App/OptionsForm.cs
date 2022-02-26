@@ -1244,9 +1244,13 @@ namespace CurePlease.App
 
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings");
             if (loadJobSettings.Checked == false && File.Exists(path + "/loadSettings"))
+            {
                 loadJobSettings.Checked = true;
+            }
             else
+            {
                 loadJobSettings.Checked = false;
+            }
         }
 
         #endregion "== Form2"
@@ -1303,22 +1307,44 @@ namespace CurePlease.App
             config.plBlink = plBlink.Checked;
             config.plReraise = plReraise.Checked;
             if (plReraiseLevel1.Checked)
+            {
                 config.plReraise_Level = 1;
+            }
             else if (plReraiseLevel2.Checked)
+            {
                 config.plReraise_Level = 2;
+            }
             else if (plReraiseLevel3.Checked)
+            {
                 config.plReraise_Level = 3;
-            else if (plReraiseLevel4.Checked) config.plReraise_Level = 4;
+            }
+            else if (plReraiseLevel4.Checked)
+            {
+                config.plReraise_Level = 4;
+            }
+
             config.plRegen = plRegen.Checked;
             if (plRegenLevel1.Checked)
+            {
                 config.plRegen_Level = 1;
+            }
             else if (plRegenLevel2.Checked)
+            {
                 config.plRegen_Level = 2;
+            }
             else if (plRegenLevel3.Checked)
+            {
                 config.plRegen_Level = 3;
+            }
             else if (plRegenLevel4.Checked)
+            {
                 config.plRegen_Level = 4;
-            else if (plRegenLevel5.Checked) config.plRegen_Level = 5;
+            }
+            else if (plRegenLevel5.Checked)
+            {
+                config.plRegen_Level = 5;
+            }
+
             config.plStoneskin = plStoneskin.Checked;
             config.plPhalanx = plPhalanx.Checked;
             config.plShellra = plShellra.Checked;
@@ -1332,8 +1358,14 @@ namespace CurePlease.App
             config.autoProtect_Spell = autoProtect.SelectedIndex;
             config.plTemper = plTemper.Checked;
             if (plTemperLevel1.Checked)
+            {
                 config.plTemper_Level = 1;
-            else if (plTemperLevel2.Checked) config.plTemper_Level = 2;
+            }
+            else if (plTemperLevel2.Checked)
+            {
+                config.plTemper_Level = 2;
+            }
+
             config.plEnspell = plEnspell.Checked;
             config.plEnspell_Spell = plEnspell_spell.SelectedIndex;
             config.plGainBoost = plGainBoost.Checked;
@@ -1353,8 +1385,13 @@ namespace CurePlease.App
 
             config.plHaste = plHaste.Checked;
             if (plHasteLevel1.Checked)
+            {
                 config.plHaste_Level = 1;
-            else if (plHasteLevel2.Checked) config.plHaste_Level = 2;
+            }
+            else if (plHasteLevel2.Checked)
+            {
+                config.plHaste_Level = 2;
+            }
 
             config.plSpikes = plSpikes.Checked;
             config.plSpikes_Spell = plSpikes_Spell.SelectedIndex;
@@ -1362,10 +1399,17 @@ namespace CurePlease.App
             config.plUtsusemi = plUtsusemi.Checked;
             config.plRefresh = plRefresh.Checked;
             if (plRefreshLevel1.Checked)
+            {
                 config.plRefresh_Level = 1;
+            }
             else if (plRefreshLevel2.Checked)
+            {
                 config.plRefresh_Level = 2;
-            else if (plRefreshLevel3.Checked) config.plRefresh_Level = 3;
+            }
+            else if (plRefreshLevel3.Checked)
+            {
+                config.plRefresh_Level = 3;
+            }
 
             // SCHOLAR STRATAGEMS
             config.accessionCure = accessionCure.Checked;
@@ -2265,9 +2309,14 @@ namespace CurePlease.App
             autoShell_Minutes.Value = config.autoShellMinutes;
             autoPhalanxIIMinutes.Value = config.autoPhalanxIIMinutes;
             if (config.autoStormspellMinutes == 0)
+            {
                 autoStormspellMinutes.Value = 3;
+            }
             else
+            {
                 autoStormspellMinutes.Value = config.autoStormspellMinutes;
+            }
+
             autoRefresh_Minutes.Value = config.autoRefresh_Minutes;
             autoRegen_Minutes.Value = config.autoRegen_Minutes;
             autoRefresh_Minutes.Value = config.autoRefresh_Minutes;
@@ -2284,40 +2333,79 @@ namespace CurePlease.App
 
             plRegen.Checked = config.plRegen;
             if (config.plRegen_Level == 1 && plRegen.Checked)
+            {
                 plRegenLevel1.Checked = true;
+            }
             else if (config.plRegen_Level == 2 && plRegen.Checked)
+            {
                 plRegenLevel2.Checked = true;
+            }
             else if (config.plRegen_Level == 3 && plRegen.Checked)
+            {
                 plRegenLevel3.Checked = true;
+            }
             else if (config.plRegen_Level == 4 && plRegen.Checked)
+            {
                 plRegenLevel4.Checked = true;
-            else if (config.plRegen_Level == 5 && plRegen.Checked) plRegenLevel5.Checked = true;
+            }
+            else if (config.plRegen_Level == 5 && plRegen.Checked)
+            {
+                plRegenLevel5.Checked = true;
+            }
 
             plReraise.Checked = config.plReraise;
             if (config.plReraise_Level == 1 && plReraise.Checked)
+            {
                 plReraiseLevel1.Checked = true;
+            }
             else if (config.plReraise_Level == 2 && plReraise.Checked)
+            {
                 plReraiseLevel2.Checked = true;
+            }
             else if (config.plReraise_Level == 3 && plReraise.Checked)
+            {
                 plReraiseLevel3.Checked = true;
-            else if (config.plReraise_Level == 4 && plReraise.Checked) plReraiseLevel4.Checked = true;
+            }
+            else if (config.plReraise_Level == 4 && plReraise.Checked)
+            {
+                plReraiseLevel4.Checked = true;
+            }
+
             plRefresh.Checked = config.plRefresh;
             if (config.plRefresh_Level == 1 && plRefresh.Checked)
+            {
                 plRefreshLevel1.Checked = true;
+            }
             else if (config.plRefresh_Level == 2 && plRefresh.Checked)
+            {
                 plRefreshLevel2.Checked = true;
-            else if (config.plRefresh_Level == 3 && plRefresh.Checked) plRefreshLevel3.Checked = true;
+            }
+            else if (config.plRefresh_Level == 3 && plRefresh.Checked)
+            {
+                plRefreshLevel3.Checked = true;
+            }
+
             plStoneskin.Checked = config.plStoneskin;
             plPhalanx.Checked = config.plPhalanx;
             plTemper.Checked = config.plTemper;
             if (config.plTemper_Level == 1 && plTemper.Checked)
+            {
                 plTemperLevel1.Checked = true;
-            else if (config.plTemper_Level == 2 && plTemper.Checked) plTemperLevel2.Checked = true;
+            }
+            else if (config.plTemper_Level == 2 && plTemper.Checked)
+            {
+                plTemperLevel2.Checked = true;
+            }
 
             plHaste.Checked = config.plHaste;
             if (config.plHaste_Level == 1 && plHaste.Checked)
+            {
                 plHasteLevel1.Checked = true;
-            else if (config.plHaste_Level == 2 && plHaste.Checked) plHasteLevel2.Checked = true;
+            }
+            else if (config.plHaste_Level == 2 && plHaste.Checked)
+            {
+                plHasteLevel2.Checked = true;
+            }
 
             plSpikes.Checked = config.plSpikes;
             plSpikes_Spell.SelectedIndex = config.plSpikes_Spell;
@@ -2952,10 +3040,18 @@ namespace CurePlease.App
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == (Keys.Control | Keys.S))
+            {
                 loadButton.PerformClick();
+            }
             else if (keyData == (Keys.Control | Keys.O))
+            {
                 saveAsButton.PerformClick();
-            else if (keyData == Keys.Escape) SaveAllButton.PerformClick();
+            }
+            else if (keyData == Keys.Escape)
+            {
+                SaveAllButton.PerformClick();
+            }
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
