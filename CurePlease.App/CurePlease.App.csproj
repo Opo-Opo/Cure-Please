@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -41,37 +41,38 @@
         <Reference Include="EliteMMO.API, Version=1.3.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>EliteMMO.API.dll</HintPath>
         </Reference>
-        <Reference Include="System"/>
-        <Reference Include="System.Core"/>
-        <Reference Include="System.Xml.Linq"/>
-        <Reference Include="System.Data.DataSetExtensions"/>
-        <Reference Include="Microsoft.CSharp"/>
-        <Reference Include="System.Data"/>
-        <Reference Include="System.Deployment"/>
-        <Reference Include="System.Drawing"/>
-        <Reference Include="System.Net.Http"/>
-        <Reference Include="System.Windows.Forms"/>
-        <Reference Include="System.Xml"/>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Xml.Linq" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Deployment" />
+        <Reference Include="System.Drawing" />
+        <Reference Include="System.Net.Http" />
+        <Reference Include="System.Windows.Forms" />
+        <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="AboutForm.cs"/>
-        <Compile Include="AboutForm.Designer.cs"/>
-        <Compile Include="CurePleaseForm.cs"/>
-        <Compile Include="CurePleaseForm.Designer.cs"/>
-        <Compile Include="CustomClasses.cs"/>
-        <Compile Include="DebuffRemovalSpell.cs"/>
-        <Compile Include="Extensions.cs"/>
-        <Compile Include="OptionsForm.cs"/>
-        <Compile Include="OptionsForm.Designer.cs"/>
-        <Compile Include="PartyBuffsForm.cs"/>
-        <Compile Include="PartyBuffsForm.Designer.cs"/>
-        <Compile Include="Program.cs"/>
-        <Compile Include="ProgressBar.cs"/>
-        <Compile Include="Properties\AssemblyInfo.cs"/>
-        <EmbeddedResource Include="AboutForm.resx"/>
-        <EmbeddedResource Include="CurePleaseForm.resx"/>
-        <EmbeddedResource Include="OptionsForm.resx"/>
-        <EmbeddedResource Include="PartyBuffsForm.resx"/>
+        <Compile Include="AboutForm.cs" />
+        <Compile Include="AboutForm.Designer.cs" />
+        <Compile Include="Bags.cs" />
+        <Compile Include="CurePleaseForm.cs" />
+        <Compile Include="CurePleaseForm.Designer.cs" />
+        <Compile Include="CustomClasses.cs" />
+        <Compile Include="DebuffRemovalSpell.cs" />
+        <Compile Include="Extensions.cs" />
+        <Compile Include="OptionsForm.cs" />
+        <Compile Include="OptionsForm.Designer.cs" />
+        <Compile Include="PartyBuffsForm.cs" />
+        <Compile Include="PartyBuffsForm.Designer.cs" />
+        <Compile Include="Program.cs" />
+        <Compile Include="ProgressBar.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <EmbeddedResource Include="AboutForm.resx" />
+        <EmbeddedResource Include="CurePleaseForm.resx" />
+        <EmbeddedResource Include="OptionsForm.resx" />
+        <EmbeddedResource Include="PartyBuffsForm.resx" />
         <EmbeddedResource Include="Properties\Resources.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -81,7 +82,7 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Resources.resx</DependentUpon>
         </Compile>
-        <None Include="Cure Please Icon.ico"/>
+        <None Include="Cure Please Icon.ico" />
         <None Include="Properties\Settings.settings">
             <Generator>SettingsSingleFileGenerator</Generator>
             <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -93,7 +94,7 @@
         </Compile>
     </ItemGroup>
     <ItemGroup>
-        <Content Include="app.manifest"/>
+        <Content Include="app.manifest" />
         <Content Include="EliteAPI.dll">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -104,5 +105,5 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

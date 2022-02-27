@@ -335,8 +335,6 @@ namespace CurePlease.App
 
             public bool plSilenceItemEnabled { get; set; }
 
-            public int plSilenceItem { get; set; }
-
             public bool plDoomEnabled { get; set; }
 
             public int plDoomitem { get; set; }
@@ -1017,7 +1015,6 @@ namespace CurePlease.App
 
                 // DEBUFF REMOVAL
                 config.plSilenceItemEnabled = false;
-                config.plSilenceItem = 0;
                 config.wakeSleepEnabled = false;
                 config.wakeSleepSpell = 2;
                 config.plDoomEnabled = false;
@@ -1489,7 +1486,6 @@ namespace CurePlease.App
 
             // DEBUFF REMOVAL
             config.plSilenceItemEnabled = plSilenceItemEnabled.Checked;
-            config.plSilenceItem = plSilenceItem.SelectedIndex;
             config.wakeSleepEnabled = wakeSleepEnabled.Checked;
             config.wakeSleepSpell = wakeSleepSpell.SelectedIndex;
             config.plDebuffEnabled = plDebuffEnabled.Checked;
@@ -2522,7 +2518,6 @@ namespace CurePlease.App
 
             //DEBUFF REMOVAL
             plSilenceItemEnabled.Checked = config.plSilenceItemEnabled;
-            plSilenceItem.SelectedIndex = config.plSilenceItem;
             wakeSleepEnabled.Checked = config.wakeSleepEnabled;
             wakeSleepSpell.SelectedIndex = config.wakeSleepSpell;
             plDoomEnabled.Checked = config.plDoomEnabled;
