@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using CurePlease.App.Domain;
 using CurePlease.App.Properties;
 using EliteMMO.API;
 using Keys = EliteMMO.API.Keys;
@@ -2038,238 +2039,14 @@ namespace CurePlease.App
             return true;
         }
 
-        private string CureTiers(string cureSpell, bool HP)
+        private string CureTiers(string cureSpell, bool highPriority)
         {
-            if (cureSpell.ToLower() == "cure vi")
-            {
-                if (HasSpell("Cure VI") && JobCanCastSpell("Cure VI") && CheckSpellRecast("Cure VI") == 0)
-                {
-                    return "Cure VI";
-                }
-
-                if (HasSpell("Cure V") && JobCanCastSpell("Cure V") && CheckSpellRecast("Cure V") == 0 &&
-                    OptionsForm.config.Undercure)
-                {
-                    return "Cure V";
-                }
-
-                if (HasSpell("Cure IV") && JobCanCastSpell("Cure IV") && CheckSpellRecast("Cure IV") == 0 &&
-                    OptionsForm.config.Undercure)
-                {
-                    return "Cure IV";
-                }
-
-                return "false";
-            }
-
-            if (cureSpell.ToLower() == "cure v")
-            {
-                if (HasSpell("Cure V") && JobCanCastSpell("Cure V") && CheckSpellRecast("Cure V") == 0)
-                {
-                    return "Cure V";
-                }
-
-                if (HasSpell("Cure IV") && JobCanCastSpell("Cure IV") && CheckSpellRecast("Cure IV") == 0 &&
-                    OptionsForm.config.Undercure)
-                {
-                    return "Cure IV";
-                }
-
-                if (HasSpell("Cure VI") && JobCanCastSpell("Cure VI") && CheckSpellRecast("Cure VI") == 0 &&
-                    (OptionsForm.config.Overcure && OptionsForm.config.OvercureOnHighPriority != true ||
-                     OptionsForm.config.OvercureOnHighPriority && HP))
-                {
-                    return "Cure VI";
-                }
-
-                return "false";
-            }
-
-            if (cureSpell.ToLower() == "cure iv")
-            {
-                if (HasSpell("Cure IV") && JobCanCastSpell("Cure IV") && CheckSpellRecast("Cure IV") == 0)
-                {
-                    return "Cure IV";
-                }
-
-                if (HasSpell("Cure III") && JobCanCastSpell("Cure III") && CheckSpellRecast("Cure III") == 0 &&
-                    OptionsForm.config.Undercure)
-                {
-                    return "Cure III";
-                }
-
-                if (HasSpell("Cure V") && JobCanCastSpell("Cure V") && CheckSpellRecast("Cure V") == 0 &&
-                    (OptionsForm.config.Overcure && OptionsForm.config.OvercureOnHighPriority != true ||
-                     OptionsForm.config.OvercureOnHighPriority && HP))
-                {
-                    return "Cure V";
-                }
-
-                return "false";
-            }
-
-            if (cureSpell.ToLower() == "cure iii")
-            {
-                if (HasSpell("Cure III") && JobCanCastSpell("Cure III") && CheckSpellRecast("Cure III") == 0)
-                {
-                    return "Cure III";
-                }
-
-                if (HasSpell("Cure IV") && JobCanCastSpell("Cure IV") && CheckSpellRecast("Cure IV") == 0 &&
-                    (OptionsForm.config.Overcure && OptionsForm.config.OvercureOnHighPriority != true ||
-                     OptionsForm.config.OvercureOnHighPriority && HP))
-                {
-                    return "Cure IV";
-                }
-
-                if (HasSpell("Cure II") && JobCanCastSpell("Cure II") && CheckSpellRecast("Cure II") == 0 &&
-                    OptionsForm.config.Undercure)
-                {
-                    return "Cure II";
-                }
-
-                return "false";
-            }
-
-            if (cureSpell.ToLower() == "cure ii")
-            {
-                if (HasSpell("Cure II") && JobCanCastSpell("Cure II") && CheckSpellRecast("Cure II") == 0)
-                {
-                    return "Cure II";
-                }
-
-                if (HasSpell("Cure") && JobCanCastSpell("Cure") && CheckSpellRecast("Cure") == 0 &&
-                    OptionsForm.config.Undercure)
-                {
-                    return "Cure";
-                }
-
-                if (HasSpell("Cure III") && JobCanCastSpell("Cure III") && CheckSpellRecast("Cure III") == 0 &&
-                    (OptionsForm.config.Overcure && OptionsForm.config.OvercureOnHighPriority != true ||
-                     OptionsForm.config.OvercureOnHighPriority && HP))
-                {
-                    return "Cure III";
-                }
-
-                return "false";
-            }
-
-            if (cureSpell.ToLower() == "cure")
-            {
-                if (HasSpell("Cure") && JobCanCastSpell("Cure") && CheckSpellRecast("Cure") == 0)
-                {
-                    return "Cure";
-                }
-
-                if (HasSpell("Cure II") && JobCanCastSpell("Cure II") && CheckSpellRecast("Cure II") == 0 &&
-                    (OptionsForm.config.Overcure && OptionsForm.config.OvercureOnHighPriority != true ||
-                     OptionsForm.config.OvercureOnHighPriority && HP))
-                {
-                    return "Cure II";
-                }
-
-                return "false";
-            }
-
-            if (cureSpell.ToLower() == "curaga v")
-            {
-                if (HasSpell("Curaga V") && JobCanCastSpell("Curaga V") && CheckSpellRecast("Curaga V") == 0)
-                {
-                    return "Curaga V";
-                }
-
-                if (HasSpell("Curaga IV") && JobCanCastSpell("Curaga IV") && CheckSpellRecast("Curaga IV") == 0 &&
-                    OptionsForm.config.Undercure)
-                {
-                    return "Curaga IV";
-                }
-
-                return "false";
-            }
-
-            if (cureSpell.ToLower() == "curaga iv")
-            {
-                if (HasSpell("Curaga IV") && JobCanCastSpell("Curaga IV") && CheckSpellRecast("Curaga IV") == 0)
-                {
-                    return "Curaga IV";
-                }
-
-                if (HasSpell("Curaga V") && JobCanCastSpell("Curaga V") && CheckSpellRecast("Curaga V") == 0 &&
-                    OptionsForm.config.Overcure)
-                {
-                    return "Curaga V";
-                }
-
-                if (HasSpell("Curaga III") && JobCanCastSpell("Curaga III") && CheckSpellRecast("Curaga III") == 0 &&
-                    OptionsForm.config.Undercure)
-                {
-                    return "Curaga III";
-                }
-
-                return "false";
-            }
-
-            if (cureSpell.ToLower() == "curaga iii")
-            {
-                if (HasSpell("Curaga III") && JobCanCastSpell("Curaga III") && CheckSpellRecast("Curaga III") == 0)
-                {
-                    return "Curaga III";
-                }
-
-                if (HasSpell("Curaga IV") && JobCanCastSpell("Curaga IV") && CheckSpellRecast("Curaga IV") == 0 &&
-                    OptionsForm.config.Overcure)
-                {
-                    return "Curaga IV";
-                }
-
-                if (HasSpell("Curaga II") && JobCanCastSpell("Curaga II") && CheckSpellRecast("Curaga II") == 0 &&
-                    OptionsForm.config.Undercure)
-                {
-                    return "Curaga II";
-                }
-
-                return "false";
-            }
-
-            if (cureSpell.ToLower() == "curaga ii")
-            {
-                if (HasSpell("Curaga II") && JobCanCastSpell("Curaga II") && CheckSpellRecast("Curaga II") == 0)
-                {
-                    return "Curaga II";
-                }
-
-                if (HasSpell("Curaga") && JobCanCastSpell("Curaga") && CheckSpellRecast("Curaga") == 0 &&
-                    OptionsForm.config.Undercure)
-                {
-                    return "Curaga";
-                }
-
-                if (HasSpell("Curaga III") && JobCanCastSpell("Curaga III") && CheckSpellRecast("Curaga III") == 0 &&
-                    OptionsForm.config.Overcure)
-                {
-                    return "Curaga III";
-                }
-
-                return "false";
-            }
-
-            if (cureSpell.ToLower() == "curaga")
-            {
-                if (HasSpell("Curaga") && JobCanCastSpell("Curaga") && CheckSpellRecast("Curaga") == 0)
-                {
-                    return "Curaga";
-                }
-
-                if (HasSpell("Curaga II") && JobCanCastSpell("Curaga II") && CheckSpellRecast("Curaga II") == 0 &&
-                    OptionsForm.config.Overcure)
-                {
-                    return "Curaga II";
-                }
-
-                return "false";
-            }
-
-            return "false";
+            return new CurePriority(
+                (spell) => JobCanCastSpell(spell) && CheckSpellRecast(spell) == 0,
+                OptionsForm.config.Overcure,
+                OptionsForm.config.Undercure,
+                OptionsForm.config.OvercureOnHighPriority
+            ).Tier(cureSpell, highPriority);
         }
 
         private bool partyMemberUpdateMethod(byte partyMemberId)
@@ -2766,168 +2543,52 @@ namespace CurePlease.App
             }
         }
 
-        private void CureCalculator_PL(bool HP)
+        private bool CureCalculator(EliteAPI.PartyMember partyMember, bool priorityPlayer)
         {
-            // FIRST GET HOW MUCH HP IS MISSING FROM THE CURRENT PARTY MEMBER
-            if (_ELITEAPIPL.Player.HP > 0)
-            {
-                var HP_Loss = _ELITEAPIPL.Player.HP * 100 / _ELITEAPIPL.Player.HPP - _ELITEAPIPL.Player.HP;
-
-                if (OptionsForm.config.cure6enabled && HP_Loss >= OptionsForm.config.cure6amount &&
-                    _ELITEAPIPL.Player.MP > 227 && HasSpell("Cure VI") && JobCanCastSpell("Cure VI"))
-                {
-                    var cureSpell = CureTiers("Cure VI", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure5enabled && HP_Loss >= OptionsForm.config.cure5amount &&
-                         _ELITEAPIPL.Player.MP > 125 && HasSpell("Cure V") && JobCanCastSpell("Cure V"))
-                {
-                    var cureSpell = CureTiers("Cure V", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure4enabled && HP_Loss >= OptionsForm.config.cure4amount &&
-                         _ELITEAPIPL.Player.MP > 88 && HasSpell("Cure IV") && JobCanCastSpell("Cure IV"))
-                {
-                    var cureSpell = CureTiers("Cure IV", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure3enabled && HP_Loss >= OptionsForm.config.cure3amount &&
-                         _ELITEAPIPL.Player.MP > 46 && HasSpell("Cure III") && JobCanCastSpell("Cure III"))
-                {
-                    if (OptionsForm.config.PrioritiseOverLowerTier)
-                    {
-                        RunDebuffChecker();
-                    }
-
-                    var cureSpell = CureTiers("Cure III", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure2enabled && HP_Loss >= OptionsForm.config.cure2amount &&
-                         _ELITEAPIPL.Player.MP > 24 && HasSpell("Cure II") && JobCanCastSpell("Cure II"))
-                {
-                    if (OptionsForm.config.PrioritiseOverLowerTier)
-                    {
-                        RunDebuffChecker();
-                    }
-
-                    var cureSpell = CureTiers("Cure II", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
-                    }
-                }
-                else if (OptionsForm.config.cure1enabled && HP_Loss >= OptionsForm.config.cure1amount &&
-                         _ELITEAPIPL.Player.MP > 8 && HasSpell("Cure") && JobCanCastSpell("Cure"))
-                {
-                    if (OptionsForm.config.PrioritiseOverLowerTier)
-                    {
-                        RunDebuffChecker();
-                    }
-
-                    var cureSpell = CureTiers("Cure", HP);
-                    if (cureSpell != "false")
-                    {
-                        CastSpell(_ELITEAPIPL.Player.Name, cureSpell);
-                    }
-                }
-            }
-        }
-
-        private void CureCalculator(byte partyMemberId, bool HP)
-        {
-            var partyMember = _ELITEAPIMonitored.Party.GetPartyMember(partyMemberId);
 
             if (partyMember.CurrentHP == 0)
             {
-                return;
+                return false;
             }
 
-            var lostHealth =
-                partyMember.CurrentHP * 100 /
-                partyMember.CurrentHPP -
-                partyMember.CurrentHP;
+            uint lostHealth = partyMember.CurrentHP *
+                              100 / partyMember.CurrentHPP -
+                              partyMember.CurrentHP;
 
-            if (OptionsForm.config.cure6enabled && lostHealth >= OptionsForm.config.cure6amount &&
-                _ELITEAPIPL.Player.MP > 227 && HasSpell("Cure VI") && JobCanCastSpell("Cure VI"))
-            {
-                var cureSpell = CureTiers("Cure VI", HP);
-                if (cureSpell != "false")
+            var calculator = new CureCalculator(
+                new List<CureSpell>()
                 {
-                    CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                }
-            }
-            else if (OptionsForm.config.cure5enabled && lostHealth >= OptionsForm.config.cure5amount &&
-                     _ELITEAPIPL.Player.MP > 125 && HasSpell("Cure V") && JobCanCastSpell("Cure V"))
-            {
-                var cureSpell = CureTiers("Cure V", HP);
-                if (cureSpell != "false")
-                {
-                    CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                }
-            }
-            else if (OptionsForm.config.cure4enabled && lostHealth >= OptionsForm.config.cure4amount &&
-                     _ELITEAPIPL.Player.MP > 88 && HasSpell("Cure IV") && JobCanCastSpell("Cure IV"))
-            {
-                var cureSpell = CureTiers("Cure IV", HP);
-                if (cureSpell != "false")
-                {
-                    CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                }
-            }
-            else if (OptionsForm.config.cure3enabled && lostHealth >= OptionsForm.config.cure3amount &&
-                     _ELITEAPIPL.Player.MP > 46 && HasSpell("Cure III") && JobCanCastSpell("Cure III"))
-            {
-                if (OptionsForm.config.PrioritiseOverLowerTier)
-                {
-                    RunDebuffChecker();
-                }
+                    new CureSpell("Cure VI", OptionsForm.config.cure6enabled, OptionsForm.config.cure6amount),
+                    new CureSpell("Cure V", OptionsForm.config.cure5enabled, OptionsForm.config.cure5amount),
+                    new CureSpell("Cure IV", OptionsForm.config.cure4enabled, OptionsForm.config.cure4amount),
+                    new CureSpell("Cure III", OptionsForm.config.cure3enabled, OptionsForm.config.cure3amount),
+                    new CureSpell("Cure II", OptionsForm.config.cure2enabled, OptionsForm.config.cure2amount),
+                    new CureSpell("Cure", OptionsForm.config.cure1enabled, OptionsForm.config.cure1amount),
+                },
+                new CurePriority(
+                    (spell) => JobCanCastSpell(spell) && CheckSpellRecast(spell) == 0,
+                    OptionsForm.config.Overcure,
+                    OptionsForm.config.Undercure,
+                    OptionsForm.config.OvercureOnHighPriority
+                )
+            );
 
-                var cureSpell = CureTiers("Cure III", HP);
-                if (cureSpell != "false")
-                {
-                    CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                }
-            }
-            else if (OptionsForm.config.cure2enabled && lostHealth >= OptionsForm.config.cure2amount &&
-                     _ELITEAPIPL.Player.MP > 24 && HasSpell("Cure II") && JobCanCastSpell("Cure II"))
-            {
-                if (OptionsForm.config.PrioritiseOverLowerTier)
-                {
-                    RunDebuffChecker();
-                }
+            var cureSpell = calculator.CureFor(lostHealth, priorityPlayer);
 
-                var cureSpell = CureTiers("Cure II", HP);
-                if (cureSpell != "false")
-                {
-                    CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                }
-            }
-            else if (OptionsForm.config.cure1enabled && lostHealth >= OptionsForm.config.cure1amount &&
-                     _ELITEAPIPL.Player.MP > 8 && HasSpell("Cure") && JobCanCastSpell("Cure"))
+            if (cureSpell is null)
             {
-                if (OptionsForm.config.PrioritiseOverLowerTier)
-                {
-                    RunDebuffChecker();
-                }
-
-                var cureSpell = CureTiers("Cure", HP);
-                if (cureSpell != "false")
-                {
-                    CastSpell(_ELITEAPIMonitored.Party.GetPartyMembers()[partyMemberId].Name, cureSpell);
-                }
+                return false;
             }
+
+            CastSpell(partyMember.Name, cureSpell);
+            return true;
+        }
+
+        private bool CureCalculator_Monitored(int partyMemberId, bool priorityPlayer)
+        {
+            var partyMember = _ELITEAPIMonitored.Party.GetPartyMember(partyMemberId);
+
+            return CureCalculator(partyMember, priorityPlayer);
         }
 
         private void RunDebuffChecker()
@@ -4078,9 +3739,10 @@ namespace CurePlease.App
 
             if (_ELITEAPIPL.Player.HP > 0 &&
                 _ELITEAPIPL.Player.HPP <= OptionsForm.config.monitoredCurePercentage &&
-                OptionsForm.config.enableOutOfPartyHealing && PLInParty() == false)
+                OptionsForm.config.enableOutOfPartyHealing && PLInParty() == false &&
+                CureCalculator(_ELITEAPIPL.Party.GetPartyMember(0), false))
             {
-                CureCalculator_PL(false);
+                return;
             }
 
 
@@ -4148,54 +3810,25 @@ namespace CurePlease.App
 
             /////////////////////////// CURE //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            //var playerHpOrder = _ELITEAPIMonitored.Party.GetPartyMembers().Where(p => p.Active >= 1).OrderBy(p => p.CurrentHPP).Select(p => p.Index);
-            var playerHpOrder = _ELITEAPIMonitored.Party.GetPartyMembers().OrderBy(p => p.CurrentHPP)
-                .OrderBy(p => p.Active == 0).Select(p => p.MemberNumber);
+            var playerHpOrder = _ELITEAPIMonitored.Party.GetPartyMembers()
+                .Where(p => p.Active > 0)
+                .Where(p => p.CurrentHP > 0)
+                .Where(p => p.CurrentHPP <= OptionsForm.config.curePercentage)
+                .Where(p => enabledBoxes[p.Index].Checked)
+                .Where(p => _ELITEAPIPL.Entity.GetEntity((int) p.TargetIndex).IsInSpellCastingRange())
+                .OrderBy(
+                    p => highPriorityBoxes[p.Index].Checked &&
+                         p.CurrentHPP <= OptionsForm.config.priorityCurePercentage
+                )
+                .ThenBy(p => p.CurrentHPP)
+                .ToList();
 
-            // First run a check on the monitored target
-            var playerMonitoredHp = _ELITEAPIMonitored.Party.GetPartyMembers()
-                .Where(p => p.Name == _ELITEAPIMonitored.Player.Name).OrderBy(p => p.Active == 0)
-                .Select(p => p.MemberNumber).FirstOrDefault();
-
-            if (OptionsForm.config.enableMonitoredPriority &&
-                _ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].Name ==
-                _ELITEAPIMonitored.Player.Name &&
-                _ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].CurrentHP > 0 &&
-                _ELITEAPIMonitored.Party.GetPartyMembers()[playerMonitoredHp].CurrentHPP <=
-                OptionsForm.config.monitoredCurePercentage)
+            // Now run everyone else
+            foreach (var partyMember in playerHpOrder)
             {
-                CureCalculator(playerMonitoredHp, false);
-            }
-            else
-            {
-                // Now run a scan to check all targets in the High Priority Threshold
-                foreach (var id in playerHpOrder)
+                if (CureCalculator(partyMember, false))
                 {
-                    if (highPriorityBoxes[id].Checked &&
-                        _ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHP > 0 &&
-                        _ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHPP <=
-                        OptionsForm.config.priorityCurePercentage)
-                    {
-                        CureCalculator(id, true);
-                        break;
-                    }
-                }
-
-                // Now run everyone else
-                foreach (var id in playerHpOrder)
-                    // Cures First, is casting possible, and enabled?
-                {
-                    if (castingPossible(id) && _ELITEAPIMonitored.Party.GetPartyMembers()[id].Active >= 1 &&
-                        enabledBoxes[id].Checked &&
-                        _ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHP > 0)
-                    {
-                        if (_ELITEAPIMonitored.Party.GetPartyMembers()[id].CurrentHPP <=
-                            OptionsForm.config.curePercentage && castingPossible(id))
-                        {
-                            CureCalculator(id, false);
-                            break;
-                        }
-                    }
+                    return;
                 }
             }
 

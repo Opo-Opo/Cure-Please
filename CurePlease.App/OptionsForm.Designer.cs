@@ -98,7 +98,6 @@
             this.DevotionTargetType = new System.Windows.Forms.ComboBox();
             this.label34 = new System.Windows.Forms.Label();
             this.enableOutOfPartyHealing = new System.Windows.Forms.CheckBox();
-            this.enableMonitoredPriority = new System.Windows.Forms.CheckBox();
             this.Undercure = new System.Windows.Forms.CheckBox();
             this.Overcure = new System.Windows.Forms.CheckBox();
             this.healWhenMPBelow = new System.Windows.Forms.NumericUpDown();
@@ -1393,18 +1392,6 @@
         " monitored players party)");
             this.enableOutOfPartyHealing.UseVisualStyleBackColor = true;
             //
-            // enableMonitoredPriority
-            //
-            this.enableMonitoredPriority.AutoSize = true;
-            this.enableMonitoredPriority.Location = new System.Drawing.Point(7, 87);
-            this.enableMonitoredPriority.Name = "enableMonitoredPriority";
-            this.enableMonitoredPriority.Size = new System.Drawing.Size(164, 19);
-            this.enableMonitoredPriority.TabIndex = 2;
-            this.enableMonitoredPriority.Text = "Enable Monitored Priority";
-            this.toolTip1.SetToolTip(this.enableMonitoredPriority, "When enabled this will place the minotired target at maximum priority over the HP" +
-        " and Normal PT members.");
-            this.enableMonitoredPriority.UseVisualStyleBackColor = true;
-            //
             // Undercure
             //
             this.Undercure.AutoSize = true;
@@ -2195,7 +2182,6 @@
             this.groupBox32.BorderColor = System.Drawing.Color.SlateGray;
             this.groupBox32.Controls.Add(this.enableOutOfPartyHealing);
             this.groupBox32.Controls.Add(this.OvercureOnHighPriority);
-            this.groupBox32.Controls.Add(this.enableMonitoredPriority);
             this.groupBox32.Controls.Add(this.Undercure);
             this.groupBox32.Controls.Add(this.Overcure);
             this.groupBox32.Location = new System.Drawing.Point(6, 174);
@@ -6776,7 +6762,6 @@
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.CheckBox enableAddOn;
         private System.Windows.Forms.CheckBox OvercureOnHighPriority;
-        private System.Windows.Forms.CheckBox enableMonitoredPriority;
         private System.Windows.Forms.CheckBox Undercure;
         private System.Windows.Forms.CheckBox Overcure;
         private System.Windows.Forms.Label label51;

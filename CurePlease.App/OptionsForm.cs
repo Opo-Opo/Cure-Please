@@ -685,8 +685,6 @@ namespace CurePlease.App
 
             public bool Undercure { get; set; }
 
-            public bool enableMonitoredPriority { get; set; }
-
             public bool enableOutOfPartyHealing { get; set; }
 
             public bool OvercureOnHighPriority { get; set; }
@@ -1205,7 +1203,6 @@ namespace CurePlease.App
 
                 config.Overcure = true;
                 config.Undercure = true;
-                config.enableMonitoredPriority = false;
                 config.enableOutOfPartyHealing = true;
                 config.OvercureOnHighPriority = false;
 
@@ -1675,7 +1672,6 @@ namespace CurePlease.App
 
             config.Overcure = Overcure.Checked;
             config.Undercure = Undercure.Checked;
-            config.enableMonitoredPriority = enableMonitoredPriority.Checked;
             config.enableOutOfPartyHealing = enableOutOfPartyHealing.Checked;
             config.OvercureOnHighPriority = OvercureOnHighPriority.Checked;
             config.EnableAddOn = enableAddOn.Checked;
@@ -2714,7 +2710,6 @@ namespace CurePlease.App
 
             Overcure.Checked = config.Overcure;
             Undercure.Checked = config.Undercure;
-            enableMonitoredPriority.Checked = config.enableMonitoredPriority;
             enableOutOfPartyHealing.Checked = config.enableOutOfPartyHealing;
             OvercureOnHighPriority.Checked = config.OvercureOnHighPriority;
 

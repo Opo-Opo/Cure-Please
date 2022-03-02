@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using EliteMMO.API;
 
-namespace CurePlease.App
+namespace CurePlease.App.Domain
 {
     public record DebuffRemovalSpell(string Name, bool PlEnabled, bool MonitoredEnabled, bool PartyEnabled)
     {

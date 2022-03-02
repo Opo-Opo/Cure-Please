@@ -60,7 +60,9 @@
         <Compile Include="CurePleaseForm.cs" />
         <Compile Include="CurePleaseForm.Designer.cs" />
         <Compile Include="CustomClasses.cs" />
-        <Compile Include="DebuffRemovalSpell.cs" />
+        <Compile Include="Domain\CureCalculator.cs" />
+        <Compile Include="Domain\CurePriority.cs" />
+        <Compile Include="Domain\DebuffRemovalSpell.cs" />
         <Compile Include="Extensions.cs" />
         <Compile Include="OptionsForm.cs" />
         <Compile Include="OptionsForm.Designer.cs" />
