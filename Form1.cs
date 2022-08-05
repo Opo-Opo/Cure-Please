@@ -8492,80 +8492,75 @@
 
         private void checkSCHCharges_Tick(object sender, EventArgs e)
         {
-            if (_ELITEAPIPL != null && _ELITEAPIMonitored != null)
+            if (_ELITEAPIPL == null || _ELITEAPIMonitored == null)
             {
-                int MainJob = _ELITEAPIPL.Player.MainJob;
-                int SubJob = _ELITEAPIPL.Player.SubJob;
-
-                if (MainJob == 20 || SubJob == 20)
-                {
-                    if (plStatusCheck(StatusEffect.Light_Arts) || plStatusCheck(StatusEffect.Addendum_White))
-                    {
-                        int currentRecastTimer = GetAbilityRecastBySpellId(231);
-
-                        int SpentPoints = _ELITEAPIPL.Player.GetJobPoints(20).SpentJobPoints;
-
-                        int MainLevel = _ELITEAPIPL.Player.MainJobLevel;
-                        int SubLevel = _ELITEAPIPL.Player.SubJobLevel;
-
-                        int baseTimer = 240;
-                        int baseCharges = 1;
-
-                        // Generate the correct timer between charges depending on level / Job Points
-                        if (MainLevel == 99 && SpentPoints > 550 && MainJob == 20)
-                        {
-                            baseTimer = 33;
-                            baseCharges = 5;
-                        }
-                        else if (MainLevel >= 90 && SpentPoints < 550 && MainJob == 20)
-                        {
-                            baseTimer = 48;
-                            baseCharges = 5;
-                        }
-                        else if (MainLevel >= 70 && MainLevel < 90 && MainJob == 20)
-                        {
-                            baseTimer = 60;
-                            baseCharges = 4;
-                        }
-                        else if (MainLevel >= 50 && MainLevel < 70 && MainJob == 20)
-                        {
-                            baseTimer = 80;
-                            baseCharges = 3;
-                        }
-                        else if ((MainLevel >= 30 && MainLevel < 50 && MainJob == 20) || (SubLevel >= 30 && SubLevel < 50 && SubJob == 20))
-                        {
-                            baseTimer = 120;
-                            baseCharges = 2;
-                        }
-                        else if ((MainLevel >= 10 && MainLevel < 30 && MainJob == 20) || (SubLevel >= 10 && SubLevel < 30 && SubJob == 20))
-                        {
-                            baseTimer = 240;
-                            baseCharges = 1;
-                        }
-
-                        // Now knowing what the time between charges is lets calculate how many
-                        // charges are available
-
-                        if (currentRecastTimer == 0)
-                        {
-                            currentSCHCharges = baseCharges;
-                        }
-                        else
-                        {
-                            int t = currentRecastTimer / 60;
-
-                            int stratsUsed = t / baseTimer;
-
-                            currentSCHCharges = (int)Math.Ceiling((decimal)baseCharges - stratsUsed);
-
-                            if (baseTimer == 120)
-                            {
-                                currentSCHCharges -= 1;
-                            }
-                        }
-                    }
-                }
+                return;
             }
+
+            int MainJob = _ELITEAPIPL.Player.MainJob;
+            int SubJob = _ELITEAPIPL.Player.SubJob;
+
+            if (MainJob != 20 && SubJob != 20)
+            {
+                return;
+            }
+
+            if (!plStatusCheck(StatusEffect.Light_Arts) && !plStatusCheck(StatusEffect.Addendum_White))
+            {
+                return;
+            }
+
+            int schLevel = MainJob == 20 ? _ELITEAPIPL.Player.MainJobLevel : _ELITEAPIPL.Player.SubJobLevel;
+            int jobPoints = _ELITEAPIPL.Player.GetJobPoints(20).SpentJobPoints;
+
+            int regainChargeTime = 0;
+            int maxCharges = 0;
+
+            if (schLevel == 99 && jobPoints >= 550)
+            {
+                regainChargeTime = 33;
+                maxCharges = 5;
+            }
+            else if (schLevel >= 90)
+            {
+                regainChargeTime = 48;
+                maxCharges = 5;
+            }
+            else if (schLevel >= 70)
+            {
+                regainChargeTime = 60;
+                maxCharges = 4;
+            }
+            else if (schLevel >= 50)
+            {
+                regainChargeTime = 80;
+                maxCharges = 3;
+            }
+            else if (schLevel >= 30)
+            {
+                regainChargeTime = 120;
+                maxCharges = 2;
+            }
+            else if (schLevel >= 10)
+            {
+                regainChargeTime = 240;
+                maxCharges = 1;
+            }
+
+            int chargeTimeRemaining = GetAbilityRecastBySpellId(231);
+
+            if (chargeTimeRemaining == 0)
+            {
+                currentSCHCharges = maxCharges;
+                return;
+            }
+
+            // Now knowing what the time between charges is lets calculate how many
+            // charges are available
+
+            int maxChargeTime = (maxCharges - 1) * regainChargeTime;
+            int fullChargeTimeRemaining = maxChargeTime - chargeTimeRemaining / 60;
+            currentSCHCharges = (int) Math.Ceiling((double) fullChargeTimeRemaining / regainChargeTime);
         }
 
         private bool CheckEngagedStatus()
